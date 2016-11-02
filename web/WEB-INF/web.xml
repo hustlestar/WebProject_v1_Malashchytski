@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app version="3.0" xmlns="http://java.sun.com/xml/ns/javaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd">
+    <welcome-file-list>
+        <welcome-file>index.html</welcome-file>
+        <welcome-file>index.jsp</welcome-file>
+    </welcome-file-list>
+
+    <servlet>
+        <servlet-name>Controller</servlet-name>
+        <servlet-class>by.hustlestar.controller.Controller</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>Controller</servlet-name>
+        <url-pattern>/Controller</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>LoginPage</servlet-name>
+        <jsp-file>/WEB-INF/jsp/loginPage.jsp</jsp-file>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>LoginPage</servlet-name>
+        <url-pattern>/goToLoginPage</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>RegisterPage</servlet-name>
+        <jsp-file>/WEB-INF/jsp/registerPage.jsp</jsp-file>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>RegisterPage</servlet-name>
+        <url-pattern>/goToRegisterPage</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>MoviesPage</servlet-name>
+        <jsp-file>/WEB-INF/jsp/moviesPage.jsp</jsp-file>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>MoviesPage</servlet-name>
+        <url-pattern>/showMovies</url-pattern>
+    </servlet-mapping>
+
+</web-app>
