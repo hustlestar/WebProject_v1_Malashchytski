@@ -40,4 +40,27 @@ public class Movie {
     public void setGross(long gross) {
         this.gross = gross;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Movie)) return false;
+
+        Movie movie = (Movie) o;
+
+        if (getYear() != movie.getYear()) return false;
+        if (getBudget() != movie.getBudget()) return false;
+        if (getGross() != movie.getGross()) return false;
+        return getTitle() != null ? getTitle().equals(movie.getTitle()) : movie.getTitle() == null;
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = getTitle() != null ? getTitle().hashCode() : 0;
+        result = 31 * result + getYear();
+        result = 31 * result + (int) (getBudget() ^ (getBudget() >>> 32));
+        result = 31 * result + (int) (getGross() ^ (getGross() >>> 32));
+        return result;
+    }
 }

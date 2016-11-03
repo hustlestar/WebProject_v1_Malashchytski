@@ -22,4 +22,24 @@ public class User {
     public void setPass(String pass) {
         this.pass = pass;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof User)) return false;
+
+        User user = (User) o;
+
+        if (getNickname() != null ? !getNickname().equals(user.getNickname()) : user.getNickname() != null)
+            return false;
+        return getPass() != null ? getPass().equals(user.getPass()) : user.getPass() == null;
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = getNickname() != null ? getNickname().hashCode() : 0;
+        result = 31 * result + (getPass() != null ? getPass().hashCode() : 0);
+        return result;
+    }
 }
