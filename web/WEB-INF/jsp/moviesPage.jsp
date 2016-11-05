@@ -39,18 +39,25 @@
                 <li><a href="#">Contact</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
-                <% if (session.getAttribute("user") == null) {
-                    out.println("<li class=\"sign-up\"><a href=\"goToRegisterPage\"><span class=\"glyphicon glyphicon-user\"></span> Sign\n" +
-                            " Up</a></li>\n" +
-                            "<li><a href=\"goToLoginPage\"><span class=\"glyphicon glyphicon-log-in\"></span> Login</a></li>");
-                } else {
-                    String userName = String.valueOf(session.getAttribute("user"));
-
-                    out.println("<li class=\"sign-up\"><a href=\"goToRegisterPage\"><span class=\"glyphicon glyphicon-user\"></span>" +
-                            userName + "</a></li>\n" +
-                            "<li><a href=\"Controller?command=log-out\"><span class=\"glyphicon glyphicon-log-out\"></span> Logout</a></li>");
-                }
-                %>
+                <c:if test="${sessionScope.get('user') == null}">
+                    <li class="sign-up">
+                        <a href="goToRegisterPage">
+                            <span class="glyphicon glyphicon-user"></span>
+                            Sign Upsss</a>
+                    </li>
+                    <li><a href="goToLoginPage"><span class="glyphicon glyphicon-log-in"></span>
+                        Login</a>
+                    </li>
+                </c:if>
+                <c:if test="${sessionScope.get('user') != null}">
+                    <li class="sign-up">
+                        <a href="goToRegisterPage">
+                            <span class="glyphicon glyphicon-user"></span> ${sessionScope.get('user')}</a>
+                    </li>
+                    <li><a href="Controller?command=log-out">
+                        <span class="glyphicon glyphicon-log-out"></span> Logout</a>
+                    </li>
+                </c:if>
             </ul>
         </div>
     </div>
