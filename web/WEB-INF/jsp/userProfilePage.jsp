@@ -7,13 +7,12 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    <link rel="stylesheet" href="src/first.css">
+    <link rel="stylesheet" href="./src/first.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
 </head>
 <body>
-
 <nav class="navbar navbar-inverse">
     <div class="container-fluid">
         <div class="navbar-header">
@@ -26,8 +25,12 @@
         </div>
         <div class="collapse navbar-collapse" id="myNavbar">
             <ul class="nav navbar-nav">
-                <li><a href="index.jsp">Home</a></li>
-                <li class="active"><a href="#">Movies</a></li>
+                <li class="active"><a href="index.jsp">Home</a></li>
+                <li>
+                    <a href="Controller?command=all-movies">
+                        Movies
+                    </a>
+                </li>
                 <li><a href="#">Projects</a></li>
                 <li><a href="#">Contact</a></li>
             </ul>
@@ -64,18 +67,7 @@
             <p><a href="#">Link</a></p>
         </div>
         <div class="col-sm-8 text-left">
-            <h1>Welcome</h1>
-            <table border="1">
-                <c:forEach var="movie" items="${requestScope.all_movies}">
-                    <tr>
-                        <td><a href="Controller?command=movie-by-id&id=${movie.id}"><c:out value="${movie.title}"/></a></td>
-                        <td><c:out value="${movie.year}"/></td>
-                    </tr>
-                </c:forEach>
 
-            </table>
-            <h3>Test</h3>
-            <p>Lorem ipsum...</p>
         </div>
         <div class="col-sm-2 sidenav">
             <div class="well">

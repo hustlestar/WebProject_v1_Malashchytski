@@ -16,31 +16,4 @@
         <url-pattern>/Controller</url-pattern>
     </servlet-mapping>
 
-    <servlet>
-        <servlet-name>LoginPage</servlet-name>
-        <jsp-file>/WEB-INF/jsp/loginPage.jsp</jsp-file>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>LoginPage</servlet-name>
-        <url-pattern>/goToLoginPage</url-pattern>
-    </servlet-mapping>
-
-    <servlet>
-        <servlet-name>RegisterPage</servlet-name>
-        <jsp-file>/WEB-INF/jsp/registerPage.jsp</jsp-file>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>RegisterPage</servlet-name>
-        <url-pattern>/goToRegisterPage</url-pattern>
-    </servlet-mapping>
-
-    <servlet>
-        <servlet-name>MoviesPage</servlet-name>
-        <jsp-file>/WEB-INF/jsp/moviesPage.jsp</jsp-file>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>MoviesPage</servlet-name>
-        <url-pattern>/showMovies</url-pattern>
-    </servlet-mapping>
-
 </web-app>

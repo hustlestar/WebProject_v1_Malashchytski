@@ -1,11 +1,4 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%--
-  Created by IntelliJ IDEA.
-  User: Hustler
-  Date: 01.11.2016
-  Time: 11:05
-  To change this template use File | Settings | File Templates.
---%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html>
 <html>
@@ -45,18 +38,18 @@
             <ul class="nav navbar-nav navbar-right">
                 <c:if test="${sessionScope.get('user') == null}">
                     <li class="sign-up">
-                        <a href="goToRegisterPage">
+                        <a href="Controller?command=register">
                             <span class="glyphicon glyphicon-user"></span>
-                            Sign Upsss</a>
+                            Sign Up</a>
                     </li>
-                    <li><a href="goToLoginPage"><span class="glyphicon glyphicon-log-in"></span>
+                    <li><a href="Controller?command=login"><span class="glyphicon glyphicon-log-in"></span>
                         Login</a>
                     </li>
                 </c:if>
                 <c:if test="${sessionScope.get('user') != null}">
                     <li class="sign-up">
-                        <a href="goToRegisterPage">
-                            <span class="glyphicon glyphicon-user"></span> ${sessionScope.get('user')}</a>
+                        <a href="Controller?command=my-profile">
+                            <span class="glyphicon glyphicon-user"></span> ${sessionScope.get('user_nickname')}</a>
                     </li>
                     <li><a href="Controller?command=log-out">
                         <span class="glyphicon glyphicon-log-out"></span> Logout</a>

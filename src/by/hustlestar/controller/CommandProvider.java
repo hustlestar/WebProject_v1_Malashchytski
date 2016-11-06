@@ -1,10 +1,7 @@
 package by.hustlestar.controller;
 
 import by.hustlestar.command.Command;
-import by.hustlestar.command.impl.LoginCommand;
-import by.hustlestar.command.impl.LogoutCommand;
-import by.hustlestar.command.impl.RegisterCommand;
-import by.hustlestar.command.impl.ShowAllMovie;
+import by.hustlestar.command.impl.*;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -21,8 +18,11 @@ class CommandProvider {
     private CommandProvider() {
         commands.put(CommandName.LOGIN, new LoginCommand());
         commands.put(CommandName.REGISTER, new RegisterCommand());
-        commands.put(CommandName.ALL_MOVIES, new ShowAllMovie());
+        commands.put(CommandName.MY_PROFILE, new MyProfile());
         commands.put(CommandName.LOG_OUT, new LogoutCommand());
+        commands.put(CommandName.ALL_MOVIES, new ShowAllMovie());
+        commands.put(CommandName.MOVIE_BY_ID, new ShowMovieByID());
+
     }
 
     public static CommandProvider getInstance() {

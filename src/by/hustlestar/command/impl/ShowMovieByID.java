@@ -10,29 +10,27 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.List;
 
 /**
- * Created by Hustler on 01.11.2016.
+ * Created by Hustler on 06.11.2016.
  */
-public class ShowAllMovie implements Command {
-
+public class ShowMovieByID implements Command {
+    private static final String ID = "id";
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         response.setContentType("text/html; charset=UTF-8");
         request.setCharacterEncoding("UTF-8");
-
-        List<Movie> movies;
+        String id = request.getParameter(ID);
+        Movie movie;
         MovieService movieService = ServiceFactory.getInstance().getMovieService();
-
         try {
-            movies = movieService.showFullList();
+            movie = movieService.showMovieByID(id);
             /*for (Movie movie : movies) {
                 System.out.println(movie.getTitle() + " - " + movie.getYear());
             }*/
-            request.setAttribute("all_movies", movies);
-            request.getRequestDispatcher("WEB-INF/jsp/moviesPage.jsp").include(request, response);
+            request.setAttribute("movie", movie);
+            request.getRequestDispatcher("WEB-INF/jsp/moviePage.jsp").include(request, response);
         } catch (ServiceException e) {
             request.getRequestDispatcher("error.jsp").forward(request, response);
         }

@@ -10,4 +10,5 @@ import java.util.List;
  */
 public interface MovieService {
     List<Movie> showFullList() throws ServiceException;
+    Movie showMovieByID(String id) throws ServiceException;
 }

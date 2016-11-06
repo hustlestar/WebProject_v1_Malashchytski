@@ -1,16 +1,16 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<jsp:useBean id="user" class="by.hustlestar.bean.entity.User" scope="session"/>
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Bootstrap Example</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <link rel="stylesheet" href="src/first.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-
+    <title><c:out value="${user.nickname}"/></title>
 </head>
 <body>
 
@@ -44,7 +44,7 @@
                 </c:if>
                 <c:if test="${sessionScope.get('user') != null}">
                     <li class="sign-up">
-                        <a href="Controller?command=user-profile">
+                        <a href="Controller?command=my-profile">
                             <span class="glyphicon glyphicon-user"></span> ${sessionScope.get('user_nickname')}</a>
                     </li>
                     <li><a href="Controller?command=log-out">
@@ -65,17 +65,13 @@
         </div>
         <div class="col-sm-8 text-left">
             <h1>Welcome</h1>
-            <table border="1">
-                <c:forEach var="movie" items="${requestScope.all_movies}">
-                    <tr>
-                        <td><a href="Controller?command=movie-by-id&id=${movie.id}"><c:out value="${movie.title}"/></a></td>
-                        <td><c:out value="${movie.year}"/></td>
-                    </tr>
-                </c:forEach>
 
-            </table>
-            <h3>Test</h3>
-            <p>Lorem ipsum...</p>
+            <c:out value="${user.nickname}"/><br/>
+            <c:out value="${user.email}"/><br/>
+            <c:out value="${user.registred}"/><br/>
+            <c:out value="${user.sex}"/>
+
+
         </div>
         <div class="col-sm-2 sidenav">
             <div class="well">

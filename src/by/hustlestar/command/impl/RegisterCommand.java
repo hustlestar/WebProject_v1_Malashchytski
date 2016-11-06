@@ -2,6 +2,7 @@ package by.hustlestar.command.impl;
 
 import by.hustlestar.bean.entity.User;
 import by.hustlestar.command.Command;
+import by.hustlestar.command.util.QueryUtil;
 import by.hustlestar.service.RegisterService;
 import by.hustlestar.service.ServiceFactory;
 import by.hustlestar.service.exception.ServiceAuthException;
@@ -18,6 +19,7 @@ import java.io.IOException;
  * Created by Hustler on 28.10.2016.
  */
 public class RegisterCommand implements Command {
+    private static final String JSP_PAGE_PATH = "WEB-INF/jsp/registerPage.jsp";
     private static final Logger logger = LogManager.getLogger();
 
     private static final String LOGIN = "nickname";
@@ -33,25 +35,26 @@ public class RegisterCommand implements Command {
         String sex = request.getParameter(SEX);
         RegisterService registerService = ServiceFactory.getInstance().getRegisterService();
 
-        //String query = QueryUtil.createHttpQueryString(request);
-        //request.getSession(true).setAttribute("prev_query", query);
-        //System.out.println(query);
+        if (login != null && email != null && password != null) {
+            try {
+                User user = registerService.register(login, email, password, sex);
 
-        try {
-            User user = registerService.register(login, email, password, sex);
+                request.setAttribute("user", user);
 
-            request.setAttribute("user", user);
+                request.getRequestDispatcher("index.jsp").include(request, response);
+                System.out.println("vse ok");
+            } catch (ServiceAuthException e) {
+                logger.error(e.getMessage(), e);
+                request.setAttribute("errorMessage", "Wrong login or password");
+                request.getRequestDispatcher("index.jsp").include(request, response);
 
-            request.getRequestDispatcher("index.jsp").include(request, response);
-            System.out.println("vse ok");
-        } catch (ServiceAuthException e) {
-            logger.error(e.getMessage(), e);
-            request.setAttribute("errorMessage", "Wrong login or password");
-            request.getRequestDispatcher("index.jsp").forward(request, response);
-
-        } catch (ServiceException e) {
-            logger.error(e.getMessage(), e);
-            request.getRequestDispatcher("error.jsp").forward(request, response);
+            } catch (ServiceException e) {
+                logger.error(e.getMessage(), e);
+                request.getRequestDispatcher("error.jsp").forward(request, response);
+            }
+        } else {
+            QueryUtil.saveCurrentQueryToSession(request);
         }
+        request.getRequestDispatcher(JSP_PAGE_PATH).forward(request, response);
     }
 }

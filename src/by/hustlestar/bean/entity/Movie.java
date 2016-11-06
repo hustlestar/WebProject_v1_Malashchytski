@@ -4,10 +4,19 @@ package by.hustlestar.bean.entity;
  * Created by Hustler on 01.11.2016.
  */
 public class Movie {
+    private int id;
     private String title;
     private int year;
     private long budget;
     private long gross;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public String getTitle() {
         return title;

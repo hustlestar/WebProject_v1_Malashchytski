@@ -32,4 +32,27 @@ public class MovieServiceImpl implements MovieService {
         }
         return movies;
     }
+
+    @Override
+    public Movie showMovieByID(String id) throws ServiceException {
+        DAOFactory daoFactory = DAOFactory.getInstance();
+        MovieDAO dao = daoFactory.getMovieDAO();
+        Movie movie;
+        int normId;
+        try {
+            normId = Integer.parseInt(id);
+        } catch (NumberFormatException e) {
+            throw new ServiceException("No film with such ID");
+        }
+        try {
+            movie = dao.byID(normId);
+            if (movie == null) {
+                throw new ServiceException("No movies matching your query");
+            }
+        } catch (DAOException e) {
+            throw new ServiceException("Error in source!", e);
+        }
+        return movie;
+    }
+
 }

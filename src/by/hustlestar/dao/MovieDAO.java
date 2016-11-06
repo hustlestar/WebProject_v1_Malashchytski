@@ -10,4 +10,5 @@ import java.util.List;
  */
 public interface MovieDAO {
     List<Movie> fullList() throws DAOException;
+    Movie byID(int id) throws DAOException;
 }

@@ -20,7 +20,14 @@ import java.io.IOException;
  * Created by Hustler on 28.10.2016.
  */
 public class LoginCommand implements Command {
-    private static final Logger logger = LogManager.getLogger();
+    private static final String JSP_PAGE_PATH = "WEB-INF/jsp/loginPage.jsp";
+    private static final String WELCOME_PAGE = "index.jsp";
+
+    private static final String USER_NICKNAME = "user_nickname";
+    private static final String USER = "user";
+    private static final String USER_TYPE_SESSION_ATTRIBUTE = "userType";
+
+    private static final Logger LOGGER = LogManager.getLogger();
     private static final String LOGIN = "nickname";
     private static final String PASSWORD = "pass";
 
@@ -29,31 +36,29 @@ public class LoginCommand implements Command {
 
         String login = request.getParameter(LOGIN);
         String password = request.getParameter(PASSWORD);
+        //System.out.println(login+" "+ password);
         LoginService loginService = ServiceFactory.getInstance().getLoginService();
         HttpSession session = request.getSession(true);
-        while (session.getAttributeNames().hasMoreElements()) {
-            System.out.println(session.getAttributeNames().nextElement());
+
+        if (login != null && password != null) {
+            try {
+                User user = loginService.authorize(login, password);
+                session.setAttribute(USER, user);
+                session.setAttribute(USER_NICKNAME, user.getNickname());
+                session.setAttribute(USER_TYPE_SESSION_ATTRIBUTE, user.getType());
+                response.sendRedirect(WELCOME_PAGE);
+            } catch (ServiceAuthException e) {
+                LOGGER.error(e.getMessage(), e);
+                request.setAttribute("errorMessage", "Wrong login or password");
+                System.out.println("errorr");
+                request.getRequestDispatcher("loginPage.jsp").include(request, response);
+            } catch (ServiceException e) {
+                LOGGER.error(e.getMessage(), e);
+                request.getRequestDispatcher("error.jsp").forward(request, response);
+            }
+        } else {
+            QueryUtil.saveCurrentQueryToSession(request);
+            request.getRequestDispatcher(JSP_PAGE_PATH).include(request, response);
         }
-        /*String query = QueryUtil.createHttpQueryString(request);
-        request.getSession(true).setAttribute("prev_query", query);
-
-        System.out.println(query);*/
-
-        try {
-            User user = loginService.authorize(login, password);
-
-            request.getSession(true).setAttribute("user", user.getNickname());
-
-            request.getRequestDispatcher("index.jsp").include(request, response);
-        } catch (ServiceAuthException e) {
-            logger.error(e.getMessage(), e);
-            request.setAttribute("errorMessage", "Wrong login or password");
-            request.getRequestDispatcher("index.jsp").forward(request, response);
-        }
-        catch (ServiceException e) {
-            logger.error(e.getMessage(), e);
-            request.getRequestDispatcher("error.jsp").forward(request, response);
-        }
-
     }
 }

@@ -36,6 +36,10 @@ public class UserSQLDAO implements UserDAO {
 
             User user = new User();
             user.setNickname(rs.getString("u_nick"));
+            user.setEmail(rs.getString("u_mail"));
+            user.setType(rs.getString("u_type"));
+            user.setSex(rs.getString("u_sex"));
+            user.setRegistred(rs.getDate("u_register"));
             return user;
 
         } catch (SQLException e) {
