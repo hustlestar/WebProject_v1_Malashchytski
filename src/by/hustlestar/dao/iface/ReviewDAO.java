@@ -10,4 +10,6 @@ import java.util.List;
  */
 public interface ReviewDAO {
     List<Review> getReviewsForMovie(int id) throws DAOException;
+
+    void addReview(int intMovieID, String userNickname, String review) throws DAOException;
 }

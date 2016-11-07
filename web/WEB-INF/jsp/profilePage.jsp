@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="src/first.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <title><c:out value="${user.nickname}"/></title>
+    <title><c:out value="${user.nickname}"/> profile</title>
 </head>
 <body>
 
@@ -45,7 +45,7 @@
                 <c:if test="${sessionScope.get('user') != null}">
                     <li class="sign-up">
                         <a href="Controller?command=my-profile">
-                            <span class="glyphicon glyphicon-user"></span> ${sessionScope.get('user_nickname')}</a>
+                            <span class="glyphicon glyphicon-user"></span> ${sessionScope.get('user').nickname}</a>
                     </li>
                     <li><a href="Controller?command=log-out">
                         <span class="glyphicon glyphicon-log-out"></span> Logout</a>
@@ -59,7 +59,7 @@
 <div class="container-fluid text-center">
     <div class="row content">
         <div class="col-sm-2 sidenav">
-            <c:if test='${sessionScope.get("userType") eq "admin" || sessionScope.get("userType") eq "moder"}'>
+            <c:if test='${sessionScope.get("user").type eq "admin" || sessionScope.get("user").type eq "moder"}'>
                 <p><a href="Controller?command=add-movie">Add movie</a></p>
             </c:if>
             <p><a href="#">Link</a></p>

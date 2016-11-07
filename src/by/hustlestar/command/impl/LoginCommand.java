@@ -23,9 +23,7 @@ public class LoginCommand implements Command {
     private static final String JSP_PAGE_PATH = "WEB-INF/jsp/loginPage.jsp";
     private static final String WELCOME_PAGE = "index.jsp";
 
-    private static final String USER_NICKNAME = "user_nickname";
     private static final String USER = "user";
-    private static final String USER_TYPE_SESSION_ATTRIBUTE = "userType";
 
     private static final Logger LOGGER = LogManager.getLogger();
     private static final String LOGIN = "nickname";
@@ -44,8 +42,6 @@ public class LoginCommand implements Command {
             try {
                 User user = loginService.authorize(login, password);
                 session.setAttribute(USER, user);
-                session.setAttribute(USER_NICKNAME, user.getNickname());
-                session.setAttribute(USER_TYPE_SESSION_ATTRIBUTE, user.getType());
                 response.sendRedirect(WELCOME_PAGE);
             } catch (ServiceAuthException e) {
                 LOGGER.error(e.getMessage(), e);

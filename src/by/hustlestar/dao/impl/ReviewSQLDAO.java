@@ -19,6 +19,7 @@ import java.util.List;
  */
 public class ReviewSQLDAO implements ReviewDAO {
     private final static String SHOW_REVIEWS_BY_ID = "SELECT user_u_nick, review FROM reviews WHERE movies_m_id=?";
+    private static final String ADD_REVIEW = "INSERT INTO reviews (movies_m_id, user_u_nick, review) VALUES (?, ?, ?)";
 
     @Override
     public List<Review> getReviewsForMovie(int id) throws DAOException {
@@ -55,6 +56,42 @@ public class ReviewSQLDAO implements ReviewDAO {
                     throw new DAOException("Exception while closing result set", e);
                 }
             }
+            if (st != null) {
+                try {
+                    st.close();
+                } catch (SQLException e) {
+                    throw new DAOException("Exception while closing statement", e);
+                }
+            }
+            try {
+                ConnectionPool.getInstance().returnConnection(con);
+            } catch (ConnectionPoolException e) {
+                throw new DAOException("Exception while returning connection", e);
+            }
+        }
+    }
+
+    @Override
+    public void addReview(int intMovieID, String userNickname, String review) throws DAOException {
+        Connection con = null;
+        PreparedStatement st = null;
+        try {
+            con = ConnectionPool.getInstance().takeConnection();
+            st = con.prepareStatement(ADD_REVIEW);
+            st.setInt(1, intMovieID);
+            st.setString(2, userNickname);
+            st.setString(3, review);
+            int update = st.executeUpdate();
+            if (update > 0) {
+                System.out.println("Review dobavlen vse ok"+userNickname+" "+review);
+                return;
+            }
+            throw new DAOException("Wrong movie data");
+        } catch (SQLException e) {
+            throw new DAOException("Movie sql error", e);
+        } catch (ConnectionPoolException e) {
+            throw new DAOException("Movie pool connection error", e);
+        } finally {
             if (st != null) {
                 try {
                     st.close();

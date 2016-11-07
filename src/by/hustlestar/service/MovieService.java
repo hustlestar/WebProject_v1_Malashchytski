@@ -17,4 +17,6 @@ public interface MovieService {
     Movie showMovieByID(String id) throws ServiceException;
 
     void addMovie(String title, String year, String budget, String gross) throws ServiceException;
+
+    void addReview(String movieID, String userNickname, String review) throws ServiceException;
 }

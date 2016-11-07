@@ -24,6 +24,7 @@ class CommandProvider {
         commands.put(CommandName.ADD_MOVIE, new AddMovie());
         commands.put(CommandName.MOVIE_BY_ID, new ShowMovieByID());
         commands.put(CommandName.MOVIES_BY_COUNTRY, new ShowMoviesByCountry());
+        commands.put(CommandName.ADD_REVIEW, new AddReview());
 
     }
 

@@ -8,5 +8,6 @@ enum CommandName {
     ALL_MOVIES, MOVIE_BY_ID,
     ADD_MOVIE, UPDATE_MOVIE,
     MOVIES_BY_COUNTRY,
+    ADD_REVIEW,
 
 }

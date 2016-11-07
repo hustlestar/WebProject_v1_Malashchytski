@@ -106,4 +106,21 @@ public class MovieServiceImpl implements MovieService {
         }
     }
 
+    @Override
+    public void addReview(String movieID, String userNickname, String review) throws ServiceException {
+        DAOFactory daoFactory = DAOFactory.getInstance();
+        ReviewDAO dao = daoFactory.getReviewDAO();
+        int intMovieID;
+        try {
+            intMovieID = Integer.parseInt(movieID);
+        } catch (NumberFormatException e) {
+            throw new ServiceException("Wrong data input, while adding film");
+        }
+        try {
+            dao.addReview(intMovieID, userNickname, review);
+        } catch (DAOException e) {
+            throw new ServiceException("Error in source!", e);
+        }
+    }
+
 }

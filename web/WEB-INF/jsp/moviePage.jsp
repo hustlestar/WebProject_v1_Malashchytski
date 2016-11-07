@@ -45,7 +45,7 @@
                 <c:if test="${sessionScope.get('user') != null}">
                     <li class="sign-up">
                         <a href="Controller?command=my-profile">
-                            <span class="glyphicon glyphicon-user"></span> ${sessionScope.get('user_nickname')}</a>
+                            <span class="glyphicon glyphicon-user"></span> ${sessionScope.get('user').nickname}</a>
                     </li>
                     <li><a href="Controller?command=log-out">
                         <span class="glyphicon glyphicon-log-out"></span> Logout</a>
@@ -78,8 +78,16 @@
             Бюджет <c:out value="${movie.budget}"/><br/>
             Сборы в мире <c:out value="${movie.gross}"/>
 
-
-
+            <c:if test="${sessionScope.get('user') != null}">
+            <form action="Controller" method="post">
+                <input type="hidden" name="command" value="add-review" lang="ru"/>
+                <input type="hidden" value="${movie.id}" name="movieID">
+                <input type="hidden" value="${sessionScope.user.nickname}" name="userNickname">
+                <!-- TO FIX WITH CSS -->
+                <input type="text" name="review" height="200px"/><br/>
+                <input type="submit" value="Add review"/>
+            </form>
+            </c:if>
             <h3>Рецензии</h3>
             <c:if test="${movie.reviews.size()>0}">
                 <c:forEach var="review" items="${requestScope.movie.reviews}">

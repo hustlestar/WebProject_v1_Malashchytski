@@ -1,6 +1,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page contentType="text/html;charset=UTF-8" pageEncoding="WINDOWS-1251" language="java" %>
-<c:if test="${sessionScope.get('user') == null && sessionScope.get('userType')!='admin' && sessionScope.get('userType')!='moder'}">
+<c:if test="${sessionScope.get('user') == null && sessionScope.get('user').type ne 'admin' && sessionScope.get('user').type ne'moder'}">
     <c:redirect url="/index.jsp"/>
 </c:if>
 <!DOCTYPE html>
@@ -52,7 +52,7 @@
                 <c:if test="${sessionScope.get('user') != null}">
                     <li class="sign-up">
                         <a href="Controller?command=my-profile">
-                            <span class="glyphicon glyphicon-user"></span> ${sessionScope.get('user_nickname')}</a>
+                            <span class="glyphicon glyphicon-user"></span> ${sessionScope.get('user').nickname}</a>
                     </li>
                     <li><a href="Controller?command=log-out">
                         <span class="glyphicon glyphicon-log-out"></span> Logout</a>

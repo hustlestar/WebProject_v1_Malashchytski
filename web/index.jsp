@@ -49,7 +49,7 @@
                 <c:if test="${sessionScope.get('user') != null}">
                     <li class="sign-up">
                         <a href="Controller?command=my-profile">
-                            <span class="glyphicon glyphicon-user"></span> ${sessionScope.get('user_nickname')}</a>
+                            <span class="glyphicon glyphicon-user"></span> ${sessionScope.get('user').nickname}</a>
                     </li>
                     <li><a href="Controller?command=log-out">
                         <span class="glyphicon glyphicon-log-out"></span> Logout</a>
