@@ -5,6 +5,8 @@ package by.hustlestar.controller;
  */
 enum CommandName {
     LOGIN, REGISTER, LOG_OUT, MY_PROFILE,
-    ALL_MOVIES, MOVIE_BY_ID
+    ALL_MOVIES, MOVIE_BY_ID,
+    ADD_MOVIE, UPDATE_MOVIE,
+    MOVIES_BY_COUNTRY,
 
 }

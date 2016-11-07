@@ -21,7 +21,9 @@ class CommandProvider {
         commands.put(CommandName.MY_PROFILE, new MyProfile());
         commands.put(CommandName.LOG_OUT, new LogoutCommand());
         commands.put(CommandName.ALL_MOVIES, new ShowAllMovie());
+        commands.put(CommandName.ADD_MOVIE, new AddMovie());
         commands.put(CommandName.MOVIE_BY_ID, new ShowMovieByID());
+        commands.put(CommandName.MOVIES_BY_COUNTRY, new ShowMoviesByCountry());
 
     }
 

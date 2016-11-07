@@ -1,5 +1,7 @@
 package by.hustlestar.bean.entity;
 
+import java.util.List;
+
 /**
  * Created by Hustler on 01.11.2016.
  */
@@ -9,6 +11,43 @@ public class Movie {
     private int year;
     private long budget;
     private long gross;
+
+    private List<Country> countries;
+    private List<Review> reviews;
+    private List<Rating> ratings;
+    private int averageRating;
+
+    public List<Country> getCountries() {
+        return countries;
+    }
+
+    public void setCountries(List<Country> countries) {
+        this.countries = countries;
+    }
+
+    public List<Review> getReviews() {
+        return reviews;
+    }
+
+    public void setReviews(List<Review> reviews) {
+        this.reviews = reviews;
+    }
+
+    public List<Rating> getRatings() {
+        return ratings;
+    }
+
+    public void setRatings(List<Rating> ratings) {
+        this.ratings = ratings;
+    }
+
+    public int getAverageRating() {
+        return averageRating;
+    }
+
+    public void setAverageRating(int averageRating) {
+        this.averageRating = averageRating;
+    }
 
     public int getId() {
         return id;

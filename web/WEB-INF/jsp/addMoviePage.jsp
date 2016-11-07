@@ -1,16 +1,19 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<jsp:useBean id="movie" class="by.hustlestar.bean.entity.Movie" scope="request"/>
+<%@ page contentType="text/html;charset=UTF-8" pageEncoding="WINDOWS-1251" language="java" %>
+<c:if test="${sessionScope.get('user') == null && sessionScope.get('userType')!='admin' && sessionScope.get('userType')!='moder'}">
+    <c:redirect url="/index.jsp"/>
+</c:if>
 <!DOCTYPE html>
 <html>
 <head>
+    <title>Bootstrap Example</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    <link rel="stylesheet" href="src/first.css">
+    <link rel="stylesheet" href="./src/first.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <title><c:out value="${movie.title}"/></title>
+
 </head>
 <body>
 
@@ -26,8 +29,12 @@
         </div>
         <div class="collapse navbar-collapse" id="myNavbar">
             <ul class="nav navbar-nav">
-                <li><a href="index.jsp">Home</a></li>
-                <li class="active"><a href="#">Movies</a></li>
+                <li class="active"><a href="index.jsp">Home</a></li>
+                <li>
+                    <a href="Controller?command=all-movies">
+                        Movies
+                    </a>
+                </li>
                 <li><a href="#">Projects</a></li>
                 <li><a href="#">Contact</a></li>
             </ul>
@@ -64,30 +71,14 @@
             <p><a href="#">Link</a></p>
         </div>
         <div class="col-sm-8 text-left">
-            <h1>Welcome</h1>
-
-            Название фильма <c:out value="${movie.title}"/><br/>
-            Год <c:out value="${movie.year}"/><br/>
-            <c:if test="${movie.countries.size()>0}">
-                Страна <c:forEach var="country" items="${requestScope.movie.countries}">
-                <a href="Controller?command=movies-by-country&country=${country.name}"><c:out
-                        value="${country.name}"/></a>
-            </c:forEach>
-                <br/>
-            </c:if>
-            Бюджет <c:out value="${movie.budget}"/><br/>
-            Сборы в мире <c:out value="${movie.gross}"/>
-
-
-
-            <h3>Рецензии</h3>
-            <c:if test="${movie.reviews.size()>0}">
-                <c:forEach var="review" items="${requestScope.movie.reviews}">
-                    <c:out value="${review.userNickname}"/>: <c:out value="${review.review}"/><br/>
-                </c:forEach>
-            </c:if>
-
-
+            <form action="Controller" method="get">
+                <input type="hidden" name="command" value="add-movie" lang="ru"/>
+                Movie Title:<input type="text" name="title"/><br/>
+                Year filmed:<input type="text" name="year"/><br/>
+                Budget:<input type="text" name="budget"/>
+                Gross:<input type="text" name="gross"/>
+                <input type="submit" value="add-movie"/>
+            </form>
         </div>
         <div class="col-sm-2 sidenav">
             <div class="well">

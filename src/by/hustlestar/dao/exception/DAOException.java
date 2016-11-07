@@ -16,4 +16,8 @@ public class DAOException extends Exception {
     public DAOException(String s, ConnectionPoolException e) {
         super(s, e);
     }
+
+    public DAOException(String s) {
+        super(s);
+    }
 }

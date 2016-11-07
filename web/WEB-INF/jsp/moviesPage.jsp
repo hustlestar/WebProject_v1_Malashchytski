@@ -44,7 +44,7 @@
                 </c:if>
                 <c:if test="${sessionScope.get('user') != null}">
                     <li class="sign-up">
-                        <a href="Controller?command=user-profile">
+                        <a href="Controller?command=my-profile">
                             <span class="glyphicon glyphicon-user"></span> ${sessionScope.get('user_nickname')}</a>
                     </li>
                     <li><a href="Controller?command=log-out">

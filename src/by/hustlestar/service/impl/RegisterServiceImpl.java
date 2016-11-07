@@ -2,7 +2,7 @@ package by.hustlestar.service.impl;
 
 import by.hustlestar.bean.entity.User;
 import by.hustlestar.dao.DAOFactory;
-import by.hustlestar.dao.UserDAO;
+import by.hustlestar.dao.iface.UserDAO;
 import by.hustlestar.dao.exception.DAOException;
 import by.hustlestar.service.RegisterService;
 import by.hustlestar.service.exception.ServiceAuthException;

@@ -1,7 +1,7 @@
 package by.hustlestar.dao.impl;
 
 import by.hustlestar.bean.entity.User;
-import by.hustlestar.dao.UserDAO;
+import by.hustlestar.dao.iface.UserDAO;
 import by.hustlestar.dao.exception.DAOException;
 import by.hustlestar.dao.impl.pool.ConnectionPool;
 import by.hustlestar.dao.impl.pool.ConnectionPoolException;
@@ -38,6 +38,7 @@ public class UserSQLDAO implements UserDAO {
             user.setNickname(rs.getString("u_nick"));
             user.setEmail(rs.getString("u_mail"));
             user.setType(rs.getString("u_type"));
+            System.out.println(user.getType());
             user.setSex(rs.getString("u_sex"));
             user.setRegistred(rs.getDate("u_register"));
             return user;

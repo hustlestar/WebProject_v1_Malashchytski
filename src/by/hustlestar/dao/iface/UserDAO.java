@@ -1,4 +1,4 @@
-package by.hustlestar.dao;
+package by.hustlestar.dao.iface;
 
 import by.hustlestar.bean.entity.User;
 import by.hustlestar.dao.exception.DAOException;

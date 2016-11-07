@@ -27,7 +27,7 @@
         <div class="collapse navbar-collapse" id="myNavbar">
             <ul class="nav navbar-nav">
                 <li><a href="index.jsp">Home</a></li>
-                <li class="active"><a href="#">Movies</a></li>
+                <li><a href="#">Movies</a></li>
                 <li><a href="#">Projects</a></li>
                 <li><a href="#">Contact</a></li>
             </ul>
@@ -59,6 +59,9 @@
 <div class="container-fluid text-center">
     <div class="row content">
         <div class="col-sm-2 sidenav">
+            <c:if test='${sessionScope.get("userType") eq "admin" || sessionScope.get("userType") eq "moder"}'>
+                <p><a href="Controller?command=add-movie">Add movie</a></p>
+            </c:if>
             <p><a href="#">Link</a></p>
             <p><a href="#">Link</a></p>
             <p><a href="#">Link</a></p>
