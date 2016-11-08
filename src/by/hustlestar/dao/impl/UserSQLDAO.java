@@ -5,6 +5,7 @@ import by.hustlestar.dao.iface.UserDAO;
 import by.hustlestar.dao.exception.DAOException;
 import by.hustlestar.dao.impl.pool.ConnectionPool;
 import by.hustlestar.dao.impl.pool.ConnectionPoolException;
+
 import java.sql.*;
 
 
@@ -14,6 +15,14 @@ import java.sql.*;
 public class UserSQLDAO implements UserDAO {
     private final static String LOG_IN_STATEMENT = "SELECT * FROM user WHERE u_nick=? and u_password=?";
     private final static String REGISTER_STATEMENT = "INSERT INTO user VALUES(?,?,?,'user',?,?)";
+
+
+    private static final String U_NICK = "u_nick";
+    private static final String U_MAIL = "u_mail";
+    private static final String U_TYPE = "u_type";
+    private static final String U_SEX = "u_sex";
+    private static final String U_REGISTER = "u_register";
+    private static final String DATE_FORMAT = "yyyy-MM-dd";
 
     @Override
     public User authorize(String login, String password) throws DAOException {
@@ -35,12 +44,11 @@ public class UserSQLDAO implements UserDAO {
             }
 
             User user = new User();
-            user.setNickname(rs.getString("u_nick"));
-            user.setEmail(rs.getString("u_mail"));
-            user.setType(rs.getString("u_type"));
-            System.out.println(user.getType());
-            user.setSex(rs.getString("u_sex"));
-            user.setRegistred(rs.getDate("u_register"));
+            user.setNickname(rs.getString(U_NICK));
+            user.setEmail(rs.getString(U_MAIL));
+            user.setType(rs.getString(U_TYPE));
+            user.setSex(rs.getString(U_SEX));
+            user.setRegistred(rs.getDate(U_REGISTER));
             return user;
 
         } catch (SQLException e) {
@@ -84,7 +92,7 @@ public class UserSQLDAO implements UserDAO {
             st.setString(3, password);
             java.util.Date dt = new java.util.Date();
             java.text.SimpleDateFormat sdf =
-                    new java.text.SimpleDateFormat("yyyy-MM-dd");
+                    new java.text.SimpleDateFormat(DATE_FORMAT);
             String currentTime = sdf.format(dt);
             System.out.println(currentTime);
             st.setDate(4, Date.valueOf(currentTime));

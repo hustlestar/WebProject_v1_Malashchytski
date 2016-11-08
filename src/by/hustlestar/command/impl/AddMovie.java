@@ -4,7 +4,6 @@ import by.hustlestar.command.Command;
 import by.hustlestar.command.util.QueryUtil;
 import by.hustlestar.service.MovieService;
 import by.hustlestar.service.ServiceFactory;
-import by.hustlestar.service.exception.ServiceAuthException;
 import by.hustlestar.service.exception.ServiceException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -20,17 +19,26 @@ import java.io.IOException;
 public class AddMovie implements Command {
 
     private static final String JSP_PAGE_PATH = "WEB-INF/jsp/addMoviePage.jsp";
-    private static final Logger logger = LogManager.getLogger();
+    private static final String WELCOME_PAGE = "index.jsp";
+    private static final String ERROR_PAGE = "WEB-INF/jsp/error.jsp";
+
+    private static final Logger LOGGER = LogManager.getLogger();
+
+    private static final String CONTENT_TYPE = "text/html; charset=UTF-8";
+    private static final String CHARACTER_ENCODING = "UTF-8";
 
     private static final String TITLE = "title";
     private static final String YEAR = "year";
     private static final String BUDGET = "budget";
     private static final String GROSS = "gross";
 
+    private static final String ERROR = "errorMessage";
+    private static final String MESSAGE_OF_ERROR = "Cannot add movie";
+
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-        response.setContentType("text/html; charset=UTF-8");
-        request.setCharacterEncoding("UTF-8");
+        response.setContentType(CONTENT_TYPE);
+        request.setCharacterEncoding(CHARACTER_ENCODING);
 
         String title = request.getParameter(TITLE);
         String year = request.getParameter(YEAR);
@@ -43,16 +51,11 @@ public class AddMovie implements Command {
             try {
                 movieService.addMovie(title, year, budget, gross);
 
-                request.getRequestDispatcher("index.jsp").include(request, response);
-                System.out.println("vse ok");
-            } catch (ServiceAuthException e) {
-                logger.error(e.getMessage(), e);
-                request.setAttribute("errorMessage", "Wrong login or password");
-                request.getRequestDispatcher("index.jsp").include(request, response);
-
-            } catch (ServiceException e) {
-                logger.error(e.getMessage(), e);
-                request.getRequestDispatcher("error.jsp").forward(request, response);
+                request.getRequestDispatcher(WELCOME_PAGE).include(request, response);
+            }  catch (ServiceException e) {
+                LOGGER.error(e.getMessage(), e);
+                request.setAttribute(ERROR, MESSAGE_OF_ERROR);
+                request.getRequestDispatcher(ERROR_PAGE).include(request, response);
             }
         } else {
             QueryUtil.saveCurrentQueryToSession(request);

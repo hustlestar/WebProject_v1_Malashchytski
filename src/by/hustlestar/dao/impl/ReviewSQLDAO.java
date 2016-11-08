@@ -21,6 +21,9 @@ public class ReviewSQLDAO implements ReviewDAO {
     private final static String SHOW_REVIEWS_BY_ID = "SELECT user_u_nick, review FROM reviews WHERE movies_m_id=?";
     private static final String ADD_REVIEW = "INSERT INTO reviews (movies_m_id, user_u_nick, review) VALUES (?, ?, ?)";
 
+    private static final String REVIEW = "review";
+    private static final String USER_U_NICK = "user_u_nick";
+
     @Override
     public List<Review> getReviewsForMovie(int id) throws DAOException {
         Connection con = null;
@@ -38,8 +41,8 @@ public class ReviewSQLDAO implements ReviewDAO {
             while (rs.next()) {
                 review = new Review();
                 review.setMovieID(id);
-                review.setUserNickname(rs.getString("user_u_nick"));
-                review.setReview(rs.getString("review"));
+                review.setUserNickname(rs.getString(USER_U_NICK));
+                review.setReview(rs.getString(REVIEW));
                 reviewList.add(review);
             }
             return reviewList;

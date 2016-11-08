@@ -27,6 +27,12 @@ public class MovieSQLDAO implements MovieDAO {
 
     private final static String UPDATE_BY_ID = "UPDATE * FROM movies VALUES (?, ?, ?, ?)";
 
+    private static final String M_ID = "m_id";
+    private static final String M_TITLE = "m_title";
+    private static final String M_YEAR = "m_year";
+    private static final String M_BUDGET = "m_budget";
+    private static final String M_GROSS = "m_gross";
+
     @Override
     public List<Movie> fullList() throws DAOException {
         Connection con = null;
@@ -43,11 +49,11 @@ public class MovieSQLDAO implements MovieDAO {
             Movie movie;
             while (rs.next()) {
                 movie = new Movie();
-                movie.setId(rs.getInt("m_id"));
-                movie.setTitle(rs.getString("m_title"));
-                movie.setYear(rs.getInt("m_year"));
-                movie.setBudget(rs.getLong("m_budget"));
-                movie.setGross(rs.getLong("m_gross"));
+                movie.setId(rs.getInt(M_ID));
+                movie.setTitle(rs.getString(M_TITLE));
+                movie.setYear(rs.getInt(M_YEAR));
+                movie.setBudget(rs.getLong(M_BUDGET));
+                movie.setGross(rs.getLong(M_GROSS));
                 movies.add(movie);
             }
             return movies;
@@ -95,11 +101,11 @@ public class MovieSQLDAO implements MovieDAO {
             Movie movie;
             while (rs.next()) {
                 movie = new Movie();
-                movie.setId(rs.getInt("m_id"));
-                movie.setTitle(rs.getString("m_title"));
-                movie.setYear(rs.getInt("m_year"));
-                movie.setBudget(rs.getLong("m_budget"));
-                movie.setGross(rs.getLong("m_gross"));
+                movie.setId(rs.getInt(M_ID));
+                movie.setTitle(rs.getString(M_TITLE));
+                movie.setYear(rs.getInt(M_YEAR));
+                movie.setBudget(rs.getLong(M_BUDGET));
+                movie.setGross(rs.getLong(M_GROSS));
                 movies.add(movie);
             }
             return movies;
@@ -146,12 +152,11 @@ public class MovieSQLDAO implements MovieDAO {
             Movie movie = null;
             if (rs.next()) {
                 movie = new Movie();
-                movie.setId(rs.getInt("m_id"));
-                movie.setTitle(rs.getString("m_title"));
-                movie.setYear(rs.getInt("m_year"));
-                movie.setBudget(rs.getLong("m_budget"));
-                movie.setGross(rs.getLong("m_gross"));
-
+                movie.setId(rs.getInt(M_ID));
+                movie.setTitle(rs.getString(M_TITLE));
+                movie.setYear(rs.getInt(M_YEAR));
+                movie.setBudget(rs.getLong(M_BUDGET));
+                movie.setGross(rs.getLong(M_GROSS));
             }
             return movie;
 
@@ -195,7 +200,7 @@ public class MovieSQLDAO implements MovieDAO {
             st.setLong(4, gross);
             int update = st.executeUpdate();
             if (update > 0) {
-                System.out.println("Filmec dobavlen vse ok"+title);
+                System.out.println("Filmec dobavlen vse ok" + title);
                 return;
             }
             throw new DAOException("Wrong movie data");

@@ -4,7 +4,6 @@ import by.hustlestar.command.Command;
 import by.hustlestar.command.util.QueryUtil;
 import by.hustlestar.service.MovieService;
 import by.hustlestar.service.ServiceFactory;
-import by.hustlestar.service.exception.ServiceAuthException;
 import by.hustlestar.service.exception.ServiceException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -19,41 +18,43 @@ import java.io.IOException;
  */
 public class AddReview implements Command {
 
-    //private static final String JSP_PAGE_PATH = "WEB-INF/jsp/addMoviePage.jsp";
-    private static final Logger logger = LogManager.getLogger();
+    private static final Logger LOGGER = LogManager.getLogger();
+    private static final String WELCOME_PAGE = "index.jsp";
+    private static final String ERROR_PAGE = "WEB-INF/jsp/error.jsp";
+
+    private static final String CONTENT_TYPE = "text/html; charset=UTF-8";
+    private static final String CHARACTER_ENCODING = "UTF-8";
+
 
     private static final String MOVIE_ID = "movieID";
     private static final String USER_NICKNAME = "userNickname";
     private static final String REVIEW = "review";
 
+    private static final String ERROR = "errorMessage";
+    private static final String MESSAGE_OF_ERROR = "Cannot add review to movie";
+
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-        response.setContentType("text/html; charset=UTF-8");
-        request.setCharacterEncoding("UTF-8");
+        response.setContentType(CONTENT_TYPE);
+        request.setCharacterEncoding(CHARACTER_ENCODING);
 
         String movieID = request.getParameter(MOVIE_ID);
         String userNickname = request.getParameter(USER_NICKNAME);
         String review = request.getParameter(REVIEW);
-        System.out.println(movieID+" "+userNickname+" "+review);
         MovieService movieService = ServiceFactory.getInstance().getMovieService();
 
         if (movieID != null && userNickname != null && review != null) {
             try {
                 movieService.addReview(movieID, userNickname, review);
-                request.getRequestDispatcher("index.jsp").include(request, response);
-                System.out.println("vse ok");
-            } catch (ServiceAuthException e) {
-                logger.error(e.getMessage(), e);
-                request.setAttribute("errorMessage", "Wrong login or password");
-                request.getRequestDispatcher("index.jsp").include(request, response);
-
+                request.getRequestDispatcher(WELCOME_PAGE).include(request, response);
             } catch (ServiceException e) {
-                logger.error(e.getMessage(), e);
-                request.getRequestDispatcher("error.jsp").forward(request, response);
+                LOGGER.error(e.getMessage(), e);
+                request.setAttribute(ERROR, MESSAGE_OF_ERROR);
+                //redirect on same page should be and print error
+                request.getRequestDispatcher(ERROR_PAGE).include(request, response);
             }
         } else {
             QueryUtil.saveCurrentQueryToSession(request);
         }
-        //request.getRequestDispatcher(JSP_PAGE_PATH).forward(request, response);
     }
 }

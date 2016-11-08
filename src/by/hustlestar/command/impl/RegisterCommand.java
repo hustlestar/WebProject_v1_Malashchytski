@@ -20,12 +20,20 @@ import java.io.IOException;
  */
 public class RegisterCommand implements Command {
     private static final String JSP_PAGE_PATH = "WEB-INF/jsp/registerPage.jsp";
-    private static final Logger logger = LogManager.getLogger();
+    private static final String WELCOME_PAGE = "index.jsp";
+
+    private static final Logger LOGGER = LogManager.getLogger();
+
+    private static final String USER = "user";
 
     private static final String LOGIN = "nickname";
     private static final String EMAIL = "email";
     private static final String PASSWORD = "pass";
     private static final String SEX = "sex";
+
+    private static final String ERROR = "errorMessage";
+    private static final String MESSAGE_OF_ERROR_1 = "All fields should be filled";
+    private static final String MESSAGE_OF_ERROR_2 = "Wrong login or password";
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
@@ -39,18 +47,18 @@ public class RegisterCommand implements Command {
             try {
                 User user = registerService.register(login, email, password, sex);
 
-                request.setAttribute("user", user);
+                request.setAttribute(USER, user);
 
-                request.getRequestDispatcher("index.jsp").include(request, response);
+                request.getRequestDispatcher(WELCOME_PAGE).include(request, response);
                 System.out.println("vse ok");
             } catch (ServiceAuthException e) {
-                logger.error(e.getMessage(), e);
-                request.setAttribute("errorMessage", "Wrong login or password");
-                request.getRequestDispatcher("index.jsp").include(request, response);
-
+                LOGGER.error(e.getMessage(), e);
+                request.setAttribute(ERROR, MESSAGE_OF_ERROR_1);
+                request.getRequestDispatcher(JSP_PAGE_PATH).include(request, response);
             } catch (ServiceException e) {
-                logger.error(e.getMessage(), e);
-                request.getRequestDispatcher("error.jsp").forward(request, response);
+                LOGGER.error(e.getMessage(), e);
+                request.setAttribute(ERROR, MESSAGE_OF_ERROR_2);
+                request.getRequestDispatcher(JSP_PAGE_PATH).forward(request, response);
             }
         } else {
             QueryUtil.saveCurrentQueryToSession(request);

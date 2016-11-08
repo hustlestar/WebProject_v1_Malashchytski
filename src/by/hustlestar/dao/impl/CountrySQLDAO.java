@@ -19,6 +19,8 @@ import java.util.List;
 public class CountrySQLDAO implements CountryDAO {
     private final static String SHOW_COUNTRIES_BY_ID = "SELECT country FROM country WHERE movies_m_id=?";
 
+    private static final String COUNTRY = "country";
+
     @Override
     public List<Country> getCountriesByMovie(int id) throws DAOException {
         Connection con = null;
@@ -35,7 +37,7 @@ public class CountrySQLDAO implements CountryDAO {
             Country country = null;
             while (rs.next()) {
                 country = new Country();
-                country.setName(rs.getString("country"));
+                country.setName(rs.getString(COUNTRY));
                 countryList.add(country);
             }
             return countryList;

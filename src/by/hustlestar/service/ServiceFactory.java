@@ -1,5 +1,6 @@
 package by.hustlestar.service;
 
+import by.hustlestar.service.impl.AdminServiceImpl;
 import by.hustlestar.service.impl.LoginServiceImpl;
 import by.hustlestar.service.impl.MovieServiceImpl;
 import by.hustlestar.service.impl.RegisterServiceImpl;
@@ -10,14 +11,15 @@ import by.hustlestar.service.impl.RegisterServiceImpl;
 public class ServiceFactory {
     private static final ServiceFactory instance = new ServiceFactory();
 
+    public static ServiceFactory getInstance() {
+        return instance;
+    }
 
     private LoginService loginService = new LoginServiceImpl();
     private RegisterService registerService = new RegisterServiceImpl();
     private MovieService movieService = new MovieServiceImpl();
+    private AdminService adminService = new AdminServiceImpl();
 
-    public static ServiceFactory getInstance() {
-        return instance;
-    }
 
     public LoginService getLoginService() {
         return loginService;
@@ -29,5 +31,9 @@ public class ServiceFactory {
 
     public MovieService getMovieService() {
         return movieService;
+    }
+
+    public AdminService getAdminService() {
+        return adminService;
     }
 }

@@ -29,12 +29,17 @@ public class LoginCommand implements Command {
     private static final String LOGIN = "nickname";
     private static final String PASSWORD = "pass";
 
+    private static final String ERROR = "errorMessage";
+    private static final String MESSAGE_OF_ERROR_1 = "Enter login and pass";
+    private static final String MESSAGE_OF_ERROR_2 = "Wrong login or password";
+
+
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
 
         String login = request.getParameter(LOGIN);
         String password = request.getParameter(PASSWORD);
-        //System.out.println(login+" "+ password);
+
         LoginService loginService = ServiceFactory.getInstance().getLoginService();
         HttpSession session = request.getSession(true);
 
@@ -45,12 +50,12 @@ public class LoginCommand implements Command {
                 response.sendRedirect(WELCOME_PAGE);
             } catch (ServiceAuthException e) {
                 LOGGER.error(e.getMessage(), e);
-                request.setAttribute("errorMessage", "Wrong login or password");
-                System.out.println("errorr");
-                request.getRequestDispatcher("loginPage.jsp").include(request, response);
+                request.setAttribute(ERROR, MESSAGE_OF_ERROR_1);
+                request.getRequestDispatcher(JSP_PAGE_PATH).include(request, response);
             } catch (ServiceException e) {
                 LOGGER.error(e.getMessage(), e);
-                request.getRequestDispatcher("error.jsp").forward(request, response);
+                request.setAttribute(ERROR, MESSAGE_OF_ERROR_2);
+                request.getRequestDispatcher(JSP_PAGE_PATH).include(request, response);
             }
         } else {
             QueryUtil.saveCurrentQueryToSession(request);
