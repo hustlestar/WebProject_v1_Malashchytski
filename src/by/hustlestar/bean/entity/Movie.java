@@ -15,6 +15,16 @@ public class Movie {
     private List<Country> countries;
     private List<Review> reviews;
     private List<Rating> ratings;
+    private List<Genre> genres;
+
+    public List<Genre> getGenres() {
+        return genres;
+    }
+
+    public void setGenres(List<Genre> genres) {
+        this.genres = genres;
+    }
+
     private int averageRating;
 
     public List<Country> getCountries() {

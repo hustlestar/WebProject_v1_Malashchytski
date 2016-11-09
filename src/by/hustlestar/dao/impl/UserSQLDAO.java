@@ -7,6 +7,8 @@ import by.hustlestar.dao.impl.pool.ConnectionPool;
 import by.hustlestar.dao.impl.pool.ConnectionPoolException;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -15,6 +17,9 @@ import java.sql.*;
 public class UserSQLDAO implements UserDAO {
     private final static String LOG_IN_STATEMENT = "SELECT * FROM user WHERE u_nick=? and u_password=?";
     private final static String REGISTER_STATEMENT = "INSERT INTO user VALUES(?,?,?,'user',?,?)";
+    private final static String VIEW_ALL_USERS = "SELECT * FROM user";
+    private static final String VIEW_BY_NICKNAME = "SELECT * FROM user WHERE u_nick=?";
+
 
 
     private static final String U_NICK = "u_nick";
@@ -122,5 +127,107 @@ public class UserSQLDAO implements UserDAO {
             }
         }
         return null;
+    }
+
+    @Override
+    public List<User> viewAllUsers() throws DAOException {
+        Connection con = null;
+        PreparedStatement st = null;
+        ResultSet rs = null;
+        try {
+            con = ConnectionPool.getInstance().takeConnection();
+
+            st = con.prepareStatement(VIEW_ALL_USERS);
+
+            rs = st.executeQuery();
+
+            List<User> users = new ArrayList<>();
+            User user;
+            while (rs.next()) {
+                user = new User();
+                user.setNickname(rs.getString(U_NICK));
+                user.setEmail(rs.getString(U_MAIL));
+                user.setType(rs.getString(U_TYPE));
+                user.setSex(rs.getString(U_SEX));
+                user.setRegistred(rs.getDate(U_REGISTER));
+                users.add(user);
+            }
+            return users;
+
+        } catch (SQLException e) {
+            throw new DAOException("User sql error", e);
+        } catch (ConnectionPoolException e) {
+            throw new DAOException("Movie pool connection error", e);
+        } finally {
+            if (rs != null) {
+                try {
+                    rs.close();
+                } catch (SQLException e) {
+                    throw new DAOException("Exception while closing result set", e);
+                }
+            }
+            if (st != null) {
+                try {
+                    st.close();
+                } catch (SQLException e) {
+                    throw new DAOException("Exception while closing statement", e);
+                }
+            }
+            try {
+                ConnectionPool.getInstance().returnConnection(con);
+            } catch (ConnectionPoolException e) {
+                throw new DAOException("Exception while returning connection", e);
+            }
+        }
+    }
+
+    @Override
+    public User viewUserByNickname(String nickname) throws DAOException {
+        Connection con = null;
+        PreparedStatement st = null;
+        ResultSet rs = null;
+        try {
+            con = ConnectionPool.getInstance().takeConnection();
+
+            st = con.prepareStatement(VIEW_BY_NICKNAME);
+            st.setString(1, nickname);
+            rs = st.executeQuery();
+
+            User user = null;
+            if (rs.next()) {
+                user = new User();
+                user.setNickname(rs.getString(U_NICK));
+                user.setEmail(rs.getString(U_MAIL));
+                user.setType(rs.getString(U_TYPE));
+                user.setSex(rs.getString(U_SEX));
+                user.setRegistred(rs.getDate(U_REGISTER));
+            }
+            return user;
+
+        } catch (SQLException e) {
+            throw new DAOException("User sql error", e);
+        } catch (ConnectionPoolException e) {
+            throw new DAOException("User pool connection error", e);
+        } finally {
+            if (rs != null) {
+                try {
+                    rs.close();
+                } catch (SQLException e) {
+                    throw new DAOException("Exception while closing result set", e);
+                }
+            }
+            if (st != null) {
+                try {
+                    st.close();
+                } catch (SQLException e) {
+                    throw new DAOException("Exception while closing statement", e);
+                }
+            }
+            try {
+                ConnectionPool.getInstance().returnConnection(con);
+            } catch (ConnectionPoolException e) {
+                throw new DAOException("Exception while returning connection", e);
+            }
+        }
     }
 }

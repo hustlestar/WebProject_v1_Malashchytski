@@ -1,13 +1,7 @@
 package by.hustlestar.dao;
 
-import by.hustlestar.dao.iface.CountryDAO;
-import by.hustlestar.dao.iface.MovieDAO;
-import by.hustlestar.dao.iface.ReviewDAO;
-import by.hustlestar.dao.iface.UserDAO;
-import by.hustlestar.dao.impl.CountrySQLDAO;
-import by.hustlestar.dao.impl.MovieSQLDAO;
-import by.hustlestar.dao.impl.ReviewSQLDAO;
-import by.hustlestar.dao.impl.UserSQLDAO;
+import by.hustlestar.dao.iface.*;
+import by.hustlestar.dao.impl.*;
 
 /**
  * Created by Hustler on 28.10.2016.
@@ -27,6 +21,7 @@ public class DAOFactory {
     private MovieDAO movieDAO = new MovieSQLDAO();
     private CountryDAO countryDAO = new CountrySQLDAO();
     private ReviewDAO reviewDAO = new ReviewSQLDAO();
+    private GenreDAO genreDAO = new GenreSQLDAO();
 
     public UserDAO getUserDAO(){
         return userDAO;
@@ -42,5 +37,9 @@ public class DAOFactory {
 
     public ReviewDAO getReviewDAO() {
         return reviewDAO;
+    }
+
+    public GenreDAO getGenreDAO() {
+        return genreDAO;
     }
 }

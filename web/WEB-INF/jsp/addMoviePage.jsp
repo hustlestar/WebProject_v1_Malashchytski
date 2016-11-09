@@ -1,5 +1,5 @@
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ page contentType="text/html;charset=UTF-8" pageEncoding="WINDOWS-1251" language="java" %>
+﻿<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8" language="java" %>
 <c:if test="${sessionScope.get('user') == null && sessionScope.get('user').type ne 'admin' && sessionScope.get('user').type ne'moder'}">
     <c:redirect url="/index.jsp"/>
 </c:if>
@@ -72,12 +72,16 @@
         </div>
         <div class="col-sm-8 text-left">
             <form action="Controller" method="get">
-                <input type="hidden" name="command" value="add-movie" lang="ru"/>
+                <p>
+                    <label><input type="radio" name="command" value="add-movie" checked/>Добавить</label>
+                    <label><input type="radio" name="command" value="update-movie"/>Обновить</label>
+                </p>
+                Movie ID:<input type="text" name="id"/><br/>
                 Movie Title:<input type="text" name="title"/><br/>
                 Year filmed:<input type="text" name="year"/><br/>
                 Budget:<input type="text" name="budget"/>
                 Gross:<input type="text" name="gross"/>
-                <input type="submit" value="add-movie"/>
+                <input type="submit" value="Confirm"/>
             </form>
         </div>
         <div class="col-sm-2 sidenav">

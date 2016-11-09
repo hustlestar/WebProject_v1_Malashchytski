@@ -22,9 +22,13 @@ class CommandProvider {
         commands.put(CommandName.LOG_OUT, new LogoutCommand());
         commands.put(CommandName.ALL_MOVIES, new ShowAllMovie());
         commands.put(CommandName.ADD_MOVIE, new AddMovie());
+        commands.put(CommandName.UPDATE_MOVIE, new UpdateMovie());
         commands.put(CommandName.MOVIE_BY_ID, new ShowMovieByID());
         commands.put(CommandName.MOVIES_BY_COUNTRY, new ShowMoviesByCountry());
+        commands.put(CommandName.MOVIES_BY_GENRE, new ShowMoviesByGenre());
         commands.put(CommandName.ADD_REVIEW, new AddReview());
+        commands.put(CommandName.VIEW_ALL_USERS, new ViewAllUser());
+        commands.put(CommandName.VIEW_USER, new ViewUser());
 
     }
 

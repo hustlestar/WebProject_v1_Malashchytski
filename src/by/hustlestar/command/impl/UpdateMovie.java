@@ -14,10 +14,9 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
- * Created by Hustler on 06.11.2016.
+ * Created by Hustler on 08.11.2016.
  */
-public class AddMovie implements Command {
-
+public class UpdateMovie implements Command {
     private static final String JSP_PAGE_PATH = "WEB-INF/jsp/addMoviePage.jsp";
     private static final String WELCOME_PAGE = "index.jsp";
     private static final String ERROR_PAGE = "WEB-INF/jsp/error.jsp";
@@ -27,20 +26,22 @@ public class AddMovie implements Command {
     private static final String CONTENT_TYPE = "text/html; charset=UTF-8";
     private static final String CHARACTER_ENCODING = "UTF-8";
 
+    private static final String ID = "id";
     private static final String TITLE = "title";
     private static final String YEAR = "year";
     private static final String BUDGET = "budget";
     private static final String GROSS = "gross";
 
     private static final String ERROR = "errorMessage";
-    private static final String MESSAGE_OF_ERROR = "Cannot add movie";
-    private static final String MESSAGE_OF_ERROR_2 = "Cannot add movie, wrong input";
+    private static final String MESSAGE_OF_ERROR = "Cannot update movie";
+    private static final String MESSAGE_OF_ERROR_2 = "Cannot update movie, wrong data";
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         response.setContentType(CONTENT_TYPE);
         request.setCharacterEncoding(CHARACTER_ENCODING);
 
+        String id = request.getParameter(ID);
         String title = request.getParameter(TITLE);
         String year = request.getParameter(YEAR);
         String budget = request.getParameter(BUDGET);
@@ -48,12 +49,12 @@ public class AddMovie implements Command {
         System.out.println(title);
         MovieService movieService = ServiceFactory.getInstance().getMovieService();
 
-        if (title != null && year != null && budget != null && gross !=null) {
+        if (id!=null && title != null && year != null && budget != null && gross != null) {
             try {
-                movieService.addMovie(title, year, budget, gross);
+                movieService.updateMovie(id, title, year, budget, gross);
+                request.getRequestDispatcher(JSP_PAGE_PATH).include(request, response);
 
-                request.getRequestDispatcher(WELCOME_PAGE).include(request, response);
-            }  catch (ServiceException e) {
+            } catch (ServiceException e) {
                 LOGGER.error(e.getMessage(), e);
                 request.setAttribute(ERROR, MESSAGE_OF_ERROR);
                 request.getRequestDispatcher(ERROR_PAGE).include(request, response);
@@ -63,6 +64,5 @@ public class AddMovie implements Command {
             request.setAttribute(ERROR, MESSAGE_OF_ERROR_2);
             request.getRequestDispatcher(ERROR_PAGE).include(request, response);
         }
-        request.getRequestDispatcher(JSP_PAGE_PATH).forward(request, response);
     }
 }

@@ -1,9 +1,6 @@
 package by.hustlestar.service;
 
-import by.hustlestar.service.impl.AdminServiceImpl;
-import by.hustlestar.service.impl.LoginServiceImpl;
-import by.hustlestar.service.impl.MovieServiceImpl;
-import by.hustlestar.service.impl.RegisterServiceImpl;
+import by.hustlestar.service.impl.*;
 
 /**
  * Created by Hustler on 31.10.2016.
@@ -19,6 +16,7 @@ public class ServiceFactory {
     private RegisterService registerService = new RegisterServiceImpl();
     private MovieService movieService = new MovieServiceImpl();
     private AdminService adminService = new AdminServiceImpl();
+    private UserService userService = new UserServiceImpl();
 
 
     public LoginService getLoginService() {
@@ -35,5 +33,9 @@ public class ServiceFactory {
 
     public AdminService getAdminService() {
         return adminService;
+    }
+
+    public UserService getUserService() {
+        return userService;
     }
 }

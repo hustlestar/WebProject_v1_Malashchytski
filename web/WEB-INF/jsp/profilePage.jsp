@@ -61,6 +61,8 @@
         <div class="col-sm-2 sidenav">
             <c:if test='${sessionScope.get("user").type eq "admin" || sessionScope.get("user").type eq "moder"}'>
                 <p><a href="Controller?command=add-movie">Add movie</a></p>
+                <p><a href="Controller?command=view-all-users">View all users</a></p>
+
             </c:if>
             <p><a href="#">Link</a></p>
             <p><a href="#">Link</a></p>

@@ -75,18 +75,25 @@
             </c:forEach>
                 <br/>
             </c:if>
+            <c:if test="${movie.genres.size()>0}">
+                Страна <c:forEach var="genre" items="${requestScope.movie.genres}">
+                <a href="Controller?command=movies-by-genre&genre=${genre.name}"><c:out
+                        value="${genre.name}"/></a>
+            </c:forEach>
+                <br/>
+            </c:if>
             Бюджет <c:out value="${movie.budget}"/><br/>
             Сборы в мире <c:out value="${movie.gross}"/>
 
             <c:if test="${sessionScope.get('user') != null}">
-            <form action="Controller" method="post">
-                <input type="hidden" name="command" value="add-review" lang="ru"/>
-                <input type="hidden" value="${movie.id}" name="movieID">
-                <input type="hidden" value="${sessionScope.user.nickname}" name="userNickname">
-                <!-- TO FIX WITH CSS -->
-                <input type="text" name="review" height="200px"/><br/>
-                <input type="submit" value="Add review"/>
-            </form>
+                <form action="Controller" method="post">
+                    <input type="hidden" name="command" value="add-review" lang="ru"/>
+                    <input type="hidden" value="${movie.id}" name="movieID">
+                    <input type="hidden" value="${sessionScope.user.nickname}" name="userNickname">
+                    <!-- TO FIX WITH CSS -->
+                    <input type="text" name="review" height="200px"/><br/>
+                    <input type="submit" value="Add review"/>
+                </form>
             </c:if>
             <h3>Рецензии</h3>
             <c:if test="${movie.reviews.size()>0}">
