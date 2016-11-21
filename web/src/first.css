@@ -6,7 +6,7 @@
 
 /* Set height of the grid so .sidenav can be 100% (adjust as needed) */
 .row.content {
-    height: 450px
+    flex: 100%;
 }
 
 /* Set gray background color and 100% height */
@@ -43,35 +43,106 @@ footer {
     border: none;
     background-color: transparent;
 }
-/*test
-html,
-body {
-    height: 100%;
-    margin: 0
+.green{
+    color: #4ebc2f;
+    background-color: transparent;
 }
-.box {
+.red{
+    color: #c02537;
+    background-color: transparent;
+}
+
+.flex{
     display: flex;
-    flex-flow: column;
-    height: 100%;
+    /*flex-direction: row;*/
+    justify-content: space-between;
+    align-items: stretch;
+}
+/*rating stars*/
+/*rating stars
+.rating {
+    float:left;
 }
 
-.box .row {
-    border: 1px dotted grey;
+ :not(:checked) is a filter, so that browsers that don’t support :checked don’t
+   follow these rules. Every browser that supports :checked also supports :not(), so
+   it doesn’t make the test unnecessarily selective
+.rating:not(:checked) > input {
+    position:absolute;
+    top:-9999px;
+    clip:rect(0,0,0,0);
 }
 
-.box .row.header {
-    flex: 0 1 auto;
-    The above is shorthand for:
-    flex-grow: 0,
-    flex-shrink: 1,
-    flex-basis: auto
+.rating:not(:checked) > label {
+    float:right;
+    width:1em;
+    padding:0 .1em;
+    overflow:hidden;
+    white-space:nowrap;
+    cursor:pointer;
+    font-size:200%;
+    line-height:1.2;
+    color:#ddd;
+    text-shadow:1px 1px #bbb, 2px 2px #666, .1em .1em .2em rgba(0,0,0,.5);
 }
 
-.box .row.content {
-    flex: 1 1 auto;
+.rating:not(:checked) > label:before {
+    content: '★ ';
 }
 
-.box .row.footer {
-    flex: 0 1 40px;
+.rating > input:checked ~ label {
+    color: #f70;
+    text-shadow:1px 1px #c60, 2px 2px #940, .1em .1em .2em rgba(0,0,0,.5);
 }
-*/
+
+.rating:not(:checked) > label:hover,
+.rating:not(:checked) > label:hover ~ label {
+    color: gold;
+    text-shadow:1px 1px goldenrod, 2px 2px #B57340, .1em .1em .2em rgba(0,0,0,.5);
+}
+
+.rating > input:checked + label:hover,
+.rating > input:checked + label:hover ~ label,
+.rating > input:checked ~ label:hover,
+.rating > input:checked ~ label:hover ~ label,
+.rating > label:hover ~ input:checked ~ label {
+    color: #ea0;
+    text-shadow:1px 1px goldenrod, 2px 2px #B57340, .1em .1em .2em rgba(0,0,0,.5);
+}
+
+.rating > label:active {
+    position:relative;
+    top:2px;
+    left:2px;
+}*/
+
+.selectboxes {
+
+    padding: 10px 0 4px 20px;
+}
+select {
+    -webkit-appearance: menulist;
+    box-sizing: border-box;
+    align-items: center;
+    white-space: pre;
+    -webkit-rtl-ordering: logical;
+    color: black;
+    background-color: white;
+    cursor: default;
+    border-width: 1px;
+    border-style: solid;
+    border-color: initial;
+    border-image: initial;
+}
+.selectboxes select {
+    width: 163px;
+    font-family: tahoma, verdana, "trebuchet ms";
+    font-size: 12px;
+    margin-bottom: 9px;
+    padding: 4px 2px;
+}
+.clear {
+    height: 1px;
+    overflow: hidden;
+    clear: left;
+}

@@ -8,7 +8,7 @@ import java.util.Enumeration;
  * Created by Hustler on 01.11.2016.
  */
 public class QueryUtil {
-    private static final String SESSION_PREV_QUERY = "prevQuery";
+    private static final String SESSION_PREV_QUERY = "previousQuery";
     private static final char QUERY_SEPARATOR = '?';
 
     private QueryUtil() {

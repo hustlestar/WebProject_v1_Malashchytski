@@ -77,7 +77,7 @@
                     <label><input type="radio" name="command" value="update-movie"/>Обновить</label>
                 </p>
                 Movie ID:<input type="text" name="id"/><br/>
-                Movie Title:<input type="text" name="title"/><br/>
+                Movie Title:<input type="text" name="titleRu"/><br/>
                 Year filmed:<input type="text" name="year"/><br/>
                 Budget:<input type="text" name="budget"/>
                 Gross:<input type="text" name="gross"/>

@@ -1,6 +1,7 @@
 package by.hustlestar.bean.entity;
 
 import java.sql.Date;
+import java.util.List;
 
 /**
  * Created by Hustler on 31.10.2016.
@@ -11,8 +12,35 @@ public class User {
     private String type;
     private String sex;
     private Date registred;
+    private List<Review> reviews;
+    private List<Rating> ratings;
+    private int reputation;
 
     public User() {
+    }
+
+    public int getReputation() {
+        return reputation;
+    }
+
+    public void setReputation(int reputation) {
+        this.reputation = reputation;
+    }
+
+    public List<Review> getReviews() {
+        return reviews;
+    }
+
+    public void setReviews(List<Review> reviews) {
+        this.reviews = reviews;
+    }
+
+    public List<Rating> getRatings() {
+        return ratings;
+    }
+
+    public void setRatings(List<Rating> ratings) {
+        this.ratings = ratings;
     }
 
     public String getType() {

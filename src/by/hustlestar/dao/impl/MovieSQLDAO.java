@@ -17,25 +17,58 @@ import java.util.List;
  * Created by Hustler on 01.11.2016.
  */
 public class MovieSQLDAO implements MovieDAO {
-    private final static String SHOW_ALL = "SELECT * FROM movies";
-    private final static String SHOW_BY_ID = "SELECT * FROM movies WHERE m_id=?";
-    private final static String SHOW_BY_COUNTRY = "SELECT movies.m_title, movies.m_year FROM movies\n" +
-            "INNER JOIN  country ON movies.m_id=country.movies_m_id\n WHERE country=?";
-    private static final String SHOW_BY_GENRE = "SELECT movies.m_title, movies.m_year FROM movies\n" +
-            "INNER JOIN  genres ON movies.m_id=genres.movies_m_id WHERE genre=?";
+    private final static String SHOW_ALL =
+            "SELECT m_id, m_title_ru, m_title_en, AVG(rating.rating_score) AS m_rating, COUNT(rating.rating_score) AS m_votes\n" +
+                    "FROM movies LEFT JOIN rating ON movies.m_id = rating.movies_m_id\n" +
+                    "GROUP BY m_id ORDER BY m_rating DESC;";
 
-    private final static String ADD_MOVIE = "INSERT INTO movies (`m_title`, `m_year`, `m_budget`, `m_gross`) VALUES (?, ?, ?, ?)";
+    private final static String SHOW_BY_ID =
+            "SELECT m_id, m_title_ru, m_title_en, m_year, m_budget, m_gross, AVG(rating.rating_score) AS m_rating, COUNT(rating.rating_score) AS m_votes FROM movies\n" +
+                    "LEFT JOIN rating\n" +
+                    "ON movies.m_id=rating.movies_m_id\n" +
+                    "WHERE m_id=?;";
 
+    private final static String SHOW_BY_COUNTRY =
+            "SELECT movies.m_id, movies.m_title_ru, movies.m_title_en, movies.m_year FROM movies\n" +
+                    "INNER JOIN  country ON movies.m_id=country.movies_m_id\n WHERE country_en=?";
 
-    private final static String UPDATE_BY_ID = "UPDATE `jackdb`.`movies`\n" +
+    private static final String SHOW_BY_GENRE =
+            "SELECT movies.m_id, movies.m_title_ru, movies.m_title_en, movies.m_year FROM movies\n" +
+                    "INNER JOIN  genres ON movies.m_id=genres.movies_m_id WHERE genres_genre_en=?";
+
+    private static final String FIND_BY_TITLE =
+            "SELECT movies.m_id, movies.m_title_ru, movies.m_title_en, movies.m_year FROM movies WHERE `m_title_en` LIKE ? \n" +
+                    "   OR `m_title_ru` LIKE ?;";
+
+    private static final String SHOW_OF_TEN_YEARS_PERIOD =
+            "SELECT m_id, m_title_ru, m_title_en, AVG(rating.rating_score) AS m_rating, COUNT(rating.rating_score) AS m_votes\n" +
+            "FROM movies LEFT JOIN rating ON movies.m_id = rating.movies_m_id\n" +
+            "WHERE movies.m_year BETWEEN ? AND ?\n" +
+            "GROUP BY m_id ORDER BY m_rating DESC;";
+
+    private static final String SHOW_OF_YEAR =
+            "SELECT m_id, m_title_ru, m_title_en, AVG(rating.rating_score) AS m_rating, COUNT(rating.rating_score) AS m_votes\n" +
+            "FROM movies LEFT JOIN rating ON movies.m_id = rating.movies_m_id\n" +
+            "WHERE movies.m_year=?\n" +
+            "GROUP BY m_id ORDER BY m_rating DESC;";
+
+    private final static String ADD_MOVIE =
+            "INSERT INTO movies (`m_title`, `m_year`, `m_budget`, `m_gross`) VALUES (?, ?, ?, ?)";
+
+    private final static String UPDATE_BY_ID =
+            "UPDATE `jackdb`.`movies`\n" +
             "SET `m_title` = ?, `m_year` = ?, `m_budget` = ?,`m_gross` = ?\n" +
             "WHERE `m_id` = ?;\n";
 
     private static final String M_ID = "m_id";
-    private static final String M_TITLE = "m_title";
+    private static final String M_TITLE_RU = "m_title_ru";
+    private static final String M_TITLE_EN = "m_title_en";
     private static final String M_YEAR = "m_year";
     private static final String M_BUDGET = "m_budget";
     private static final String M_GROSS = "m_gross";
+
+    private static final String M_RATING = "m_rating";
+    private static final String M_VOTES = "m_votes";
 
     @Override
     public List<Movie> fullList() throws DAOException {
@@ -54,10 +87,10 @@ public class MovieSQLDAO implements MovieDAO {
             while (rs.next()) {
                 movie = new Movie();
                 movie.setId(rs.getInt(M_ID));
-                movie.setTitle(rs.getString(M_TITLE));
-                movie.setYear(rs.getInt(M_YEAR));
-                movie.setBudget(rs.getLong(M_BUDGET));
-                movie.setGross(rs.getLong(M_GROSS));
+                movie.setTitleRu(rs.getString(M_TITLE_RU));
+                movie.setTitleEn(rs.getString(M_TITLE_EN));
+                movie.setAvgRating(rs.getDouble(M_RATING));
+                movie.setRatingVotes(rs.getInt(M_VOTES));
                 movies.add(movie);
             }
             return movies;
@@ -106,10 +139,8 @@ public class MovieSQLDAO implements MovieDAO {
             while (rs.next()) {
                 movie = new Movie();
                 movie.setId(rs.getInt(M_ID));
-                movie.setTitle(rs.getString(M_TITLE));
-                movie.setYear(rs.getInt(M_YEAR));
-                movie.setBudget(rs.getLong(M_BUDGET));
-                movie.setGross(rs.getLong(M_GROSS));
+                movie.setTitleRu(rs.getString(M_TITLE_RU));
+                movie.setTitleEn(rs.getString(M_TITLE_EN));
                 movies.add(movie);
             }
             return movies;
@@ -158,10 +189,165 @@ public class MovieSQLDAO implements MovieDAO {
             while (rs.next()) {
                 movie = new Movie();
                 movie.setId(rs.getInt(M_ID));
-                movie.setTitle(rs.getString(M_TITLE));
+                movie.setTitleRu(rs.getString(M_TITLE_RU));
+                movie.setTitleEn(rs.getString(M_TITLE_EN));
+                movies.add(movie);
+            }
+            return movies;
+
+        } catch (SQLException e) {
+            throw new DAOException("Movie sql error", e);
+        } catch (ConnectionPoolException e) {
+            throw new DAOException("Movie pool connection error", e);
+        } finally {
+            if (rs != null) {
+                try {
+                    rs.close();
+                } catch (SQLException e) {
+                    throw new DAOException("Exception while closing result set", e);
+                }
+            }
+            if (st != null) {
+                try {
+                    st.close();
+                } catch (SQLException e) {
+                    throw new DAOException("Exception while closing statement", e);
+                }
+            }
+            try {
+                ConnectionPool.getInstance().returnConnection(con);
+            } catch (ConnectionPoolException e) {
+                throw new DAOException("Exception while returning connection", e);
+            }
+        }
+    }
+
+    @Override
+    public List<Movie> findMovieByTitle(String title) throws DAOException {
+        Connection con = null;
+        PreparedStatement st = null;
+        ResultSet rs = null;
+        try {
+            con = ConnectionPool.getInstance().takeConnection();
+
+            st = con.prepareStatement(FIND_BY_TITLE);
+            st.setString(1, "%" + title + "%");
+            st.setString(2, "%" + title + "%");
+            rs = st.executeQuery();
+
+            List<Movie> movies = new ArrayList<>();
+            Movie movie;
+            while (rs.next()) {
+                movie = new Movie();
+                movie.setId(rs.getInt(M_ID));
+                movie.setTitleRu(rs.getString(M_TITLE_RU));
+                movie.setTitleEn(rs.getString(M_TITLE_EN));
                 movie.setYear(rs.getInt(M_YEAR));
-                movie.setBudget(rs.getLong(M_BUDGET));
-                movie.setGross(rs.getLong(M_GROSS));
+                movies.add(movie);
+            }
+            return movies;
+
+        } catch (SQLException e) {
+            throw new DAOException("Movie sql error", e);
+        } catch (ConnectionPoolException e) {
+            throw new DAOException("Movie pool connection error", e);
+        } finally {
+            if (rs != null) {
+                try {
+                    rs.close();
+                } catch (SQLException e) {
+                    throw new DAOException("Exception while closing result set", e);
+                }
+            }
+            if (st != null) {
+                try {
+                    st.close();
+                } catch (SQLException e) {
+                    throw new DAOException("Exception while closing statement", e);
+                }
+            }
+            try {
+                ConnectionPool.getInstance().returnConnection(con);
+            } catch (ConnectionPoolException e) {
+                throw new DAOException("Exception while returning connection", e);
+            }
+        }
+    }
+
+    @Override
+    public List<Movie> showMoviesOfTenYearsPeriod(int years) throws DAOException {
+        Connection con = null;
+        PreparedStatement st = null;
+        ResultSet rs = null;
+        try {
+            con = ConnectionPool.getInstance().takeConnection();
+
+            st = con.prepareStatement(SHOW_OF_TEN_YEARS_PERIOD);
+            st.setInt(1, years);
+            st.setInt(2, years+9);
+            rs = st.executeQuery();
+
+            List<Movie> movies = new ArrayList<>();
+            Movie movie;
+            while (rs.next()) {
+                movie = new Movie();
+                movie.setId(rs.getInt(M_ID));
+                movie.setTitleRu(rs.getString(M_TITLE_RU));
+                movie.setTitleEn(rs.getString(M_TITLE_EN));
+                movie.setAvgRating(rs.getDouble(M_RATING));
+                movie.setRatingVotes(rs.getInt(M_VOTES));
+                movies.add(movie);
+            }
+            return movies;
+
+        } catch (SQLException e) {
+            throw new DAOException("Movie sql error", e);
+        } catch (ConnectionPoolException e) {
+            throw new DAOException("Movie pool connection error", e);
+        } finally {
+            if (rs != null) {
+                try {
+                    rs.close();
+                } catch (SQLException e) {
+                    throw new DAOException("Exception while closing result set", e);
+                }
+            }
+            if (st != null) {
+                try {
+                    st.close();
+                } catch (SQLException e) {
+                    throw new DAOException("Exception while closing statement", e);
+                }
+            }
+            try {
+                ConnectionPool.getInstance().returnConnection(con);
+            } catch (ConnectionPoolException e) {
+                throw new DAOException("Exception while returning connection", e);
+            }
+        }
+    }
+
+    @Override
+    public List<Movie> showMoviesOfYear(int year) throws DAOException {
+        Connection con = null;
+        PreparedStatement st = null;
+        ResultSet rs = null;
+        try {
+            con = ConnectionPool.getInstance().takeConnection();
+
+            st = con.prepareStatement(SHOW_OF_YEAR);
+            st.setInt(1, year);
+            rs = st.executeQuery();
+
+            List<Movie> movies = new ArrayList<>();
+            Movie movie;
+            while (rs.next()) {
+                movie = new Movie();
+                movie.setId(rs.getInt(M_ID));
+                movie.setTitleRu(rs.getString(M_TITLE_RU));
+                movie.setTitleEn(rs.getString(M_TITLE_EN));
+                movie.setAvgRating(rs.getDouble(M_RATING));
+                movie.setRatingVotes(rs.getInt(M_VOTES));
                 movies.add(movie);
             }
             return movies;
@@ -209,10 +395,13 @@ public class MovieSQLDAO implements MovieDAO {
             if (rs.next()) {
                 movie = new Movie();
                 movie.setId(rs.getInt(M_ID));
-                movie.setTitle(rs.getString(M_TITLE));
+                movie.setTitleRu(rs.getString(M_TITLE_RU));
+                movie.setTitleEn(rs.getString(M_TITLE_EN));
                 movie.setYear(rs.getInt(M_YEAR));
                 movie.setBudget(rs.getLong(M_BUDGET));
                 movie.setGross(rs.getLong(M_GROSS));
+                movie.setAvgRating(rs.getDouble(M_RATING));
+                movie.setRatingVotes(rs.getInt(M_VOTES));
             }
             return movie;
 

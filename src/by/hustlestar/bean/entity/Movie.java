@@ -7,7 +7,8 @@ import java.util.List;
  */
 public class Movie {
     private int id;
-    private String title;
+    private String titleRu;
+    private String titleEn;
     private int year;
     private long budget;
     private long gross;
@@ -17,6 +18,25 @@ public class Movie {
     private List<Rating> ratings;
     private List<Genre> genres;
 
+    private double avgRating;
+    private int ratingVotes;
+
+    public double getAvgRating() {
+        return avgRating;
+    }
+
+    public void setAvgRating(double avgRating) {
+        this.avgRating = avgRating;
+    }
+
+    public int getRatingVotes() {
+        return ratingVotes;
+    }
+
+    public void setRatingVotes(int ratingVotes) {
+        this.ratingVotes = ratingVotes;
+    }
+
     public List<Genre> getGenres() {
         return genres;
     }
@@ -25,7 +45,6 @@ public class Movie {
         this.genres = genres;
     }
 
-    private int averageRating;
 
     public List<Country> getCountries() {
         return countries;
@@ -51,14 +70,6 @@ public class Movie {
         this.ratings = ratings;
     }
 
-    public int getAverageRating() {
-        return averageRating;
-    }
-
-    public void setAverageRating(int averageRating) {
-        this.averageRating = averageRating;
-    }
-
     public int getId() {
         return id;
     }
@@ -67,12 +78,20 @@ public class Movie {
         this.id = id;
     }
 
-    public String getTitle() {
-        return title;
+    public String getTitleRu() {
+        return titleRu;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public void setTitleRu(String titleRu) {
+        this.titleRu = titleRu;
+    }
+
+    public String getTitleEn() {
+        return titleEn;
+    }
+
+    public void setTitleEn(String titleEn) {
+        this.titleEn = titleEn;
     }
 
     public int getYear() {
@@ -109,13 +128,13 @@ public class Movie {
         if (getYear() != movie.getYear()) return false;
         if (getBudget() != movie.getBudget()) return false;
         if (getGross() != movie.getGross()) return false;
-        return getTitle() != null ? getTitle().equals(movie.getTitle()) : movie.getTitle() == null;
+        return getTitleRu() != null ? getTitleRu().equals(movie.getTitleRu()) : movie.getTitleRu() == null;
 
     }
 
     @Override
     public int hashCode() {
-        int result = getTitle() != null ? getTitle().hashCode() : 0;
+        int result = getTitleRu() != null ? getTitleRu().hashCode() : 0;
         result = 31 * result + getYear();
         result = 31 * result + (int) (getBudget() ^ (getBudget() >>> 32));
         result = 31 * result + (int) (getGross() ^ (getGross() >>> 32));

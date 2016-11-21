@@ -1,17 +1,13 @@
 package by.hustlestar.service.impl;
 
-import by.hustlestar.bean.entity.Country;
-import by.hustlestar.bean.entity.Genre;
-import by.hustlestar.bean.entity.Movie;
-import by.hustlestar.bean.entity.Review;
+import by.hustlestar.bean.entity.*;
 import by.hustlestar.dao.DAOFactory;
-import by.hustlestar.dao.iface.CountryDAO;
-import by.hustlestar.dao.iface.GenreDAO;
-import by.hustlestar.dao.iface.MovieDAO;
+import by.hustlestar.dao.iface.*;
 import by.hustlestar.dao.exception.DAOException;
-import by.hustlestar.dao.iface.ReviewDAO;
-import by.hustlestar.service.MovieService;
+import by.hustlestar.dao.impl.ReviewScoreSQLDAO;
+import by.hustlestar.service.iface.MovieService;
 import by.hustlestar.service.exception.ServiceException;
+import by.hustlestar.service.util.UtilService;
 
 import java.util.List;
 
@@ -44,7 +40,7 @@ public class MovieServiceImpl implements MovieService {
         try {
             movies = dao.showMoviesByCountry(country);
             if (movies == null || movies.size() == 0) {
-                throw new ServiceException("No movies matching your query");
+                throw new ServiceException("No movies matching your query" + country);
             }
         } catch (DAOException e) {
             throw new ServiceException("Error in source!", e);
@@ -73,10 +69,13 @@ public class MovieServiceImpl implements MovieService {
         DAOFactory daoFactory = DAOFactory.getInstance();
         MovieDAO dao = daoFactory.getMovieDAO();
         CountryDAO countryDAO = daoFactory.getCountryDAO();
+        RatingDAO ratingDAO = daoFactory.getRatingDAO();
         ReviewDAO reviewDAO = daoFactory.getReviewDAO();
         GenreDAO genreDAO = daoFactory.getGenreDAO();
+        UtilService utilService = UtilService.getInstance();
         Movie movie;
         List<Country> countryList;
+        List<Rating> ratingList;
         List<Review> reviewList;
         List<Genre> genreList;
         int normId;
@@ -88,12 +87,23 @@ public class MovieServiceImpl implements MovieService {
         try {
             movie = dao.showMovieByID(normId);
             if (movie != null) {
+
                 countryList = countryDAO.getCountriesByMovie(normId);
-                reviewList = reviewDAO.getReviewsForMovie(normId);
+
                 genreList = genreDAO.getGenresByMovie(normId);
+
+                ratingList = ratingDAO.getRatingsForMovie(normId);
+
+                reviewList = reviewDAO.getReviewsForMovie(normId);
+                utilService.fillReview(reviewList);
+
                 movie.setCountries(countryList);
-                movie.setReviews(reviewList);
                 movie.setGenres(genreList);
+                movie.setRatings(ratingList);
+                movie.setReviews(reviewList);
+
+                //utilService.countRatingAndVotes(movie);
+
             } else {
                 throw new ServiceException("No movies matching your query");
             }
@@ -104,51 +114,63 @@ public class MovieServiceImpl implements MovieService {
     }
 
     @Override
-    public void addMovie(String title, String year, String budget, String gross) throws ServiceException {
+    public List<Movie> findMovieByTitle(String title) throws ServiceException {
         DAOFactory daoFactory = DAOFactory.getInstance();
         MovieDAO dao = daoFactory.getMovieDAO();
-        int intYear;
-        long longBudget;
-        long longGross;
+        List<Movie> movies;
         try {
-            intYear = Integer.parseInt(year);
-            longBudget = Long.parseLong(budget);
-            longGross = Long.parseLong(gross);
-        } catch (NumberFormatException e) {
-            throw new ServiceException("Wrong data input, while adding film");
-        }
-
-        try {
-
-            dao.addMovie(title, intYear, longBudget, longGross);
-
+            movies = dao.findMovieByTitle(title);
+            if (movies == null || movies.size() == 0) {
+                throw new ServiceException("No movies matching your query");
+            }
         } catch (DAOException e) {
             throw new ServiceException("Error in source!", e);
         }
+        return movies;
     }
 
     @Override
-    public void updateMovie(String id, String title, String year, String budget, String gross) throws ServiceException {
+    public List<Movie> showMoviesOfTenYearsPeriod(String years) throws ServiceException {
         DAOFactory daoFactory = DAOFactory.getInstance();
         MovieDAO dao = daoFactory.getMovieDAO();
-        int intID;
-        int intYear;
-        long longBudget;
-        long longGross;
+        List<Movie> movies;
+        int intYears;
         try {
-            intID = Integer.parseInt(id);
-            intYear = Integer.parseInt(year);
-            longBudget = Long.parseLong(budget);
-            longGross = Long.parseLong(gross);
+            intYears = Integer.parseInt(years);
         } catch (NumberFormatException e) {
-            throw new ServiceException("Wrong data input, while adding film");
+            throw new ServiceException("Wrong years input!");
         }
-
         try {
-            dao.updateMovie(intID, title, intYear, longBudget, longGross);
+            movies = dao.showMoviesOfTenYearsPeriod(intYears);
+            if (movies == null || movies.size() == 0) {
+                throw new ServiceException("No movies matching your query");
+            }
         } catch (DAOException e) {
             throw new ServiceException("Error in source!", e);
         }
+        return movies;
+    }
+
+    @Override
+    public List<Movie> showMoviesOfYear(String year) throws ServiceException {
+        DAOFactory daoFactory = DAOFactory.getInstance();
+        MovieDAO dao = daoFactory.getMovieDAO();
+        List<Movie> movies;
+        int intYear;
+        try {
+            intYear = Integer.parseInt(year);
+        } catch (NumberFormatException e) {
+            throw new ServiceException("Wrong years input!");
+        }
+        try {
+            movies = dao.showMoviesOfYear(intYear);
+            if (movies == null || movies.size() == 0) {
+                throw new ServiceException("No movies matching your query");
+            }
+        } catch (DAOException e) {
+            throw new ServiceException("Error in source!", e);
+        }
+        return movies;
     }
 
     @Override
@@ -168,4 +190,43 @@ public class MovieServiceImpl implements MovieService {
         }
     }
 
+    @Override
+    public void likeReview(String movieID, String reviewerNickname, String score, String userNickname) throws ServiceException {
+        DAOFactory daoFactory = DAOFactory.getInstance();
+        ReviewScoreDAO dao = daoFactory.getReviewScoreDAO();
+        int intMovieID;
+        int value = score.equals("up") ? 1 : -1;
+        try {
+            intMovieID = Integer.parseInt(movieID);
+        } catch (NumberFormatException e) {
+            throw new ServiceException("Wrong data input, while adding like");
+        }
+        try {
+            dao.likeReview(intMovieID, reviewerNickname, value, userNickname);
+        } catch (DAOException e) {
+            throw new ServiceException("Error in source!", e);
+        }
+    }
+
+    @Override
+    public void addRating(String movieID, String userNickname, String rating) throws ServiceException {
+        DAOFactory daoFactory = DAOFactory.getInstance();
+        RatingDAO dao = daoFactory.getRatingDAO();
+        int intMovieID;
+        int intRating;
+        try {
+            intMovieID = Integer.parseInt(movieID);
+            intRating = Integer.parseInt(rating);
+            if (intRating<1 && intRating>10 ){
+                throw new ServiceException("Wrong rating input, while adding rating");
+            }
+        } catch (NumberFormatException e) {
+            throw new ServiceException("Wrong data input, while adding rating");
+        }
+        try {
+            dao.addRating(intMovieID, userNickname, intRating);
+        } catch (DAOException e) {
+            throw new ServiceException("Error in source!", e);
+        }
+    }
 }

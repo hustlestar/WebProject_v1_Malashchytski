@@ -12,8 +12,12 @@ public interface MovieDAO {
     List<Movie> fullList() throws DAOException;
     List<Movie> showMoviesByCountry(String country) throws DAOException;
     List<Movie> showMoviesByGenre(String genre) throws DAOException;
+    List<Movie> findMovieByTitle(String title) throws DAOException;
+    List<Movie> showMoviesOfTenYearsPeriod(int years) throws DAOException;
+    List<Movie> showMoviesOfYear(int year) throws DAOException;
     Movie showMovieByID(int id) throws DAOException;
     void addMovie(String title, int year, long budget, long gross) throws DAOException;
     void updateMovie(int id, String title, int year, long budget, long gross) throws DAOException;
+
 
 }

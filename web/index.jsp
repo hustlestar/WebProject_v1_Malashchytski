@@ -1,5 +1,14 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<fmt:setLocale value="${sessionScope.language}"/>
+<fmt:setBundle basename="locale" var="locale"/>
+<fmt:message bundle="${locale}" key="locale.siteName" var="siteName"/>
+<fmt:message bundle="${locale}" key="locale.home" var="home"/>
+<fmt:message bundle="${locale}" key="locale.signUp" var="signUp"/>
+<fmt:message bundle="${locale}" key="locale.logIn" var="logIn"/>
+<fmt:message bundle="${locale}" key="locale.logOut" var="logOut"/>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -22,11 +31,11 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="#">Logo</a>
+            <a class="navbar-brand" href="#">${siteName}</a>
         </div>
         <div class="collapse navbar-collapse" id="myNavbar">
             <ul class="nav navbar-nav">
-                <li class="active"><a href="index.jsp">Home</a></li>
+                <li class="active"><a href="index.jsp">${home}</a></li>
                 <li>
                     <a href="Controller?command=all-movies">
                         Movies
@@ -40,10 +49,10 @@
                     <li class="sign-up">
                         <a href="Controller?command=register">
                             <span class="glyphicon glyphicon-user"></span>
-                            Sign Up</a>
+                            ${signUp}</a>
                     </li>
                     <li><a href="Controller?command=login"><span class="glyphicon glyphicon-log-in"></span>
-                        Login</a>
+                        ${logIn}</a>
                     </li>
                 </c:if>
                 <c:if test="${sessionScope.get('user') != null}">
@@ -52,15 +61,17 @@
                             <span class="glyphicon glyphicon-user"></span> ${sessionScope.get('user').nickname}</a>
                     </li>
                     <li><a href="Controller?command=log-out">
-                        <span class="glyphicon glyphicon-log-out"></span> Logout</a>
+                        <span class="glyphicon glyphicon-log-out"></span> ${logOut}</a>
                     </li>
                 </c:if>
+                <li><a href="Controller?command=change-language&language=en">English</a></li>
+                <li><a href="Controller?command=change-language&language=ru">русский</a></li>
             </ul>
         </div>
     </div>
 </nav>
 
-<div class="container-fluid text-center">
+<div class="container-fluid text-center flex">
     <div class="row content">
         <div class="col-sm-2 sidenav">
             <p><a href="#">Link</a></p>
@@ -68,6 +79,11 @@
             <p><a href="#">Link</a></p>
         </div>
         <div class="col-sm-8 text-left">
+            <form method="post" action="Controller">
+                <input type="hidden" name="command" value="find-movie-by-title"/>
+                All about:<input type="text" placeholder="Movie" name="movieTitle"/><br/>
+                <input type="submit" value="Search"/>
+            </form>
             <h1>Welcome</h1>
             <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
                 dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip

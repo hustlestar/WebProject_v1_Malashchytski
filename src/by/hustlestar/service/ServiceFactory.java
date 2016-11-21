@@ -1,5 +1,8 @@
 package by.hustlestar.service;
 
+import by.hustlestar.service.iface.AdminService;
+import by.hustlestar.service.iface.MovieService;
+import by.hustlestar.service.iface.UserService;
 import by.hustlestar.service.impl.*;
 
 /**
@@ -12,20 +15,9 @@ public class ServiceFactory {
         return instance;
     }
 
-    private LoginService loginService = new LoginServiceImpl();
-    private RegisterService registerService = new RegisterServiceImpl();
     private MovieService movieService = new MovieServiceImpl();
     private AdminService adminService = new AdminServiceImpl();
     private UserService userService = new UserServiceImpl();
-
-
-    public LoginService getLoginService() {
-        return loginService;
-    }
-
-    public RegisterService getRegisterService() {
-        return registerService;
-    }
 
     public MovieService getMovieService() {
         return movieService;

@@ -4,18 +4,27 @@ package by.hustlestar.bean.entity;
  * Created by Hustler on 08.11.2016.
  */
 public class Genre {
-    private String name;
+    private String nameRu;
+    private String nameEn;
 
-    public String getName() {
-        return name;
+    public String getNameRu() {
+        return nameRu;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setNameRu(String nameRu) {
+        this.nameRu = nameRu;
+    }
+
+    public String getNameEn() {
+        return nameEn;
+    }
+
+    public void setNameEn(String nameEn) {
+        this.nameEn = nameEn;
     }
 
     @Override
     public String toString() {
-        return name;
+        return nameRu;
     }
 }

@@ -1,5 +1,5 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8" language="java" %>
 <jsp:useBean id="user" class="by.hustlestar.bean.entity.User" scope="session"/>
 <!DOCTYPE html>
 <html>
@@ -62,6 +62,7 @@
             <c:if test='${sessionScope.get("user").type eq "admin" || sessionScope.get("user").type eq "moder"}'>
                 <p><a href="Controller?command=add-movie">Add movie</a></p>
                 <p><a href="Controller?command=view-all-users">View all users</a></p>
+                <p><a href="Controller?command=view-all-banned-users">View all banned users</a></p>
 
             </c:if>
             <p><a href="#">Link</a></p>
@@ -75,8 +76,15 @@
             <c:out value="${user.email}"/><br/>
             <c:out value="${user.registred}"/><br/>
             <c:out value="${user.sex}"/>
-
-
+            <h3>Рецензии</h3>
+            <c:if test="${user.reviews.size()>0}">
+                <c:forEach var="review" items="${sessionScope.user.reviews}">
+                    <c:out value="${review.userNickname}"/>
+                    <i class="green"><c:out value="${review.thumbsUp}"/></i> /
+                    <i class="red"><c:out value="${review.thumbsDown}"/></i>
+                    : <c:out value="${review.review}"/><br/>
+                </c:forEach>
+            </c:if>
         </div>
         <div class="col-sm-2 sidenav">
             <div class="well">

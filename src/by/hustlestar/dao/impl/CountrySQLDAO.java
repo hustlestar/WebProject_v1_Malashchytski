@@ -17,9 +17,10 @@ import java.util.List;
  * Created by Hustler on 07.11.2016.
  */
 public class CountrySQLDAO implements CountryDAO {
-    private final static String SHOW_COUNTRIES_BY_ID = "SELECT country FROM country WHERE movies_m_id=?";
+    private final static String SHOW_COUNTRIES_BY_ID = "SELECT country_ru, country_en FROM country WHERE movies_m_id=?";
 
-    private static final String COUNTRY = "country";
+    private static final String COUNTRY_RU = "country_ru";
+    private static final String COUNTRY_EN = "country_en";
 
     @Override
     public List<Country> getCountriesByMovie(int id) throws DAOException {
@@ -37,7 +38,8 @@ public class CountrySQLDAO implements CountryDAO {
             Country country = null;
             while (rs.next()) {
                 country = new Country();
-                country.setName(rs.getString(COUNTRY));
+                country.setNameRu(rs.getString(COUNTRY_RU));
+                country.setNameEn(rs.getString(COUNTRY_EN));
                 countryList.add(country);
             }
             return countryList;

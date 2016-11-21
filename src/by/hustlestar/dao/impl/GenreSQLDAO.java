@@ -1,6 +1,5 @@
 package by.hustlestar.dao.impl;
 
-import by.hustlestar.bean.entity.Country;
 import by.hustlestar.bean.entity.Genre;
 import by.hustlestar.dao.exception.DAOException;
 import by.hustlestar.dao.iface.GenreDAO;
@@ -18,9 +17,10 @@ import java.util.List;
  * Created by Hustler on 08.11.2016.
  */
 public class GenreSQLDAO implements GenreDAO {
-    private final static String SHOW_GENRES_BY_ID = "SELECT genres_genre FROM genres WHERE movies_m_id=?";
+    private final static String SHOW_GENRES_BY_ID = "SELECT genres_genre_ru, genres_genre_en FROM genres WHERE movies_m_id=?";
 
-    private static final String GENRE = "genres_genre";
+    private static final String GENRE_RU = "genres_genre_ru";
+    private static final String GENRE_EN = "genres_genre_en";
     @Override
     public List<Genre> getGenresByMovie(int id) throws DAOException {
         Connection con = null;
@@ -37,15 +37,16 @@ public class GenreSQLDAO implements GenreDAO {
             Genre genre = null;
             while (rs.next()) {
                 genre = new Genre();
-                genre.setName(rs.getString(GENRE));
+                genre.setNameRu(rs.getString(GENRE_RU));
+                genre.setNameEn(rs.getString(GENRE_EN));
                 genreList.add(genre);
             }
             return genreList;
 
         } catch (SQLException e) {
-            throw new DAOException("Country sql error", e);
+            throw new DAOException("Genre sql error", e);
         } catch (ConnectionPoolException e) {
-            throw new DAOException("Country pool connection error", e);
+            throw new DAOException("Genre pool connection error", e);
         } finally {
             if (rs != null) {
                 try {
