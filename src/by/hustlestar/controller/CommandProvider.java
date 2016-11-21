@@ -55,7 +55,8 @@ class CommandProvider {
 
     Command getCommand(String commandName){
         String cmd = commandName.replace("-","_").toUpperCase();
-        CommandName name = CommandName.valueOf(cmd);
+        CommandName name = CommandName.valueOf(cmd);// продумывать нужно все варианты выполнения кода
+        // здесь возможен runtimeexception
         Command command;
         command = commands.get(name);
         return command;

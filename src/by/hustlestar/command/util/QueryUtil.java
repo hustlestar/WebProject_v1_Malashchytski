@@ -22,7 +22,7 @@ public class QueryUtil {
 
         if(queryString == null){
             session.setAttribute(SESSION_PREV_QUERY, requestURI);
-            System.out.println(requestURI);
+            System.out.println(requestURI);// выкашивайте вы эти строки перед коммитом, что ли
         }
         else {
             session.setAttribute(SESSION_PREV_QUERY, requestURI + QUERY_SEPARATOR + queryString);
