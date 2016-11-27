@@ -16,8 +16,6 @@ import java.io.IOException;
  */
 public class UpdateMovie implements Command {
     private static final String JSP_PAGE_PATH = "WEB-INF/jsp/addMoviePage.jsp";
-    private static final String WELCOME_PAGE = "index.jsp";
-    private static final String ERROR_PAGE = "WEB-INF/jsp/error.jsp";
 
     private static final Logger LOGGER = LogManager.getLogger();
 
@@ -25,7 +23,8 @@ public class UpdateMovie implements Command {
     private static final String CHARACTER_ENCODING = "UTF-8";
 
     private static final String ID = "id";
-    private static final String TITLE = "title";
+    private static final String TITLE_RU = "titleRu";
+    private static final String TITLE_EN = "titleEn";
     private static final String YEAR = "year";
     private static final String BUDGET = "budget";
     private static final String GROSS = "gross";
@@ -40,27 +39,28 @@ public class UpdateMovie implements Command {
         request.setCharacterEncoding(CHARACTER_ENCODING);
 
         String id = request.getParameter(ID);
-        String title = request.getParameter(TITLE);
+        String titleRu = request.getParameter(TITLE_RU);
+        String titleEn = request.getParameter(TITLE_EN);
         String year = request.getParameter(YEAR);
         String budget = request.getParameter(BUDGET);
         String gross = request.getParameter(GROSS);
-        System.out.println(title);
+        System.out.println(titleRu);
 
         AdminService adminService = AdminUtil.getAdminService(request, response);
 
-        if (id != null && title != null && year != null && budget != null && gross != null) {
+        if (id != null && titleRu != null && titleEn != null && year != null && budget != null && gross != null) {
             try {
-                adminService.updateMovie(id, title, year, budget, gross);
+                adminService.updateMovie(id, titleRu, titleEn, year, budget, gross);
                 request.getRequestDispatcher(JSP_PAGE_PATH).include(request, response);
 
             } catch (ServiceException e) {
                 LOGGER.error(e.getMessage(), e);
                 request.setAttribute(ERROR, MESSAGE_OF_ERROR);
-                request.getRequestDispatcher(ERROR_PAGE).include(request, response);
+                request.getRequestDispatcher(JSP_PAGE_PATH).include(request, response);
             }
         } else {
             request.setAttribute(ERROR, MESSAGE_OF_ERROR_2);
-            request.getRequestDispatcher(ERROR_PAGE).include(request, response);
+            request.getRequestDispatcher(JSP_PAGE_PATH).include(request, response);
         }
     }
 }

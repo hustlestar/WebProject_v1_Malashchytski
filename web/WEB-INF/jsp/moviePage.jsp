@@ -1,6 +1,23 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8" language="java" %>
 <jsp:useBean id="movie" class="by.hustlestar.bean.entity.Movie" scope="request"/>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<fmt:setLocale value="${sessionScope.language}"/>
+<fmt:setBundle basename="locale" var="locale"/>
+<fmt:message bundle="${locale}" key="locale.year" var="year"/>
+<fmt:message bundle="${locale}" key="locale.country" var="country"/>
+<fmt:message bundle="${locale}" key="locale.genre" var="genre"/>
+<fmt:message bundle="${locale}" key="locale.budget" var="budget"/>
+<fmt:message bundle="${locale}" key="locale.gross" var="gross"/>
+<fmt:message bundle="${locale}" key="locale.rating" var="rating"/>
+<fmt:message bundle="${locale}" key="locale.votes" var="votes"/>
+<fmt:message bundle="${locale}" key="locale.noRating" var="noRating"/>
+<fmt:message bundle="${locale}" key="locale.noVotes" var="noVotes"/>
+<fmt:message bundle="${locale}" key="locale.yourRating" var="yourRating"/>
+<fmt:message bundle="${locale}" key="locale.rateMovie" var="rateMovie"/>
+<fmt:message bundle="${locale}" key="locale.reviews" var="reviews"/>
+
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -15,105 +32,83 @@
 </head>
 <body>
 
-<nav class="navbar navbar-inverse">
-    <div class="container-fluid">
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-            <a class="navbar-brand" href="#">Logo</a>
-        </div>
-        <div class="collapse navbar-collapse" id="myNavbar">
-            <ul class="nav navbar-nav">
-                <li><a href="index.jsp">Home</a></li>
-                <li class="active"><a href="#">Movies</a></li>
-                <li><a href="#">Projects</a></li>
-                <li><a href="#">Contact</a></li>
-            </ul>
-            <ul class="nav navbar-nav navbar-right">
-                <c:if test="${sessionScope.get('user') == null}">
-                    <li class="sign-up">
-                        <a href="Controller?command=register">
-                            <span class="glyphicon glyphicon-user"></span>
-                            Sign Up</a>
-                    </li>
-                    <li><a href="Controller?command=login"><span class="glyphicon glyphicon-log-in"></span>
-                        Login</a>
-                    </li>
-                </c:if>
-                <c:if test="${sessionScope.get('user') != null}">
-                    <li class="sign-up">
-                        <a href="Controller?command=my-profile">
-                            <span class="glyphicon glyphicon-user"></span> ${sessionScope.get('user').nickname}</a>
-                    </li>
-                    <li><a href="Controller?command=log-out">
-                        <span class="glyphicon glyphicon-log-out"></span> Logout</a>
-                    </li>
-                </c:if>
-            </ul>
-        </div>
-    </div>
-</nav>
+<c:import url="template/navbar.jsp"/>
 
 <div class="container-fluid text-center">
     <div class="row content">
-        <div class="col-sm-2 sidenav">
-            <p><a href="#">Link</a></p>
-            <p><a href="#">Link</a></p>
-            <p><a href="#">Link</a></p>
-        </div>
+
+        <c:import url="template/sideleft.jsp"/>
+
         <div class="col-sm-8 text-left">
-            <h1>Welcome</h1>
-
-            Название фильма <c:out value="${movie.titleRu}"/><br/>
-            Оригинальное название <c:out value="${movie.titleEn}"/><br/>
-            Год <c:out value="${movie.year}"/><br/>
-            <c:if test="${movie.countries.size()>0}">
-                Страна <c:forEach var="country" items="${requestScope.movie.countries}">
-                <a href="Controller?command=movies-by-country&country=${country.nameEn}"><c:out
-                        value="${country.nameRu}"/></a>
-            </c:forEach>
-                <br/>
+            <c:if test="${sessionScope.get('language') eq 'ru' || sessionScope.get('language')==null}">
+                <h1><c:out value="${movie.titleRu}"/></h1>
+                <h3><c:out value="${movie.titleEn}"/></h3>
             </c:if>
-            <c:if test="${movie.genres.size()>0}">
-                Жанры <c:forEach var="genre" items="${requestScope.movie.genres}">
-                <a href="Controller?command=movies-by-genre&genre=${genre.nameEn}"><c:out
-                        value="${genre.nameRu}"/></a>
-            </c:forEach>
-                <br/>
+            <c:if test="${sessionScope.get('language') eq 'en'}">
+                <h1><c:out value="${movie.titleEn}"/></h1>
             </c:if>
-            Бюджет <c:out value="${movie.budget}"/><br/>
-            Сборы в мире <c:out value="${movie.gross}"/><br/>
-            <hr>
-            <c:if test="${movie.ratingVotes>0}">
-                Рейтинг <c:out value="${movie.avgRating}"/><br/>
-                Количество голосов <c:out value="${movie.ratingVotes}"/><br/>
-            </c:if>
-
-            <c:if test="${sessionScope.get('user') != null}">
-                <!-- rating -->
-                <div class="container">
-                    <!--<fieldset class="rating">
-                        <legend>Please rate:</legend>
-                        <input type="radio" id="star10" nameRu="rating" value="5" /><label for="star10" titleRu="Rocks! 10">10 stars</label>
-                        <a href="Controller?command=add-rating&movieID=${movie.id}&rating=9"><input type="radio" id="star9" nameRu="rating" value="5" /><label for="star9" titleRu="Great! 9">9 stars</label></a>
-                        <a href="Controller?command=add-rating&movieID=${movie.id}&rating=8"><input type="radio" id="star8" nameRu="rating" value="5" /><label for="star8" titleRu="Nice! 8">8 stars</label></a>
-                        <a href="Controller?command=add-rating&movieID=${movie.id}&rating=7"><input type="radio" id="star7" nameRu="rating" value="5" /><label for="star7" titleRu="Good! 7">7 stars</label></a>
-                        <a href="Controller?command=add-rating&movieID=${movie.id}&rating=6"><input type="radio" id="star6" nameRu="rating" value="5" /><label for="star6" titleRu="Average! 6">6 stars</label></a>
-                        <a href="Controller?command=add-rating&movieID=${movie.id}&rating=5"><input type="radio" id="star5" nameRu="rating" value="5" /><label for="star5" titleRu="Kinda bad 5">5 stars</label></a>
-                        <a href="Controller?command=add-rating&movieID=${movie.id}&rating=4"><input type="radio" id="star4" nameRu="rating" value="4" /><label for="star4" titleRu="Poor 4">4 stars</label></a>
-                        <a href="Controller?command=add-rating&movieID=${movie.id}&rating=3"><input type="radio" id="star3" nameRu="rating" value="3" /><label for="star3" titleRu="Really bad 3">3 stars</label></a>
-                        <a href="Controller?command=add-rating&movieID=${movie.id}&rating=2"><input type="radio" id="star2" nameRu="rating" value="2" /><label for="star2" titleRu="Sucks big time 2">2 stars</label></a>
-                        <a href="Controller?command=add-rating&movieID=${movie.id}&rating=1"><input type="radio" id="star1" nameRu="rating" value="1" /><label for="star1" titleRu="Awful 1">1 star</label></a>
-                    </fieldset>-->
-                    Моя оценка: <c:forEach var="rating" items="${sessionScope.get('user').ratings}">
-                    <c:if test="${rating.movieID==movie.id}">
-                        <c:out value="${rating.ratingScore}"/>
+            <div class="col-sm-3">
+                <img src="images/movies/${movie.id}.jpg" alt="picture for movie" width="100%"/>
+            </div>
+            <div class="col-sm-9 text-left">
+                ${year} <c:out value="${movie.year}"/><br/>
+                <c:if test="${sessionScope.get('language') eq 'en'}">
+                    <c:if test="${movie.countries.size()>0}">
+                        ${country} <c:forEach var="country" items="${requestScope.movie.countries}">
+                        <a href="Controller?command=movies-by-country&country=${country.nameEn}"><c:out
+                                value="${country.nameEn}"/></a>
+                    </c:forEach>
+                        <br/>
                     </c:if>
-                </c:forEach>
+                    <c:if test="${movie.genres.size()>0}">
+                        ${genre} <c:forEach var="genre" items="${requestScope.movie.genres}">
+                        <a href="Controller?command=movies-by-genre&genre=${genre.nameEn}"><c:out
+                                value="${genre.nameEn}"/></a>
+                    </c:forEach>
+                    </c:if>
+                    <br/>
+                </c:if>
+                <c:if test="${sessionScope.get('language') eq 'ru' || sessionScope.get('language')==null}">
+                    <c:if test="${movie.countries.size()>0}">
+                        ${country} <c:forEach var="country" items="${requestScope.movie.countries}">
+                        <a href="Controller?command=movies-by-country&country=${country.nameEn}"><c:out
+                                value="${country.nameRu}"/></a>
+                    </c:forEach>
+                        <br/>
+                    </c:if>
+                    <c:if test="${movie.genres.size()>0}">
+                        ${genre} <c:forEach var="genre" items="${requestScope.movie.genres}">
+                        <a href="Controller?command=movies-by-genre&genre=${genre.nameEn}"><c:out
+                                value="${genre.nameRu}"/></a>
+                    </c:forEach>
+                    </c:if>
+                    <br/>
+                </c:if>
+                ${budget} <c:out value="${movie.budget}"/><br/>
+                ${gross} <c:out value="${movie.gross}"/><br/>
+                <hr>
+                <c:if test="${movie.ratingVotes>0}">
+                    ${rating} <c:out value="${movie.avgRating}"/><br/>
+                    ${votes} <c:out value="${movie.ratingVotes}"/><br/>
+                </c:if>
+                <c:if test="${movie.ratingVotes==0}">
+                    ${noRating}<br/>
+                    ${noVotes}<br>
+                </c:if>
+
+                <c:if test="${sessionScope.get('user') != null}">
+                    <c:if test="${requestScope.get('errorRating')!=null}">
+                        <h3 class="red"><c:out value="${requestScope.get('errorRating')}"/></h3>
+                        <c:remove var="errorRating" scope="request"/>
+                    </c:if>
+                    ${yourRating}
+                    <c:forEach var="rating" items="${sessionScope.get('user').ratings}">
+                        <c:if test="${rating.movieID==movie.id}">
+                            <c:out value="${rating.ratingScore}"/>
+                        </c:if>
+                    </c:forEach>
                     <br>
+                    ${rateMovie}
                     <a href="Controller?command=add-rating&movieID=${movie.id}&rating=10">10</a>
                     <a href="Controller?command=add-rating&movieID=${movie.id}&rating=9">9</a>
                     <a href="Controller?command=add-rating&movieID=${movie.id}&rating=8">8</a>
@@ -124,55 +119,89 @@
                     <a href="Controller?command=add-rating&movieID=${movie.id}&rating=3">3</a>
                     <a href="Controller?command=add-rating&movieID=${movie.id}&rating=2">2</a>
                     <a href="Controller?command=add-rating&movieID=${movie.id}&rating=1">1</a>
+                    <br>
+                </c:if>
+                <hr>
+            </div>
+            <div class="col-sm-12">
+                <hr>
+                <c:if test="${sessionScope.get('user') != null}">
+                    <c:if test="${requestScope.get('errorReview')!=null}">
+                        <h3 class="red"><c:out value="${requestScope.get('errorReview')}"/></h3>
+                        <c:remove var="errorReview" scope="request"/>
+                    </c:if>
+                    <form action="Controller" method="post" accept-charset="UTF-8">
+                        <input type="hidden" name="command" value="add-review" lang="ru"/>
+                        <input type="hidden" value="${movie.id}" name="movieID">
+                        <p>
+                            <label>
+                                Русский <input type="radio" name="lang" value="ru" checked/>
+                            </label>
+                            <label>
+                                English <input type="radio" name="lang" value="en"/>
+                            </label>
+                        </p>
+                        <label>
+                            Review text <input type="text" name="review" required/>
+                        </label><br/>
+                        <button class="btn btn-info" type="submit">Add review</button>
+                    </form>
+                </c:if>
+                <h3><span class="badge">${movie.reviews.size()}</span> ${reviews}</h3><br>
+
+                <div class="row">
+                    <c:if test="${requestScope.get('errorLikeReview')!=null}">
+                        <h3 class="red"><c:out value="${requestScope.get('errorLikeReview')}"/></h3>
+                        <c:remove var="errorLikeReview" scope="request"/>
+                    </c:if>
+                    <c:if test="${movie.reviews.size()>0}">
+                        <c:forEach var="review" items="${requestScope.movie.reviews}">
+                            <div class="col-sm-2 text-center">
+                                <img src="images/users/anon.jpg" class="img-circle" height="65" width="65" alt="Avatar">
+                            </div>
+                            <div class="col-sm-10">
+                                <h4><a href="Controller?command=view-user&nickname=${review.userNickname}">
+                                    <c:out value="${review.userNickname}"/></a>
+                                    <small>Sep 29, 2015, 9:12 PM</small>
+                                </h4>
+                                <c:if test="${sessionScope.get('user').type eq 'admin' || sessionScope.get('user').type eq 'moder'}">
+                                    <p>
+                                        <a href="Controller?command=delete-review&movieID=${movie.id}&userNickname=${review.userNickname}">Удалить
+                                            рецензию</a>
+                                        <a href="Controller?command=ban-user&userNickname=${review.userNickname}">Забанить
+                                            пользователя</a></p>
+                                </c:if>
+                                <p><c:out value="${review.review}"/></p>
+                                <p>
+                                    <small>Полезная рецензия? <c:if test="${sessionScope.get('user') != null}">
+                                        <a href="Controller?command=like-review&movieID=${movie.id}&reviewer=${review.userNickname}&score=up"><i
+                                                class="green"><c:out value="${review.thumbsUp}"/></i></a> /
+                                        <a href="Controller?command=like-review&movieID=${movie.id}&reviewer=${review.userNickname}&score=down"><i
+                                                class="red"><c:out value="${review.thumbsDown}"/></i></a>
+                                        <br/></c:if>
+                                        <c:if test="${sessionScope.get('user') == null}">
+
+                                            <i class="green"><c:out value="${review.thumbsUp}"/></i> /
+                                            <i class="red"><c:out value="${review.thumbsDown}"/></i>
+                                            <br/>
+                                        </c:if></small>
+                                </p>
+                                <br>
+                            </div>
+
+                        </c:forEach>
+                    </c:if>
                 </div>
-                <br>
-
-                <form action="Controller" method="post" accept-charset="UTF-8">
-                    <input type="hidden" name="command" value="add-review" lang="ru"/>
-                    <input type="hidden" value="${movie.id}" name="movieID">
-                    <!-- TO FIX WITH CSS -->
-                    <input type="text" name="review" height="200px" lang="ru"/><br/>
-                    <input type="submit" value="Add review"/>
-                </form>
-            </c:if>
-            <h3>Рецензии</h3>
-            <c:if test="${movie.reviews.size()>0}">
-                <c:forEach var="review" items="${requestScope.movie.reviews}">
-                    <c:if test="${sessionScope.get('user').type eq 'admin' || sessionScope.get('user').type eq 'moder'}">
-                        <a href="Controller?command=delete-review&movieID=${movie.id}&userNickname=${review.userNickname}">Удалить рецензию</a>
-                        <a href="Controller?command=ban-user&userNickname=${review.userNickname}">Забанить пользователя</a>
-                    </c:if>
-                    <c:if test="${sessionScope.get('user') != null}"><c:out value="${review.userNickname}"/>
-                        <a href="Controller?command=like-review&movieID=${movie.id}&reviewer=${review.userNickname}&score=up"><i
-                                class="green"><c:out value="${review.thumbsUp}"/></i></a> /
-                        <a href="Controller?command=like-review&movieID=${movie.id}&reviewer=${review.userNickname}&score=down"><i
-                                class="red"><c:out value="${review.thumbsDown}"/></i></a>
-                        : <c:out value="${review.review}"/><br/></c:if>
-                    <c:if test="${sessionScope.get('user') == null}">
-                        <c:out value="${review.userNickname}"/>
-                        <i class="green"><c:out value="${review.thumbsUp}"/></i> /
-                        <i class="red"><c:out value="${review.thumbsDown}"/></i>
-                        : <c:out value="${review.review}"/><br/>
-                    </c:if>
-                </c:forEach>
-            </c:if>
-
+            </div>
 
         </div>
-        <div class="col-sm-2 sidenav">
-            <div class="well">
-                <p>ADS</p>
-            </div>
-            <div class="well">
-                <p>ADS</p>
-            </div>
-        </div>
+
+        <c:import url="template/sideright.jsp"/>
+
     </div>
 </div>
 
-<footer class="container-fluid text-center">
-    <p>Footer Text</p>
-</footer>
+<c:import url="template/footer.jsp"/>
 
 </body>
 </html>

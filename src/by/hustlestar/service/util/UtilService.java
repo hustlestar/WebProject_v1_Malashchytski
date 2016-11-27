@@ -21,7 +21,7 @@ public class UtilService {
         return instance;
     }
 
-    public void fillReview(List<Review> reviewList) throws DAOException {
+    public void fillRevieWithScore(List<Review> reviewList) throws DAOException {
         DAOFactory daoFactory = DAOFactory.getInstance();
         ReviewScoreDAO reviewScoreDAO = daoFactory.getReviewScoreDAO();
         for (Review review : reviewList) {

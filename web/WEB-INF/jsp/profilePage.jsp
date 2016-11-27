@@ -1,6 +1,11 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8" language="java" %>
 <jsp:useBean id="user" class="by.hustlestar.bean.entity.User" scope="session"/>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<fmt:setLocale value="${sessionScope.language}"/>
+<fmt:setBundle basename="locale" var="locale"/>
+<fmt:message bundle="${locale}" key="locale.reviews" var="reviews"/>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -14,61 +19,13 @@
 </head>
 <body>
 
-<nav class="navbar navbar-inverse">
-    <div class="container-fluid">
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-            <a class="navbar-brand" href="#">Logo</a>
-        </div>
-        <div class="collapse navbar-collapse" id="myNavbar">
-            <ul class="nav navbar-nav">
-                <li><a href="index.jsp">Home</a></li>
-                <li><a href="#">Movies</a></li>
-                <li><a href="#">Projects</a></li>
-                <li><a href="#">Contact</a></li>
-            </ul>
-            <ul class="nav navbar-nav navbar-right">
-                <c:if test="${sessionScope.get('user') == null}">
-                    <li class="sign-up">
-                        <a href="Controller?command=register">
-                            <span class="glyphicon glyphicon-user"></span>
-                            Sign Up</a>
-                    </li>
-                    <li><a href="Controller?command=login"><span class="glyphicon glyphicon-log-in"></span>
-                        Login</a>
-                    </li>
-                </c:if>
-                <c:if test="${sessionScope.get('user') != null}">
-                    <li class="sign-up">
-                        <a href="Controller?command=my-profile">
-                            <span class="glyphicon glyphicon-user"></span> ${sessionScope.get('user').nickname}</a>
-                    </li>
-                    <li><a href="Controller?command=log-out">
-                        <span class="glyphicon glyphicon-log-out"></span> Logout</a>
-                    </li>
-                </c:if>
-            </ul>
-        </div>
-    </div>
-</nav>
+<c:import url="template/navbar.jsp"/>
 
 <div class="container-fluid text-center">
     <div class="row content">
-        <div class="col-sm-2 sidenav">
-            <c:if test='${sessionScope.get("user").type eq "admin" || sessionScope.get("user").type eq "moder"}'>
-                <p><a href="Controller?command=add-movie">Add movie</a></p>
-                <p><a href="Controller?command=view-all-users">View all users</a></p>
-                <p><a href="Controller?command=view-all-banned-users">View all banned users</a></p>
 
-            </c:if>
-            <p><a href="#">Link</a></p>
-            <p><a href="#">Link</a></p>
-            <p><a href="#">Link</a></p>
-        </div>
+        <c:import url="template/sideleft.jsp"/>
+
         <div class="col-sm-8 text-left">
             <h1>Welcome</h1>
 
@@ -76,7 +33,7 @@
             <c:out value="${user.email}"/><br/>
             <c:out value="${user.registred}"/><br/>
             <c:out value="${user.sex}"/>
-            <h3>Рецензии</h3>
+            <h3>${reviews}</h3>
             <c:if test="${user.reviews.size()>0}">
                 <c:forEach var="review" items="${sessionScope.user.reviews}">
                     <c:out value="${review.userNickname}"/>
@@ -85,21 +42,52 @@
                     : <c:out value="${review.review}"/><br/>
                 </c:forEach>
             </c:if>
+            <c:if test="${user.reviews.size()>0}">
+                <c:forEach var="review" items="${sessionScope.user.reviews}">
+                    <div class="col-sm-2 text-center">
+                        <img src="images/users/anon.jpg" class="img-circle" height="65" width="65" alt="Avatar">
+                    </div>
+                    <div class="col-sm-10">
+                        <h4><a href="Controller?command=movie-by-id&id=${review.movieID}">Review for movie</a></h4>
+                        <h4><a href="Controller?command=view-user&nickname=${review.userNickname}">
+                            <c:out value="${review.userNickname}"/></a>
+                            <small>Sep 29, 2015, 9:12 PM</small>
+                        </h4>
+                        <c:if test="${sessionScope.get('user').type eq 'admin' || sessionScope.get('user').type eq 'moder'}">
+                            <p>
+                                <a href="Controller?command=delete-review&movieID=${review.movieID}&userNickname=${review.userNickname}">Удалить
+                                    рецензию</a>
+                                <a href="Controller?command=ban-user&userNickname=${review.userNickname}">Забанить
+                                    пользователя</a></p>
+                        </c:if>
+                        <p><c:out value="${review.review}"/></p>
+                        <p>
+                            <small>Полезная рецензия? <c:if test="${sessionScope.get('user') != null}">
+                                <a href="Controller?command=like-review&movieID=${movie.id}&reviewer=${review.userNickname}&score=up"><i
+                                        class="green"><c:out value="${review.thumbsUp}"/></i></a> /
+                                <a href="Controller?command=like-review&movieID=${movie.id}&reviewer=${review.userNickname}&score=down"><i
+                                        class="red"><c:out value="${review.thumbsDown}"/></i></a>
+                                <br/></c:if>
+                                <c:if test="${sessionScope.get('user') == null}">
+
+                                    <i class="green"><c:out value="${review.thumbsUp}"/></i> /
+                                    <i class="red"><c:out value="${review.thumbsDown}"/></i>
+                                    <br/>
+                                </c:if></small>
+                        </p>
+                        <br>
+                    </div>
+
+                </c:forEach>
+            </c:if>
         </div>
-        <div class="col-sm-2 sidenav">
-            <div class="well">
-                <p>ADS</p>
-            </div>
-            <div class="well">
-                <p>ADS</p>
-            </div>
-        </div>
+
+        <c:import url="template/sideright.jsp"/>
+
     </div>
 </div>
 
-<footer class="container-fluid text-center">
-    <p>Footer Text</p>
-</footer>
+<c:import url="template/footer.jsp"/>
 
 </body>
 </html>

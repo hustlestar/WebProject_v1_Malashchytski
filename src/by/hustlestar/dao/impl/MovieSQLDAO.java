@@ -3,7 +3,7 @@ package by.hustlestar.dao.impl;
 import by.hustlestar.bean.entity.Movie;
 import by.hustlestar.dao.iface.MovieDAO;
 import by.hustlestar.dao.exception.DAOException;
-import by.hustlestar.dao.impl.pool.ConnectionPool;
+import by.hustlestar.dao.impl.pool.ConnectionPoolSQLDAO;
 import by.hustlestar.dao.impl.pool.ConnectionPoolException;
 
 import java.sql.Connection;
@@ -53,11 +53,11 @@ public class MovieSQLDAO implements MovieDAO {
             "GROUP BY m_id ORDER BY m_rating DESC;";
 
     private final static String ADD_MOVIE =
-            "INSERT INTO movies (`m_title`, `m_year`, `m_budget`, `m_gross`) VALUES (?, ?, ?, ?)";
+            "INSERT INTO movies (m_title_ru, m_title_en, `m_year`, `m_budget`, `m_gross`) VALUES (?, ?, ?, ?, ?)";
 
     private final static String UPDATE_BY_ID =
             "UPDATE `jackdb`.`movies`\n" +
-            "SET `m_title` = ?, `m_year` = ?, `m_budget` = ?,`m_gross` = ?\n" +
+            "SET m_title_ru = ?, m_title_en = ?, `m_year` = ?, `m_budget` = ?,`m_gross` = ?\n" +
             "WHERE `m_id` = ?;\n";
 
     private static final String M_ID = "m_id";
@@ -76,7 +76,7 @@ public class MovieSQLDAO implements MovieDAO {
         PreparedStatement st = null;
         ResultSet rs = null;
         try {
-            con = ConnectionPool.getInstance().takeConnection();
+            con = ConnectionPoolSQLDAO.getInstance().takeConnection();
 
             st = con.prepareStatement(SHOW_ALL);
 
@@ -115,7 +115,7 @@ public class MovieSQLDAO implements MovieDAO {
                 }
             }
             try {
-                ConnectionPool.getInstance().returnConnection(con);
+                ConnectionPoolSQLDAO.getInstance().returnConnection(con);
             } catch (ConnectionPoolException e) {
                 throw new DAOException("Exception while returning connection", e);
             }
@@ -128,7 +128,7 @@ public class MovieSQLDAO implements MovieDAO {
         PreparedStatement st = null;
         ResultSet rs = null;
         try {
-            con = ConnectionPool.getInstance().takeConnection();
+            con = ConnectionPoolSQLDAO.getInstance().takeConnection();
 
             st = con.prepareStatement(SHOW_BY_COUNTRY);
             st.setString(1, country);
@@ -165,7 +165,7 @@ public class MovieSQLDAO implements MovieDAO {
                 }
             }
             try {
-                ConnectionPool.getInstance().returnConnection(con);
+                ConnectionPoolSQLDAO.getInstance().returnConnection(con);
             } catch (ConnectionPoolException e) {
                 throw new DAOException("Exception while returning connection", e);
             }
@@ -178,7 +178,7 @@ public class MovieSQLDAO implements MovieDAO {
         PreparedStatement st = null;
         ResultSet rs = null;
         try {
-            con = ConnectionPool.getInstance().takeConnection();
+            con = ConnectionPoolSQLDAO.getInstance().takeConnection();
 
             st = con.prepareStatement(SHOW_BY_GENRE);
             st.setString(1, genre);
@@ -215,7 +215,7 @@ public class MovieSQLDAO implements MovieDAO {
                 }
             }
             try {
-                ConnectionPool.getInstance().returnConnection(con);
+                ConnectionPoolSQLDAO.getInstance().returnConnection(con);
             } catch (ConnectionPoolException e) {
                 throw new DAOException("Exception while returning connection", e);
             }
@@ -228,11 +228,12 @@ public class MovieSQLDAO implements MovieDAO {
         PreparedStatement st = null;
         ResultSet rs = null;
         try {
-            con = ConnectionPool.getInstance().takeConnection();
+            con = ConnectionPoolSQLDAO.getInstance().takeConnection();
 
             st = con.prepareStatement(FIND_BY_TITLE);
             st.setString(1, "%" + title + "%");
             st.setString(2, "%" + title + "%");
+            //System.out.println("%" + title + "%");
             rs = st.executeQuery();
 
             List<Movie> movies = new ArrayList<>();
@@ -267,7 +268,7 @@ public class MovieSQLDAO implements MovieDAO {
                 }
             }
             try {
-                ConnectionPool.getInstance().returnConnection(con);
+                ConnectionPoolSQLDAO.getInstance().returnConnection(con);
             } catch (ConnectionPoolException e) {
                 throw new DAOException("Exception while returning connection", e);
             }
@@ -280,7 +281,7 @@ public class MovieSQLDAO implements MovieDAO {
         PreparedStatement st = null;
         ResultSet rs = null;
         try {
-            con = ConnectionPool.getInstance().takeConnection();
+            con = ConnectionPoolSQLDAO.getInstance().takeConnection();
 
             st = con.prepareStatement(SHOW_OF_TEN_YEARS_PERIOD);
             st.setInt(1, years);
@@ -320,7 +321,7 @@ public class MovieSQLDAO implements MovieDAO {
                 }
             }
             try {
-                ConnectionPool.getInstance().returnConnection(con);
+                ConnectionPoolSQLDAO.getInstance().returnConnection(con);
             } catch (ConnectionPoolException e) {
                 throw new DAOException("Exception while returning connection", e);
             }
@@ -333,7 +334,7 @@ public class MovieSQLDAO implements MovieDAO {
         PreparedStatement st = null;
         ResultSet rs = null;
         try {
-            con = ConnectionPool.getInstance().takeConnection();
+            con = ConnectionPoolSQLDAO.getInstance().takeConnection();
 
             st = con.prepareStatement(SHOW_OF_YEAR);
             st.setInt(1, year);
@@ -372,7 +373,7 @@ public class MovieSQLDAO implements MovieDAO {
                 }
             }
             try {
-                ConnectionPool.getInstance().returnConnection(con);
+                ConnectionPoolSQLDAO.getInstance().returnConnection(con);
             } catch (ConnectionPoolException e) {
                 throw new DAOException("Exception while returning connection", e);
             }
@@ -385,7 +386,7 @@ public class MovieSQLDAO implements MovieDAO {
         PreparedStatement st = null;
         ResultSet rs = null;
         try {
-            con = ConnectionPool.getInstance().takeConnection();
+            con = ConnectionPoolSQLDAO.getInstance().takeConnection();
 
             st = con.prepareStatement(SHOW_BY_ID);
             st.setInt(1, id);
@@ -425,7 +426,7 @@ public class MovieSQLDAO implements MovieDAO {
                 }
             }
             try {
-                ConnectionPool.getInstance().returnConnection(con);
+                ConnectionPoolSQLDAO.getInstance().returnConnection(con);
             } catch (ConnectionPoolException e) {
                 throw new DAOException("Exception while returning connection", e);
             }
@@ -433,19 +434,20 @@ public class MovieSQLDAO implements MovieDAO {
     }
 
     @Override
-    public void addMovie(String title, int year, long budget, long gross) throws DAOException {
+    public void addMovie(String titleRu, String titleEn, int year, long budget, long gross) throws DAOException {
         Connection con = null;
         PreparedStatement st = null;
         try {
-            con = ConnectionPool.getInstance().takeConnection();
+            con = ConnectionPoolSQLDAO.getInstance().takeConnection();
             st = con.prepareStatement(ADD_MOVIE);
-            st.setString(1, title);
-            st.setInt(2, year);
-            st.setLong(3, budget);
-            st.setLong(4, gross);
+            st.setString(1, titleRu);
+            st.setString(2, titleEn);
+            st.setInt(3, year);
+            st.setLong(4, budget);
+            st.setLong(5, gross);
             int update = st.executeUpdate();
             if (update > 0) {
-                System.out.println("Filmec dobavlen vse ok" + title);
+                System.out.println("Filmec dobavlen vse ok" + titleRu);
                 return;
             }
             throw new DAOException("Wrong movie data");
@@ -462,7 +464,7 @@ public class MovieSQLDAO implements MovieDAO {
                 }
             }
             try {
-                ConnectionPool.getInstance().returnConnection(con);
+                ConnectionPoolSQLDAO.getInstance().returnConnection(con);
             } catch (ConnectionPoolException e) {
                 throw new DAOException("Exception while returning connection", e);
             }
@@ -470,20 +472,21 @@ public class MovieSQLDAO implements MovieDAO {
     }
 
     @Override
-    public void updateMovie(int id, String title, int year, long budget, long gross) throws DAOException {
+    public void updateMovie(int id, String titleRu, String titleEn, int year, long budget, long gross) throws DAOException {
         Connection con = null;
         PreparedStatement st = null;
         try {
-            con = ConnectionPool.getInstance().takeConnection();
+            con = ConnectionPoolSQLDAO.getInstance().takeConnection();
             st = con.prepareStatement(UPDATE_BY_ID);
-            st.setString(1, title);
-            st.setInt(2, year);
-            st.setLong(3, budget);
-            st.setLong(4, gross);
-            st.setInt(5, id);
+            st.setString(1, titleRu);
+            st.setString(2, titleEn);
+            st.setInt(3, year);
+            st.setLong(4, budget);
+            st.setLong(5, gross);
+            st.setInt(6, id);
             int update = st.executeUpdate();
             if (update > 0) {
-                System.out.println("Filmec obnovlen vse ok" + title);
+                System.out.println("Filmec obnovlen vse ok" + titleRu);
                 return;
             }
             throw new DAOException("Wrong movie data");
@@ -500,7 +503,7 @@ public class MovieSQLDAO implements MovieDAO {
                 }
             }
             try {
-                ConnectionPool.getInstance().returnConnection(con);
+                ConnectionPoolSQLDAO.getInstance().returnConnection(con);
             } catch (ConnectionPoolException e) {
                 throw new DAOException("Exception while returning connection", e);
             }

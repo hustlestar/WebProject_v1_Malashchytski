@@ -33,7 +33,7 @@ public class UserServiceImpl implements UserService {
             if (user != null) {
                 reviewList = reviewDAO.getReviewsForUser(nickname);
 
-                new UtilService().fillReview(reviewList);
+                new UtilService().fillRevieWithScore(reviewList);
 
                 user.setReviews(reviewList);
             } else {
@@ -68,7 +68,7 @@ public class UserServiceImpl implements UserService {
             reviewList = reviewDAO.getReviewsForUser(login);
             ratingList = ratingDAO.getRatingsOfUser(login);
 
-            utilService.fillReview(reviewList);
+            utilService.fillRevieWithScore(reviewList);
 
             user.setReviews(reviewList);
             user.setRatings(ratingList);

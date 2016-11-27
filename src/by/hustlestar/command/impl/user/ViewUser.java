@@ -2,6 +2,7 @@ package by.hustlestar.command.impl.user;
 
 import by.hustlestar.bean.entity.User;
 import by.hustlestar.command.Command;
+import by.hustlestar.command.util.QueryUtil;
 import by.hustlestar.service.ServiceFactory;
 import by.hustlestar.service.iface.UserService;
 import by.hustlestar.service.exception.ServiceException;
@@ -34,6 +35,7 @@ public class ViewUser implements Command {
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+        QueryUtil.saveCurrentQueryToSession(request);
         response.setContentType(CONTENT_TYPE);
         request.setCharacterEncoding(CHARACTER_ENCODING);
         String nickname = request.getParameter(NICKNAME);
@@ -41,9 +43,7 @@ public class ViewUser implements Command {
         UserService userService = ServiceFactory.getInstance().getUserService();
         try {
             user = userService.showUserByNickname(nickname);
-            /*for (Movie movie : movies) {
-                System.out.println(movie.getTitleRu() + " - " + movie.getYear());
-            }*/
+
             request.setAttribute(REQUEST_ATTRIBUTE, user);
             request.getRequestDispatcher(JSP_PAGE_PATH).include(request, response);
         } catch (ServiceException e) {

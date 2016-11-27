@@ -2,6 +2,7 @@ package by.hustlestar.command.impl.movie;
 
 import by.hustlestar.bean.entity.Movie;
 import by.hustlestar.command.Command;
+import by.hustlestar.command.util.CommandsUtil;
 import by.hustlestar.command.util.QueryUtil;
 import by.hustlestar.service.iface.MovieService;
 import by.hustlestar.service.ServiceFactory;
@@ -40,12 +41,12 @@ public class ShowMovieByID implements Command {
         request.setCharacterEncoding(CHARACTER_ENCODING);
 
         String id = request.getParameter(ID);
-
+        String lang = (String) CommandsUtil.getLanguage(request);
         Movie movie;
 
         MovieService movieService = ServiceFactory.getInstance().getMovieService();
         try {
-            movie = movieService.showMovieByID(id);
+            movie = movieService.showMovieByID(id, lang);
 
             request.setAttribute(REQUEST_ATTRIBUTE, movie);
 
@@ -58,4 +59,6 @@ public class ShowMovieByID implements Command {
             request.getRequestDispatcher(ERROR_PAGE).forward(request, response);
         }
     }
+
+
 }

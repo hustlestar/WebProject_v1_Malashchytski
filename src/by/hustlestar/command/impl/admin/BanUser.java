@@ -1,6 +1,7 @@
 package by.hustlestar.command.impl.admin;
 
 import by.hustlestar.command.Command;
+import by.hustlestar.command.util.CommandsUtil;
 import by.hustlestar.service.exception.ServiceException;
 import by.hustlestar.service.iface.AdminService;
 import org.apache.logging.log4j.LogManager;
@@ -15,15 +16,12 @@ import java.io.IOException;
  * Created by Hustler on 21.11.2016.
  */
 public class BanUser implements Command {
-    private static final String WELCOME_PAGE = "index.jsp";
     private static final String ERROR_PAGE = "WEB-INF/jsp/error.jsp";
 
     private static final Logger LOGGER = LogManager.getLogger();
 
     private static final String CONTENT_TYPE = "text/html; charset=UTF-8";
     private static final String CHARACTER_ENCODING = "UTF-8";
-
-    private static final String PREVIOUS_QUERY = "previousQuery";
 
     private static final String USER_NICKNAME = "userNickname";
 
@@ -38,10 +36,7 @@ public class BanUser implements Command {
 
         String userNickname = request.getParameter(USER_NICKNAME);
 
-        String previousQuery = (String) request.getSession(false).getAttribute(PREVIOUS_QUERY);
-        if (previousQuery == null) {
-            previousQuery = WELCOME_PAGE;
-        }
+        String previousQuery = CommandsUtil.getPreviousQuery(request);
 
         /*admin rights check*/
         AdminService adminService= AdminUtil.getAdminService(request, response);

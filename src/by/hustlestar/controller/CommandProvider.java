@@ -8,6 +8,8 @@ import by.hustlestar.command.impl.rating.AddRating;
 import by.hustlestar.command.impl.review.AddReview;
 import by.hustlestar.command.impl.review.LikeReview;
 import by.hustlestar.command.impl.user.*;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -16,6 +18,7 @@ import java.util.Map;
  * Created by Hustler on 27.10.2016.
  */
 class CommandProvider {
+    private static final Logger LOGGER = LogManager.getLogger();
 
     private Map<CommandName, Command> commands = new HashMap<CommandName, Command>();
     private static final CommandProvider instance = new CommandProvider();
@@ -55,9 +58,15 @@ class CommandProvider {
 
     Command getCommand(String commandName){
         String cmd = commandName.replace("-","_").toUpperCase();
-        CommandName name = CommandName.valueOf(cmd);
+        CommandName name = null;
         Command command;
-        command = commands.get(name);
+        try {
+            name = CommandName.valueOf(cmd);
+            command = commands.get(name);
+        } catch (IllegalArgumentException e) {
+            LOGGER.error("No such command", e);
+            command = commands.get(CommandName.ALL_MOVIES);
+        }
         return command;
     }
 }

@@ -2,6 +2,7 @@ package by.hustlestar.dao;
 
 import by.hustlestar.dao.iface.*;
 import by.hustlestar.dao.impl.*;
+import by.hustlestar.dao.impl.pool.ConnectionPoolSQLDAO;
 
 /**
  * Created by Hustler on 28.10.2016.
@@ -24,6 +25,7 @@ public class DAOFactory {
     private ReviewDAO reviewDAO = new ReviewSQLDAO();
     private ReviewScoreDAO reviewScoreDAO = new ReviewScoreSQLDAO();
     private GenreDAO genreDAO = new GenreSQLDAO();
+    private ConnectionPoolDAO connectionPoolDAO = new ConnectionPoolSQLDAO();
 
     public UserDAO getUserDAO() {
         return userDAO;
@@ -51,5 +53,9 @@ public class DAOFactory {
 
     public GenreDAO getGenreDAO() {
         return genreDAO;
+    }
+
+    public ConnectionPoolDAO getConnectionPoolDAO() {
+        return connectionPoolDAO;
     }
 }

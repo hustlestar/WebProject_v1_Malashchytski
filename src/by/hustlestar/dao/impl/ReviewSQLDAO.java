@@ -3,7 +3,7 @@ package by.hustlestar.dao.impl;
 import by.hustlestar.bean.entity.Review;
 import by.hustlestar.dao.exception.DAOException;
 import by.hustlestar.dao.iface.ReviewDAO;
-import by.hustlestar.dao.impl.pool.ConnectionPool;
+import by.hustlestar.dao.impl.pool.ConnectionPoolSQLDAO;
 import by.hustlestar.dao.impl.pool.ConnectionPoolException;
 
 import java.sql.Connection;
@@ -18,13 +18,13 @@ import java.util.List;
  */
 public class ReviewSQLDAO implements ReviewDAO {
     private final static String SHOW_REVIEWS_BY_ID =
-            "SELECT user_u_nick, review FROM reviews WHERE movies_m_id=?";
+            "SELECT user_u_nick, review FROM reviews WHERE movies_m_id=? AND review_lang=?";
 
     private static final String SHOW_REVIEWS_BY_USER =
             "SELECT movies_m_id, review FROM reviews WHERE user_u_nick=?";
 
     private static final String ADD_REVIEW =
-            "INSERT INTO reviews (movies_m_id, user_u_nick, review) VALUES (?, ?, ?)";
+            "INSERT INTO reviews (movies_m_id, user_u_nick, review, review_lang) VALUES (?, ?, ?, ?)";
 
     private static final String DELETE_REVIEW =
             "DELETE FROM `jackdb`.`reviews`\n" +
@@ -35,15 +35,16 @@ public class ReviewSQLDAO implements ReviewDAO {
     private static final String MOVIES_M_ID = "movies_m_id";
 
     @Override
-    public List<Review> getReviewsForMovie(int id) throws DAOException {
+    public List<Review> getReviewsForMovie(int id, String lang) throws DAOException {
         Connection con = null;
         PreparedStatement st = null;
         ResultSet rs = null;
         try {
-            con = ConnectionPool.getInstance().takeConnection();
+            con = ConnectionPoolSQLDAO.getInstance().takeConnection();
 
             st = con.prepareStatement(SHOW_REVIEWS_BY_ID);
             st.setInt(1, id);
+            st.setString(2, lang);
             rs = st.executeQuery();
 
             List<Review> reviewList = new ArrayList<>();
@@ -77,7 +78,7 @@ public class ReviewSQLDAO implements ReviewDAO {
                 }
             }
             try {
-                ConnectionPool.getInstance().returnConnection(con);
+                ConnectionPoolSQLDAO.getInstance().returnConnection(con);
             } catch (ConnectionPoolException e) {
                 throw new DAOException("Exception while returning connection", e);
             }
@@ -90,7 +91,7 @@ public class ReviewSQLDAO implements ReviewDAO {
         PreparedStatement st = null;
         ResultSet rs = null;
         try {
-            con = ConnectionPool.getInstance().takeConnection();
+            con = ConnectionPoolSQLDAO.getInstance().takeConnection();
 
             st = con.prepareStatement(SHOW_REVIEWS_BY_USER);
             st.setString(1, nickname);
@@ -127,7 +128,7 @@ public class ReviewSQLDAO implements ReviewDAO {
                 }
             }
             try {
-                ConnectionPool.getInstance().returnConnection(con);
+                ConnectionPoolSQLDAO.getInstance().returnConnection(con);
             } catch (ConnectionPoolException e) {
                 throw new DAOException("Exception while returning connection", e);
             }
@@ -135,15 +136,16 @@ public class ReviewSQLDAO implements ReviewDAO {
     }
 
     @Override
-    public void addReview(int intMovieID, String userNickname, String review) throws DAOException {
+    public void addReview(int intMovieID, String userNickname, String review, String lang) throws DAOException {
         Connection con = null;
         PreparedStatement st = null;
         try {
-            con = ConnectionPool.getInstance().takeConnection();
+            con = ConnectionPoolSQLDAO.getInstance().takeConnection();
             st = con.prepareStatement(ADD_REVIEW);
             st.setInt(1, intMovieID);
             st.setString(2, userNickname);
             st.setString(3, review);
+            st.setString(4, lang);
             int update = st.executeUpdate();
             if (update > 0) {
                 System.out.println("Review dobavlen vse ok"+userNickname+" "+review);
@@ -163,7 +165,7 @@ public class ReviewSQLDAO implements ReviewDAO {
                 }
             }
             try {
-                ConnectionPool.getInstance().returnConnection(con);
+                ConnectionPoolSQLDAO.getInstance().returnConnection(con);
             } catch (ConnectionPoolException e) {
                 throw new DAOException("Exception while returning connection", e);
             }
@@ -175,7 +177,7 @@ public class ReviewSQLDAO implements ReviewDAO {
         Connection con = null;
         PreparedStatement st = null;
         try {
-            con = ConnectionPool.getInstance().takeConnection();
+            con = ConnectionPoolSQLDAO.getInstance().takeConnection();
             st = con.prepareStatement(DELETE_REVIEW);
             st.setInt(1, intMovieID);
             st.setString(2, userNickname);
@@ -198,7 +200,7 @@ public class ReviewSQLDAO implements ReviewDAO {
                 }
             }
             try {
-                ConnectionPool.getInstance().returnConnection(con);
+                ConnectionPoolSQLDAO.getInstance().returnConnection(con);
             } catch (ConnectionPoolException e) {
                 throw new DAOException("Exception while returning connection", e);
             }

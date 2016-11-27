@@ -18,9 +18,9 @@ public interface AdminService {
 
     List<User> showAllBannedUsers() throws ServiceException;
 
-    void addMovie(String title, String year, String budget, String gross) throws ServiceException;
+    void addMovie(String titleRu,String titleEn, String year, String budget, String gross) throws ServiceException;
 
-    void updateMovie(String id, String title, String year, String budget, String gross) throws ServiceException;
+    void updateMovie(String id,String titleRu, String titleEn, String year, String budget, String gross) throws ServiceException;
 
     void deleteReview(String movieID, String userNickname) throws ServiceException;
 }

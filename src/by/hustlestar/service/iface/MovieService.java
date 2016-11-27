@@ -16,7 +16,7 @@ public interface MovieService {
 
     List<Movie> showMoviesByGenre(String genre) throws ServiceException;
 
-    Movie showMovieByID(String id) throws ServiceException;
+    Movie showMovieByID(String id, String lang) throws ServiceException;
 
     List<Movie> findMovieByTitle(String title) throws ServiceException;
 
@@ -24,7 +24,7 @@ public interface MovieService {
 
     List<Movie> showMoviesOfYear(String year) throws ServiceException;
 
-    void addReview(String movieID, String userNickname, String review) throws ServiceException;
+    void addReview(String movieID, String userNickname, String review, String lang) throws ServiceException;
 
     void likeReview(String movieID, String reviewerNickname, String score, String userNickname) throws ServiceException;
 

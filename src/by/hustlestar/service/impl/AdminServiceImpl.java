@@ -81,7 +81,7 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public void addMovie(String title, String year, String budget, String gross) throws ServiceException {
+    public void addMovie(String titleRu ,String titleEn, String year, String budget, String gross) throws ServiceException {
         DAOFactory daoFactory = DAOFactory.getInstance();
         MovieDAO dao = daoFactory.getMovieDAO();
         int intYear;
@@ -97,7 +97,7 @@ public class AdminServiceImpl implements AdminService {
 
         try {
 
-            dao.addMovie(title, intYear, longBudget, longGross);
+            dao.addMovie(titleRu, titleEn, intYear, longBudget, longGross);
 
         } catch (DAOException e) {
             throw new ServiceException("Error in source!", e);
@@ -105,7 +105,7 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public void updateMovie(String id, String title, String year, String budget, String gross) throws ServiceException {
+    public void updateMovie(String id,String titleRu, String titleEn, String year, String budget, String gross) throws ServiceException {
         DAOFactory daoFactory = DAOFactory.getInstance();
         MovieDAO dao = daoFactory.getMovieDAO();
         int intID;
@@ -122,7 +122,7 @@ public class AdminServiceImpl implements AdminService {
         }
 
         try {
-            dao.updateMovie(intID, title, intYear, longBudget, longGross);
+            dao.updateMovie(intID, titleRu, titleEn, intYear, longBudget, longGross);
         } catch (DAOException e) {
             throw new ServiceException("Error in source!", e);
         }

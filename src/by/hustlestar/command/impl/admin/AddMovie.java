@@ -26,7 +26,8 @@ public class AddMovie implements Command {
     private static final String CONTENT_TYPE = "text/html; charset=UTF-8";
     private static final String CHARACTER_ENCODING = "UTF-8";
 
-    private static final String TITLE = "title";
+    private static final String TITLE_RU = "titleRu";
+    private static final String TITLE_EN = "titleEn";
     private static final String YEAR = "year";
     private static final String BUDGET = "budget";
     private static final String GROSS = "gross";
@@ -40,16 +41,17 @@ public class AddMovie implements Command {
         response.setContentType(CONTENT_TYPE);
         request.setCharacterEncoding(CHARACTER_ENCODING);
 
-        String title = request.getParameter(TITLE);
+        String titleRu = request.getParameter(TITLE_RU);
+        String titleEn = request.getParameter(TITLE_EN);
         String year = request.getParameter(YEAR);
         String budget = request.getParameter(BUDGET);
         String gross = request.getParameter(GROSS);
 
         AdminService adminService = AdminUtil.getAdminService(request, response);
 
-        if (title != null && year != null && budget != null && gross !=null) {
+        if (titleRu != null && titleEn != null && year != null && budget != null && gross !=null) {
             try {
-                adminService.addMovie(title, year, budget, gross);
+                adminService.addMovie(titleRu, titleEn, year, budget, gross);
 
                 request.getRequestDispatcher(WELCOME_PAGE).include(request, response);
             }  catch (ServiceException e) {

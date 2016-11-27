@@ -3,7 +3,7 @@ package by.hustlestar.dao.impl;
 import by.hustlestar.bean.entity.ReviewScore;
 import by.hustlestar.dao.exception.DAOException;
 import by.hustlestar.dao.iface.ReviewScoreDAO;
-import by.hustlestar.dao.impl.pool.ConnectionPool;
+import by.hustlestar.dao.impl.pool.ConnectionPoolSQLDAO;
 import by.hustlestar.dao.impl.pool.ConnectionPoolException;
 
 import java.sql.Connection;
@@ -37,7 +37,7 @@ public class ReviewScoreSQLDAO implements ReviewScoreDAO {
         PreparedStatement st = null;
         ResultSet rs = null;
         try {
-            con = ConnectionPool.getInstance().takeConnection();
+            con = ConnectionPoolSQLDAO.getInstance().takeConnection();
 
             st = con.prepareStatement(GET_REVIEW_SCORES_FOR_REVIEW);
             st.setInt(1, movieID);
@@ -76,7 +76,7 @@ public class ReviewScoreSQLDAO implements ReviewScoreDAO {
                 }
             }
             try {
-                ConnectionPool.getInstance().returnConnection(con);
+                ConnectionPoolSQLDAO.getInstance().returnConnection(con);
             } catch (ConnectionPoolException e) {
                 throw new DAOException("Exception while returning connection", e);
             }
@@ -88,7 +88,7 @@ public class ReviewScoreSQLDAO implements ReviewScoreDAO {
         Connection con = null;
         PreparedStatement st = null;
         try {
-            con = ConnectionPool.getInstance().takeConnection();
+            con = ConnectionPoolSQLDAO.getInstance().takeConnection();
             st = con.prepareStatement(LIKE_DISLIKE_REVIEW);
             st.setInt(1, intMovieID);
             st.setString(2, reviewerNickname);
@@ -113,7 +113,7 @@ public class ReviewScoreSQLDAO implements ReviewScoreDAO {
                 }
             }
             try {
-                ConnectionPool.getInstance().returnConnection(con);
+                ConnectionPoolSQLDAO.getInstance().returnConnection(con);
             } catch (ConnectionPoolException e) {
                 throw new DAOException("Exception while returning connection", e);
             }

@@ -4,7 +4,6 @@ import by.hustlestar.bean.entity.*;
 import by.hustlestar.dao.DAOFactory;
 import by.hustlestar.dao.iface.*;
 import by.hustlestar.dao.exception.DAOException;
-import by.hustlestar.dao.impl.ReviewScoreSQLDAO;
 import by.hustlestar.service.iface.MovieService;
 import by.hustlestar.service.exception.ServiceException;
 import by.hustlestar.service.util.UtilService;
@@ -65,7 +64,7 @@ public class MovieServiceImpl implements MovieService {
     }
 
     @Override
-    public Movie showMovieByID(String id) throws ServiceException {
+    public Movie showMovieByID(String id, String lang) throws ServiceException {
         DAOFactory daoFactory = DAOFactory.getInstance();
         MovieDAO dao = daoFactory.getMovieDAO();
         CountryDAO countryDAO = daoFactory.getCountryDAO();
@@ -94,8 +93,8 @@ public class MovieServiceImpl implements MovieService {
 
                 ratingList = ratingDAO.getRatingsForMovie(normId);
 
-                reviewList = reviewDAO.getReviewsForMovie(normId);
-                utilService.fillReview(reviewList);
+                reviewList = reviewDAO.getReviewsForMovie(normId, lang);
+                utilService.fillRevieWithScore(reviewList);
 
                 movie.setCountries(countryList);
                 movie.setGenres(genreList);
@@ -174,7 +173,7 @@ public class MovieServiceImpl implements MovieService {
     }
 
     @Override
-    public void addReview(String movieID, String userNickname, String review) throws ServiceException {
+    public void addReview(String movieID, String userNickname, String review, String lang) throws ServiceException {
         DAOFactory daoFactory = DAOFactory.getInstance();
         ReviewDAO dao = daoFactory.getReviewDAO();
         int intMovieID;
@@ -184,7 +183,7 @@ public class MovieServiceImpl implements MovieService {
             throw new ServiceException("Wrong data input, while adding film");
         }
         try {
-            dao.addReview(intMovieID, userNickname, review);
+            dao.addReview(intMovieID, userNickname, review, lang);
         } catch (DAOException e) {
             throw new ServiceException("Error in source!", e);
         }
@@ -201,6 +200,9 @@ public class MovieServiceImpl implements MovieService {
         } catch (NumberFormatException e) {
             throw new ServiceException("Wrong data input, while adding like");
         }
+        if (reviewerNickname.equals(userNickname)){
+            throw new ServiceException("You cannot vote for your own review");
+        }
         try {
             dao.likeReview(intMovieID, reviewerNickname, value, userNickname);
         } catch (DAOException e) {
@@ -212,6 +214,7 @@ public class MovieServiceImpl implements MovieService {
     public void addRating(String movieID, String userNickname, String rating) throws ServiceException {
         DAOFactory daoFactory = DAOFactory.getInstance();
         RatingDAO dao = daoFactory.getRatingDAO();
+
         int intMovieID;
         int intRating;
         try {
@@ -224,7 +227,13 @@ public class MovieServiceImpl implements MovieService {
             throw new ServiceException("Wrong data input, while adding rating");
         }
         try {
-            dao.addRating(intMovieID, userNickname, intRating);
+            Rating rate = dao.checkRating(intMovieID, userNickname);
+            if (rate!=null){
+                dao.updateRating(intMovieID, userNickname, intRating);
+            } else {
+                dao.addRating(intMovieID, userNickname, intRating);
+            }
+
         } catch (DAOException e) {
             throw new ServiceException("Error in source!", e);
         }

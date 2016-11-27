@@ -1,6 +1,7 @@
 package by.hustlestar.command.impl.common;
 
 import by.hustlestar.command.Command;
+import by.hustlestar.command.util.CommandsUtil;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -17,8 +18,6 @@ public class ChangeLanguage implements Command {
     private static final String LANGUAGE = "language";
 
     private static final String SESSION_LANGUAGE = "language";
-    private static final String SESSION_PREVIOUS_QUERY = "previousQuery";
-    private static final String WELCOME_PAGE = "index.jsp";
 
     private ArrayList<String> supportedLanguages = new ArrayList<>();
     private static final String ENGLISH = "en";
@@ -42,10 +41,7 @@ public class ChangeLanguage implements Command {
             session.setAttribute(SESSION_LANGUAGE, language);
         }
 
-        String previousQuery = (String) session.getAttribute(SESSION_PREVIOUS_QUERY);
-        if (previousQuery == null) {
-            previousQuery = WELCOME_PAGE;
-        }
+        String previousQuery = CommandsUtil.getPreviousQuery(request);
         response.sendRedirect(previousQuery);
     }
 }

@@ -2,6 +2,7 @@ package by.hustlestar.command.impl.user;
 
 import by.hustlestar.bean.entity.User;
 import by.hustlestar.command.Command;
+import by.hustlestar.command.util.CommandsUtil;
 import by.hustlestar.command.util.QueryUtil;
 import by.hustlestar.service.ServiceFactory;
 import by.hustlestar.service.iface.UserService;
@@ -21,7 +22,6 @@ import java.io.IOException;
  */
 public class Login implements Command {
     private static final String JSP_PAGE_PATH = "WEB-INF/jsp/loginPage.jsp";
-    private static final String WELCOME_PAGE = "index.jsp";
 
     private static final String USER = "user";
 
@@ -30,8 +30,8 @@ public class Login implements Command {
     private static final String PASSWORD = "pass";
 
     private static final String ERROR = "errorMessage";
-    private static final String MESSAGE_OF_ERROR_1 = "Enter login and pass";
-    private static final String MESSAGE_OF_ERROR_2 = "Wrong login or password";
+    private static final String MESSAGE_OF_ERROR_1 = "Wrong login or pass";
+    private static final String MESSAGE_OF_ERROR_2 = "Some error happened, please try again.";
     private static final String MESSAGE_OF_ERROR_3 = "All fields should be filled";
 
     @Override
@@ -40,6 +40,8 @@ public class Login implements Command {
         String login = request.getParameter(LOGIN);
         String password = request.getParameter(PASSWORD);
 
+        String previousQuery = CommandsUtil.getPreviousQuery(request);
+
         UserService userService = ServiceFactory.getInstance().getUserService();
         HttpSession session = request.getSession(true);
 
@@ -47,8 +49,8 @@ public class Login implements Command {
             try {
                 User user = userService.authorize(login, password);
                 session.setAttribute(USER, user);
-                System.out.println(user.getReviews().size());
-                response.sendRedirect(WELCOME_PAGE);
+
+                response.sendRedirect(previousQuery);
             } catch (ServiceAuthException e) {
                 LOGGER.error(e.getMessage(), e);
                 request.setAttribute(ERROR, MESSAGE_OF_ERROR_1);

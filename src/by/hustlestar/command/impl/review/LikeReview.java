@@ -2,6 +2,7 @@ package by.hustlestar.command.impl.review;
 
 import by.hustlestar.bean.entity.User;
 import by.hustlestar.command.Command;
+import by.hustlestar.command.util.CommandsUtil;
 import by.hustlestar.service.ServiceFactory;
 import by.hustlestar.service.exception.ServiceException;
 import by.hustlestar.service.iface.MovieService;
@@ -18,33 +19,25 @@ import java.io.IOException;
  */
 public class LikeReview implements Command {
     private static final Logger LOGGER = LogManager.getLogger();
-    private static final String WELCOME_PAGE = "index.jsp";
-    private static final String ERROR_PAGE = "WEB-INF/jsp/error.jsp";
 
     private static final String CONTENT_TYPE = "text/html; charset=UTF-8";
     private static final String CHARACTER_ENCODING = "UTF-8";
-
-
-    private static final String PREVIOUS_QUERY = "previousQuery";
 
     private static final String MOVIE_ID = "movieID";
     private static final String REVIEWER = "reviewer";
     private static final String SCORE = "score";
     private static final String USER = "user";
 
-    private static final String ERROR = "errorMessage";
-    private static final String MESSAGE_OF_ERROR = "Cannot add score to this review, you cannot vote twice";
-    private static final String MESSAGE_OF_ERROR_2 = "Fill in all fields";
+    private static final String ERROR_LIKE_REVIEW = "errorLikeReview";
+    private static final String MESSAGE_OF_ERROR = "Score wasn't added, you cannot vote twice or for your own review";
+    private static final String MESSAGE_OF_ERROR_2 = "Some data is missing";
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         response.setContentType(CONTENT_TYPE);
         request.setCharacterEncoding(CHARACTER_ENCODING);
 
-        String previousQuery = (String) request.getSession(false).getAttribute(PREVIOUS_QUERY);
-        if (previousQuery == null) {
-            previousQuery = WELCOME_PAGE;
-        }
+        String previousQuery = CommandsUtil.getPreviousQuery(request);
 
         String movieID = request.getParameter(MOVIE_ID);
         String reviewerNickname = request.getParameter(REVIEWER);
@@ -65,14 +58,12 @@ public class LikeReview implements Command {
                 request.getRequestDispatcher(previousQuery).forward(request, response);
             } catch (ServiceException e) {
                 LOGGER.error(e.getMessage(), e);
-                request.setAttribute(ERROR, MESSAGE_OF_ERROR);
-                //redirect on same page should be and print error
-                request.getRequestDispatcher(ERROR_PAGE).forward(request, response);
+                request.setAttribute(ERROR_LIKE_REVIEW, MESSAGE_OF_ERROR);
+                request.getRequestDispatcher(previousQuery).forward(request, response);
             }
         } else {
-            request.setAttribute(ERROR, MESSAGE_OF_ERROR_2);
-            //redirect on same page should be and print error
-            request.getRequestDispatcher(ERROR_PAGE).forward(request, response);
+            request.setAttribute(ERROR_LIKE_REVIEW, MESSAGE_OF_ERROR_2);
+            request.getRequestDispatcher(previousQuery).forward(request, response);
         }
     }
 }

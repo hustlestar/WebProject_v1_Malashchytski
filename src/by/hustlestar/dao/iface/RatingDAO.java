@@ -14,6 +14,9 @@ public interface RatingDAO {
 
     List<Rating> getRatingsOfUser(String nickname) throws DAOException;
 
+    Rating checkRating(int intMovieID, String userNickname) throws DAOException;
+
     void addRating(int intMovieID, String userNickname, int rating) throws DAOException;
 
+    void updateRating(int intMovieID, String userNickname, int intRating) throws DAOException;
 }

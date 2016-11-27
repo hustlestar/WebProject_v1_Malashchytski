@@ -17,87 +17,39 @@
 </head>
 <body>
 
-<nav class="navbar navbar-inverse">
-    <div class="container-fluid">
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-            <a class="navbar-brand" href="#">Logo</a>
-        </div>
-        <div class="collapse navbar-collapse" id="myNavbar">
-            <ul class="nav navbar-nav">
-                <li class="active"><a href="index.jsp">Home</a></li>
-                <li>
-                    <a href="Controller?command=all-movies">
-                        Movies
-                    </a>
-                </li>
-                <li><a href="#">Projects</a></li>
-                <li><a href="#">Contact</a></li>
-            </ul>
-            <ul class="nav navbar-nav navbar-right">
-                <c:if test="${sessionScope.get('user') == null}">
-                    <li class="sign-up">
-                        <a href="Controller?command=register">
-                            <span class="glyphicon glyphicon-user"></span>
-                            Sign Up</a>
-                    </li>
-                    <li><a href="Controller?command=login"><span class="glyphicon glyphicon-log-in"></span>
-                        Login</a>
-                    </li>
-                </c:if>
-                <c:if test="${sessionScope.get('user') != null}">
-                    <li class="sign-up">
-                        <a href="Controller?command=my-profile">
-                            <span class="glyphicon glyphicon-user"></span> ${sessionScope.get('user').nickname}</a>
-                    </li>
-                    <li><a href="Controller?command=log-out">
-                        <span class="glyphicon glyphicon-log-out"></span> Logout</a>
-                    </li>
-                </c:if>
-            </ul>
-        </div>
-    </div>
-</nav>
+<c:import url="template/navbar.jsp"/>
 
 <div class="container-fluid text-center">
     <div class="row content">
-        <div class="col-sm-2 sidenav">
-            <p><a href="#">Link</a></p>
-            <p><a href="#">Link</a></p>
-            <p><a href="#">Link</a></p>
-        </div>
+
+        <c:import url="template/sideleft.jsp"/>
+
         <div class="col-sm-8 text-left">
+            <c:if test="${requestScope.get('errorMessage')!=null}">
+                <h3 class="red"><c:out value="${requestScope.get('errorMessage')}"/></h3>
+                <c:remove var="errorMessage" scope="request"/>
+            </c:if>
             <form action="Controller" method="get">
                 <p>
                     <label><input type="radio" name="command" value="add-movie" checked/>Добавить</label>
                     <label><input type="radio" name="command" value="update-movie"/>Обновить</label>
                 </p>
                 Movie ID:<input type="text" name="id"/><br/>
-                Movie Title:<input type="text" name="titleRu"/><br/>
+                Movie Title Ru:<input type="text" name="titleRu"/><br/>
+                Movie Title En:<input type="text" name="titleEn"/><br/>
                 Year filmed:<input type="text" name="year"/><br/>
                 Budget:<input type="text" name="budget"/>
                 Gross:<input type="text" name="gross"/>
                 <input type="submit" value="Confirm"/>
             </form>
         </div>
-        <div class="col-sm-2 sidenav">
-            <div class="well">
-                <p>ADS</p>
-            </div>
-            <div class="well">
-                <p>ADS</p>
-            </div>
-        </div>
+
+        <c:import url="template/sideright.jsp"/>
+
     </div>
 </div>
 
-<footer class="container-fluid text-center">
-    <p>Footer Text</p>
-</footer>
+<c:import url="template/footer.jsp"/>
 
 </body>
 </html>

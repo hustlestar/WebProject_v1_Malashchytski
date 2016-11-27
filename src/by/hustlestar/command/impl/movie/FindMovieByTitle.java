@@ -13,6 +13,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.nio.charset.Charset;
 import java.util.List;
 
 /**
@@ -36,6 +37,8 @@ public class FindMovieByTitle implements Command {
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         QueryUtil.saveCurrentQueryToSession(request);
+        System.out.println(String.format("file.encoding: %s", System.getProperty("file.encoding")));
+        System.out.println(String.format("defaultCharset: %s", Charset.defaultCharset().name()));
         response.setContentType(CONTENT_TYPE);
         request.setCharacterEncoding(CHARACTER_ENCODING);
 

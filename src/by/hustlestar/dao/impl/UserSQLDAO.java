@@ -3,7 +3,7 @@ package by.hustlestar.dao.impl;
 import by.hustlestar.bean.entity.User;
 import by.hustlestar.dao.iface.UserDAO;
 import by.hustlestar.dao.exception.DAOException;
-import by.hustlestar.dao.impl.pool.ConnectionPool;
+import by.hustlestar.dao.impl.pool.ConnectionPoolSQLDAO;
 import by.hustlestar.dao.impl.pool.ConnectionPoolException;
 
 import java.sql.*;
@@ -51,7 +51,7 @@ public class UserSQLDAO implements UserDAO {
         PreparedStatement st = null;
         ResultSet rs = null;
         try {
-            con = ConnectionPool.getInstance().takeConnection();
+            con = ConnectionPoolSQLDAO.getInstance().takeConnection();
 
             st = con.prepareStatement(LOG_IN_STATEMENT);
 
@@ -92,7 +92,7 @@ public class UserSQLDAO implements UserDAO {
                 }
             }
             try {
-                ConnectionPool.getInstance().returnConnection(con);
+                ConnectionPoolSQLDAO.getInstance().returnConnection(con);
             } catch (ConnectionPoolException e) {
                 throw new DAOException("Exception while returning connection", e);
             }
@@ -105,7 +105,7 @@ public class UserSQLDAO implements UserDAO {
         Connection con = null;
         PreparedStatement st = null;
         try {
-            con = ConnectionPool.getInstance().takeConnection();
+            con = ConnectionPoolSQLDAO.getInstance().takeConnection();
 
             st = con.prepareStatement(REGISTER_STATEMENT);
             st.setString(1, login);
@@ -137,7 +137,7 @@ public class UserSQLDAO implements UserDAO {
                 }
             }
             try {
-                ConnectionPool.getInstance().returnConnection(con);
+                ConnectionPoolSQLDAO.getInstance().returnConnection(con);
             } catch (ConnectionPoolException e) {
                 throw new DAOException("Exception while returning connection", e);
             }
@@ -151,7 +151,7 @@ public class UserSQLDAO implements UserDAO {
         PreparedStatement st = null;
         ResultSet rs = null;
         try {
-            con = ConnectionPool.getInstance().takeConnection();
+            con = ConnectionPoolSQLDAO.getInstance().takeConnection();
 
             st = con.prepareStatement(VIEW_ALL_USERS);
 
@@ -190,7 +190,7 @@ public class UserSQLDAO implements UserDAO {
                 }
             }
             try {
-                ConnectionPool.getInstance().returnConnection(con);
+                ConnectionPoolSQLDAO.getInstance().returnConnection(con);
             } catch (ConnectionPoolException e) {
                 throw new DAOException("Exception while returning connection", e);
             }
@@ -203,7 +203,7 @@ public class UserSQLDAO implements UserDAO {
         PreparedStatement st = null;
         ResultSet rs = null;
         try {
-            con = ConnectionPool.getInstance().takeConnection();
+            con = ConnectionPoolSQLDAO.getInstance().takeConnection();
 
             st = con.prepareStatement(VIEW_ALL_BANNED_USERS);
 
@@ -242,7 +242,7 @@ public class UserSQLDAO implements UserDAO {
                 }
             }
             try {
-                ConnectionPool.getInstance().returnConnection(con);
+                ConnectionPoolSQLDAO.getInstance().returnConnection(con);
             } catch (ConnectionPoolException e) {
                 throw new DAOException("Exception while returning connection", e);
             }
@@ -255,7 +255,7 @@ public class UserSQLDAO implements UserDAO {
         PreparedStatement st = null;
         ResultSet rs = null;
         try {
-            con = ConnectionPool.getInstance().takeConnection();
+            con = ConnectionPoolSQLDAO.getInstance().takeConnection();
 
             st = con.prepareStatement(VIEW_BY_NICKNAME);
             st.setString(1, nickname);
@@ -292,7 +292,7 @@ public class UserSQLDAO implements UserDAO {
                 }
             }
             try {
-                ConnectionPool.getInstance().returnConnection(con);
+                ConnectionPoolSQLDAO.getInstance().returnConnection(con);
             } catch (ConnectionPoolException e) {
                 throw new DAOException("Exception while returning connection", e);
             }
@@ -304,7 +304,7 @@ public class UserSQLDAO implements UserDAO {
         Connection con = null;
         PreparedStatement st = null;
         try {
-            con = ConnectionPool.getInstance().takeConnection();
+            con = ConnectionPoolSQLDAO.getInstance().takeConnection();
             st = con.prepareStatement(BAN_USER_BY_NICKNAME);
             st.setString(1, userNickname);
             int update = st.executeUpdate();
@@ -326,7 +326,7 @@ public class UserSQLDAO implements UserDAO {
                 }
             }
             try {
-                ConnectionPool.getInstance().returnConnection(con);
+                ConnectionPoolSQLDAO.getInstance().returnConnection(con);
             } catch (ConnectionPoolException e) {
                 throw new DAOException("Exception while returning connection", e);
             }
@@ -338,7 +338,7 @@ public class UserSQLDAO implements UserDAO {
         Connection con = null;
         PreparedStatement st = null;
         try {
-            con = ConnectionPool.getInstance().takeConnection();
+            con = ConnectionPoolSQLDAO.getInstance().takeConnection();
             st = con.prepareStatement(UNBAN_USER_BY_NICKNAME);
             st.setString(1, userNickname);
             int update = st.executeUpdate();
@@ -360,7 +360,7 @@ public class UserSQLDAO implements UserDAO {
                 }
             }
             try {
-                ConnectionPool.getInstance().returnConnection(con);
+                ConnectionPoolSQLDAO.getInstance().returnConnection(con);
             } catch (ConnectionPoolException e) {
                 throw new DAOException("Exception while returning connection", e);
             }

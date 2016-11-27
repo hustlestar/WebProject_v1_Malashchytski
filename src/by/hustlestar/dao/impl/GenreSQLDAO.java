@@ -3,7 +3,7 @@ package by.hustlestar.dao.impl;
 import by.hustlestar.bean.entity.Genre;
 import by.hustlestar.dao.exception.DAOException;
 import by.hustlestar.dao.iface.GenreDAO;
-import by.hustlestar.dao.impl.pool.ConnectionPool;
+import by.hustlestar.dao.impl.pool.ConnectionPoolSQLDAO;
 import by.hustlestar.dao.impl.pool.ConnectionPoolException;
 
 import java.sql.Connection;
@@ -27,7 +27,7 @@ public class GenreSQLDAO implements GenreDAO {
         PreparedStatement st = null;
         ResultSet rs = null;
         try {
-            con = ConnectionPool.getInstance().takeConnection();
+            con = ConnectionPoolSQLDAO.getInstance().takeConnection();
 
             st = con.prepareStatement(SHOW_GENRES_BY_ID);
             st.setInt(1, id);
@@ -63,7 +63,7 @@ public class GenreSQLDAO implements GenreDAO {
                 }
             }
             try {
-                ConnectionPool.getInstance().returnConnection(con);
+                ConnectionPoolSQLDAO.getInstance().returnConnection(con);
             } catch (ConnectionPoolException e) {
                 throw new DAOException("Exception while returning connection", e);
             }
