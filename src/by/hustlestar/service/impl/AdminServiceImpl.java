@@ -3,9 +3,7 @@ package by.hustlestar.service.impl;
 import by.hustlestar.bean.entity.User;
 import by.hustlestar.dao.DAOFactory;
 import by.hustlestar.dao.exception.DAOException;
-import by.hustlestar.dao.iface.MovieDAO;
-import by.hustlestar.dao.iface.ReviewDAO;
-import by.hustlestar.dao.iface.UserDAO;
+import by.hustlestar.dao.iface.*;
 import by.hustlestar.service.iface.AdminService;
 import by.hustlestar.service.exception.ServiceException;
 
@@ -141,6 +139,78 @@ public class AdminServiceImpl implements AdminService {
 
         try {
             dao.deleteReview(intMovieID, userNickname);
+        } catch (DAOException e) {
+            throw new ServiceException("Error in source!", e);
+        }
+    }
+
+    @Override
+    public void addCountryForMovie(String movieID, String nameRu, String nameEn) throws ServiceException {
+        DAOFactory daoFactory = DAOFactory.getInstance();
+        CountryDAO dao = daoFactory.getCountryDAO();
+        int intMovieID;
+        try {
+            intMovieID = Integer.parseInt(movieID);
+        } catch (NumberFormatException e) {
+            throw new ServiceException("Wrong data input, while adding film");
+        }
+
+        try {
+            dao.addCountryForMovie(intMovieID, nameRu, nameEn);
+        } catch (DAOException e) {
+            throw new ServiceException("Error in source!", e);
+        }
+    }
+
+    @Override
+    public void deleteCountryForMovie(String movieID, String nameEn) throws ServiceException {
+        DAOFactory daoFactory = DAOFactory.getInstance();
+        CountryDAO dao = daoFactory.getCountryDAO();
+        int intMovieID;
+        try {
+            intMovieID = Integer.parseInt(movieID);
+        } catch (NumberFormatException e) {
+            throw new ServiceException("Wrong data input, while adding film");
+        }
+
+        try {
+            dao.deleteCountryForMovie(intMovieID, nameEn);
+        } catch (DAOException e) {
+            throw new ServiceException("Error in source!", e);
+        }
+    }
+
+    @Override
+    public void addGenreForMovie(String movieID, String nameRu, String nameEn) throws ServiceException {
+        DAOFactory daoFactory = DAOFactory.getInstance();
+        GenreDAO dao = daoFactory.getGenreDAO();
+        int intMovieID;
+        try {
+            intMovieID = Integer.parseInt(movieID);
+        } catch (NumberFormatException e) {
+            throw new ServiceException("Wrong data input, while adding film");
+        }
+
+        try {
+            dao.addGenreForMovie(intMovieID, nameRu, nameEn);
+        } catch (DAOException e) {
+            throw new ServiceException("Error in source!", e);
+        }
+    }
+
+    @Override
+    public void deleteGenreForMovie(String movieID, String nameEn) throws ServiceException {
+        DAOFactory daoFactory = DAOFactory.getInstance();
+        GenreDAO dao = daoFactory.getGenreDAO();
+        int intMovieID;
+        try {
+            intMovieID = Integer.parseInt(movieID);
+        } catch (NumberFormatException e) {
+            throw new ServiceException("Wrong data input, while adding film");
+        }
+
+        try {
+            dao.deleteGenreForMovie(intMovieID, nameEn);
         } catch (DAOException e) {
             throw new ServiceException("Error in source!", e);
         }

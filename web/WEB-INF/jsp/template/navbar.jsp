@@ -38,10 +38,11 @@
         </div>
         <div class="collapse navbar-collapse" id="myNavbar">
             <ul class="nav navbar-nav">
-                <li class="active"><a href="../index.jsp">${home}</a></li>
-                <li><a href="Controller?command=all-movies">${movies}</a></li>
-                <li><a href="#">Projects</a></li>
-                <li><a href="#">Contact</a></li>
+                <li id="index-page"><a href="../index.jsp">${home}</a></li>
+                <li id="movies-page"><a href="Controller?command=all-movies">${movies}</a></li>
+                <li id="reviews-page"><a href="#">Reviews</a></li>
+                <li id="users-page"><a href="#">Users</a></li>
+                <li id="about-page"><a href="#">FAQ</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 <c:if test="${sessionScope.get('user') == null}">

@@ -18,6 +18,11 @@ import java.util.List;
  */
 public class GenreSQLDAO implements GenreDAO {
     private final static String SHOW_GENRES_BY_ID = "SELECT genres_genre_ru, genres_genre_en FROM genres WHERE movies_m_id=?";
+    private static final String ADD_GENRE =
+            "INSERT INTO genres (movies_m_id, genres_genre_ru, genres_genre_en) VALUES (?, ?, ?)";
+    private static final String DELETE_GENRE =
+            "DELETE FROM genres\n" +
+                    "WHERE movies_m_id=? AND genres_genre_en=?;";
 
     private static final String GENRE_RU = "genres_genre_ru";
     private static final String GENRE_EN = "genres_genre_en";
@@ -55,6 +60,77 @@ public class GenreSQLDAO implements GenreDAO {
                     throw new DAOException("Exception while closing result set", e);
                 }
             }
+            if (st != null) {
+                try {
+                    st.close();
+                } catch (SQLException e) {
+                    throw new DAOException("Exception while closing statement", e);
+                }
+            }
+            try {
+                ConnectionPoolSQLDAO.getInstance().returnConnection(con);
+            } catch (ConnectionPoolException e) {
+                throw new DAOException("Exception while returning connection", e);
+            }
+        }
+    }
+
+    @Override
+    public void addGenreForMovie(int intMovieID, String nameRu, String nameEn) throws DAOException {
+        Connection con = null;
+        PreparedStatement st = null;
+        try {
+            con = ConnectionPoolSQLDAO.getInstance().takeConnection();
+            st = con.prepareStatement(ADD_GENRE);
+            st.setInt(1, intMovieID);
+            st.setString(2, nameRu);
+            st.setString(3, nameEn);
+            int update = st.executeUpdate();
+            if (update > 0) {
+                System.out.println("Country dobavlen vse ok "+nameEn+" "+nameRu);
+                return;
+            }
+            throw new DAOException("Wrong review data");
+        } catch (SQLException e) {
+            throw new DAOException("Review sql error", e);
+        } catch (ConnectionPoolException e) {
+            throw new DAOException("Review pool connection error", e);
+        } finally {
+            if (st != null) {
+                try {
+                    st.close();
+                } catch (SQLException e) {
+                    throw new DAOException("Exception while closing statement", e);
+                }
+            }
+            try {
+                ConnectionPoolSQLDAO.getInstance().returnConnection(con);
+            } catch (ConnectionPoolException e) {
+                throw new DAOException("Exception while returning connection", e);
+            }
+        }
+    }
+
+    @Override
+    public void deleteGenreForMovie(int intMovieID, String nameEn) throws DAOException {
+        Connection con = null;
+        PreparedStatement st = null;
+        try {
+            con = ConnectionPoolSQLDAO.getInstance().takeConnection();
+            st = con.prepareStatement(DELETE_GENRE);
+            st.setInt(1, intMovieID);
+            st.setString(2, nameEn);
+            int update = st.executeUpdate();
+            if (update > 0) {
+                System.out.println("Review udalen vse ok  "+intMovieID);
+                return;
+            }
+            throw new DAOException("Wrong review data");
+        } catch (SQLException e) {
+            throw new DAOException("Movie sql error", e);
+        } catch (ConnectionPoolException e) {
+            throw new DAOException("Movie pool connection error", e);
+        } finally {
             if (st != null) {
                 try {
                     st.close();

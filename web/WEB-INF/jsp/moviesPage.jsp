@@ -11,10 +11,14 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </head>
-<body>
+<body onload="active()">
 
 <c:import url="template/navbar.jsp"/>
-
+<script language="javascript">
+    function active() {
+        document.getElementById("movies-page").className = "active";
+    }
+</script>
 <div class="container-fluid text-center flex">
     <div class="row content">
 

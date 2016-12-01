@@ -10,4 +10,8 @@ import java.util.List;
  */
 public interface CountryDAO {
     List<Country> getCountriesByMovie(int id) throws DAOException;
+
+    void addCountryForMovie(int intMovieID, String nameRu, String nameEn) throws DAOException;
+
+    void deleteCountryForMovie(int intMovieID, String nameEn) throws DAOException;
 }

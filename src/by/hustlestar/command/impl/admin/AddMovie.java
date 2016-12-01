@@ -60,7 +60,6 @@ public class AddMovie implements Command {
                 request.getRequestDispatcher(ERROR_PAGE).include(request, response);
             }
         } else {
-            QueryUtil.saveCurrentQueryToSession(request);
             request.setAttribute(ERROR, MESSAGE_OF_ERROR_2);
             request.getRequestDispatcher(ERROR_PAGE).include(request, response);
         }

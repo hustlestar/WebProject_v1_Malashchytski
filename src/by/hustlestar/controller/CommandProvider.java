@@ -33,6 +33,10 @@ class CommandProvider {
         commands.put(CommandName.MOVIE_BY_ID, new ShowMovieByID());
         commands.put(CommandName.FIND_MOVIE_BY_TITLE, new FindMovieByTitle());
         commands.put(CommandName.ADD_MOVIE, new AddMovie());
+        commands.put(CommandName.ADD_COUNTRY_FOR_MOVIE, new AddCountryForMovie());
+        commands.put(CommandName.DELETE_COUNTRY_FOR_MOVIE, new DeleteCountryForMovie());
+        commands.put(CommandName.ADD_GENRE_FOR_MOVIE, new AddGenreForMovie());
+        commands.put(CommandName.DELETE_GENRE_FOR_MOVIE, new DeleteGenreForMovie());
         commands.put(CommandName.UPDATE_MOVIE, new UpdateMovie());
         commands.put(CommandName.BAN_USER, new BanUser());
         commands.put(CommandName.UNBAN_USER, new UnbanUser());

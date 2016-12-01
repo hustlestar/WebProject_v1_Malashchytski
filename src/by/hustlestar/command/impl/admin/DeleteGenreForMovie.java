@@ -12,9 +12,9 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
- * Created by Hustler on 21.11.2016.
+ * Created by dell on 01.12.2016.
  */
-public class DeleteReview implements by.hustlestar.command.Command {
+public class DeleteGenreForMovie implements by.hustlestar.command.Command {
     private static final Logger LOGGER = LogManager.getLogger();
     private static final String ERROR_PAGE = "WEB-INF/jsp/error.jsp";
 
@@ -22,8 +22,8 @@ public class DeleteReview implements by.hustlestar.command.Command {
     private static final String CHARACTER_ENCODING = "UTF-8";
 
 
-    private static final String MOVIE_ID = "movieID";
-    private static final String USER_NICKNAME = "userNickname";
+    private static final String MOVIE_ID = "id";
+    private static final String GENRE = "genre";
 
     private static final String ERROR = "errorMessage";
     private static final String MESSAGE_OF_ERROR = "Cannot delete review";
@@ -38,14 +38,15 @@ public class DeleteReview implements by.hustlestar.command.Command {
         String previousQuery = CommandsUtil.getPreviousQuery(request);
 
         String movieID = request.getParameter(MOVIE_ID);
-        String userNickname = request.getParameter(USER_NICKNAME);
+        String nameEn = request.getParameter(GENRE);
 
 
         AdminService adminService = AdminUtil.getAdminService(request, response);
 
-        if (movieID != null && userNickname != null) {
+        if (movieID != null && nameEn != null) {
             try {
-                adminService.deleteReview(movieID, userNickname);
+                adminService.deleteGenreForMovie(movieID, nameEn);
+                //response.sendRedirect(previousQuery);
                 response.sendRedirect(previousQuery);
             } catch (ServiceException e) {
                 LOGGER.error(e.getMessage(), e);
@@ -59,5 +60,4 @@ public class DeleteReview implements by.hustlestar.command.Command {
             request.getRequestDispatcher(ERROR_PAGE).forward(request, response);
         }
     }
-
 }

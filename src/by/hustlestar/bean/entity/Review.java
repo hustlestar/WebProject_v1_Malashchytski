@@ -1,5 +1,7 @@
 package by.hustlestar.bean.entity;
 
+import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.List;
 
 /**
@@ -10,6 +12,7 @@ public class Review {
     private String userNickname;
     private String review;
     private String reviewLang;
+    private Timestamp reviewDate;
     private List<ReviewScore> reviewScores;
     private int thumbsUp;
     private int thumbsDown;
@@ -68,5 +71,13 @@ public class Review {
 
     public void setThumbsDown(int thumbsDown) {
         this.thumbsDown = thumbsDown;
+    }
+
+    public Timestamp getReviewDate() {
+        return reviewDate;
+    }
+
+    public void setReviewDate(Timestamp reviewDate) {
+        this.reviewDate = reviewDate;
     }
 }

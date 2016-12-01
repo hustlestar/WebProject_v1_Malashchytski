@@ -1,6 +1,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<c:set scope="session" var="previousQuery" value="index.jsp"/>
 <fmt:setLocale value="${sessionScope.language}"/>
 <fmt:setBundle basename="locale" var="locale"/>
 
@@ -17,10 +18,14 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
 </head>
-<body>
+<body onload="active()">
 
 <c:import url="WEB-INF/jsp/template/navbar.jsp"/>
-
+<script language="javascript">
+    function active() {
+        document.getElementById("index-page").className = "active";
+    }
+</script>
 <div class="container-fluid text-center flex">
     <div class="row content">
 

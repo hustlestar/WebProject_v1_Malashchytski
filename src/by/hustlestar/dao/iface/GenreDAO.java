@@ -10,4 +10,8 @@ import java.util.List;
  */
 public interface GenreDAO {
     List<Genre> getGenresByMovie(int id) throws DAOException;
+
+    void addGenreForMovie(int intMovieID, String nameRu, String nameEn) throws DAOException;
+
+    void deleteGenreForMovie(int intMovieID, String nameEn) throws DAOException;
 }

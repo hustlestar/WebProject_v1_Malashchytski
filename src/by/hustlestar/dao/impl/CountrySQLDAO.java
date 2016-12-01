@@ -17,7 +17,13 @@ import java.util.List;
  * Created by Hustler on 07.11.2016.
  */
 public class CountrySQLDAO implements CountryDAO {
-    private final static String SHOW_COUNTRIES_BY_ID = "SELECT country_ru, country_en FROM country WHERE movies_m_id=?";
+    private final static String SHOW_COUNTRIES_BY_ID =
+            "SELECT country_ru, country_en FROM country WHERE movies_m_id=?";
+    private static final String ADD_COUNTRY =
+            "INSERT INTO country (movies_m_id, country_ru, country_en) VALUES (?, ?, ?)";
+    private static final String DELETE_COUNTRY =
+            "DELETE FROM country\n" +
+                    "WHERE movies_m_id=? AND country_en=?;";
 
     private static final String COUNTRY_RU = "country_ru";
     private static final String COUNTRY_EN = "country_en";
@@ -56,6 +62,77 @@ public class CountrySQLDAO implements CountryDAO {
                     throw new DAOException("Exception while closing result set", e);
                 }
             }
+            if (st != null) {
+                try {
+                    st.close();
+                } catch (SQLException e) {
+                    throw new DAOException("Exception while closing statement", e);
+                }
+            }
+            try {
+                ConnectionPoolSQLDAO.getInstance().returnConnection(con);
+            } catch (ConnectionPoolException e) {
+                throw new DAOException("Exception while returning connection", e);
+            }
+        }
+    }
+
+    @Override
+    public void addCountryForMovie(int intMovieID, String nameRu, String nameEn) throws DAOException {
+        Connection con = null;
+        PreparedStatement st = null;
+        try {
+            con = ConnectionPoolSQLDAO.getInstance().takeConnection();
+            st = con.prepareStatement(ADD_COUNTRY);
+            st.setInt(1, intMovieID);
+            st.setString(2, nameRu);
+            st.setString(3, nameEn);
+            int update = st.executeUpdate();
+            if (update > 0) {
+                System.out.println("Country dobavlen vse ok"+nameEn+" "+nameRu);
+                return;
+            }
+            throw new DAOException("Wrong review data");
+        } catch (SQLException e) {
+            throw new DAOException("Review sql error", e);
+        } catch (ConnectionPoolException e) {
+            throw new DAOException("Review pool connection error", e);
+        } finally {
+            if (st != null) {
+                try {
+                    st.close();
+                } catch (SQLException e) {
+                    throw new DAOException("Exception while closing statement", e);
+                }
+            }
+            try {
+                ConnectionPoolSQLDAO.getInstance().returnConnection(con);
+            } catch (ConnectionPoolException e) {
+                throw new DAOException("Exception while returning connection", e);
+            }
+        }
+    }
+
+    @Override
+    public void deleteCountryForMovie(int intMovieID, String nameEn) throws DAOException {
+        Connection con = null;
+        PreparedStatement st = null;
+        try {
+            con = ConnectionPoolSQLDAO.getInstance().takeConnection();
+            st = con.prepareStatement(DELETE_COUNTRY);
+            st.setInt(1, intMovieID);
+            st.setString(2, nameEn);
+            int update = st.executeUpdate();
+            if (update > 0) {
+                System.out.println("Review udalen vse ok "+intMovieID);
+                return;
+            }
+            throw new DAOException("Wrong review data");
+        } catch (SQLException e) {
+            throw new DAOException("Movie sql error", e);
+        } catch (ConnectionPoolException e) {
+            throw new DAOException("Movie pool connection error", e);
+        } finally {
             if (st != null) {
                 try {
                     st.close();

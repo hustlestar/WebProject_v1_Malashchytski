@@ -29,36 +29,44 @@ public class MovieSQLDAO implements MovieDAO {
                     "WHERE m_id=?;";
 
     private final static String SHOW_BY_COUNTRY =
-            "SELECT movies.m_id, movies.m_title_ru, movies.m_title_en, movies.m_year FROM movies\n" +
-                    "INNER JOIN  country ON movies.m_id=country.movies_m_id\n WHERE country_en=?";
+            "SELECT m_id, m_title_ru, m_title_en, AVG(rating.rating_score) AS m_rating, COUNT(rating.rating_score) AS m_votes\n" +
+                    "FROM movies\n" +
+                    "LEFT JOIN rating ON movies.m_id = rating.movies_m_id\n" +
+                    "LEFT JOIN country ON movies.m_id = country.movies_m_id\n" +
+                    "WHERE country.country_en = ? GROUP BY m_id ORDER BY m_rating DESC;";
 
     private static final String SHOW_BY_GENRE =
-            "SELECT movies.m_id, movies.m_title_ru, movies.m_title_en, movies.m_year FROM movies\n" +
-                    "INNER JOIN  genres ON movies.m_id=genres.movies_m_id WHERE genres_genre_en=?";
+            "SELECT m_id, m_title_ru, m_title_en, AVG(rating.rating_score) AS m_rating, COUNT(rating.rating_score) AS m_votes\n" +
+                    "FROM movies\n" +
+                    "LEFT JOIN rating ON movies.m_id = rating.movies_m_id\n" +
+                    "LEFT JOIN genres ON movies.m_id = genres.movies_m_id " +
+                    "WHERE genres.genres_genre_en = ? GROUP BY m_id ORDER BY m_rating DESC;";
 
     private static final String FIND_BY_TITLE =
-            "SELECT movies.m_id, movies.m_title_ru, movies.m_title_en, movies.m_year FROM movies WHERE `m_title_en` LIKE ? \n" +
-                    "   OR `m_title_ru` LIKE ?;";
+            "SELECT m_id, m_title_ru, m_title_en, AVG(rating.rating_score) AS m_rating, COUNT(rating.rating_score) AS m_votes\n" +
+                    "FROM movies\n" +
+                    "LEFT JOIN rating ON movies.m_id = rating.movies_m_id\n" +
+                    "WHERE `m_title_en` LIKE ? OR `m_title_ru` LIKE ?;";
 
     private static final String SHOW_OF_TEN_YEARS_PERIOD =
             "SELECT m_id, m_title_ru, m_title_en, AVG(rating.rating_score) AS m_rating, COUNT(rating.rating_score) AS m_votes\n" +
-            "FROM movies LEFT JOIN rating ON movies.m_id = rating.movies_m_id\n" +
-            "WHERE movies.m_year BETWEEN ? AND ?\n" +
-            "GROUP BY m_id ORDER BY m_rating DESC;";
+                    "FROM movies LEFT JOIN rating ON movies.m_id = rating.movies_m_id\n" +
+                    "WHERE movies.m_year BETWEEN ? AND ?\n" +
+                    "GROUP BY m_id ORDER BY m_rating DESC;";
 
     private static final String SHOW_OF_YEAR =
             "SELECT m_id, m_title_ru, m_title_en, AVG(rating.rating_score) AS m_rating, COUNT(rating.rating_score) AS m_votes\n" +
-            "FROM movies LEFT JOIN rating ON movies.m_id = rating.movies_m_id\n" +
-            "WHERE movies.m_year=?\n" +
-            "GROUP BY m_id ORDER BY m_rating DESC;";
+                    "FROM movies LEFT JOIN rating ON movies.m_id = rating.movies_m_id\n" +
+                    "WHERE movies.m_year=?\n" +
+                    "GROUP BY m_id ORDER BY m_rating DESC;";
 
     private final static String ADD_MOVIE =
             "INSERT INTO movies (m_title_ru, m_title_en, `m_year`, `m_budget`, `m_gross`) VALUES (?, ?, ?, ?, ?)";
 
     private final static String UPDATE_BY_ID =
             "UPDATE `jackdb`.`movies`\n" +
-            "SET m_title_ru = ?, m_title_en = ?, `m_year` = ?, `m_budget` = ?,`m_gross` = ?\n" +
-            "WHERE `m_id` = ?;\n";
+                    "SET m_title_ru = ?, m_title_en = ?, `m_year` = ?, `m_budget` = ?,`m_gross` = ?\n" +
+                    "WHERE `m_id` = ?;\n";
 
     private static final String M_ID = "m_id";
     private static final String M_TITLE_RU = "m_title_ru";
@@ -141,6 +149,8 @@ public class MovieSQLDAO implements MovieDAO {
                 movie.setId(rs.getInt(M_ID));
                 movie.setTitleRu(rs.getString(M_TITLE_RU));
                 movie.setTitleEn(rs.getString(M_TITLE_EN));
+                movie.setAvgRating(rs.getDouble(M_RATING));
+                movie.setRatingVotes(rs.getInt(M_VOTES));
                 movies.add(movie);
             }
             return movies;
@@ -191,6 +201,8 @@ public class MovieSQLDAO implements MovieDAO {
                 movie.setId(rs.getInt(M_ID));
                 movie.setTitleRu(rs.getString(M_TITLE_RU));
                 movie.setTitleEn(rs.getString(M_TITLE_EN));
+                movie.setAvgRating(rs.getDouble(M_RATING));
+                movie.setRatingVotes(rs.getInt(M_VOTES));
                 movies.add(movie);
             }
             return movies;
@@ -243,7 +255,8 @@ public class MovieSQLDAO implements MovieDAO {
                 movie.setId(rs.getInt(M_ID));
                 movie.setTitleRu(rs.getString(M_TITLE_RU));
                 movie.setTitleEn(rs.getString(M_TITLE_EN));
-                movie.setYear(rs.getInt(M_YEAR));
+                movie.setAvgRating(rs.getDouble(M_RATING));
+                movie.setRatingVotes(rs.getInt(M_VOTES));
                 movies.add(movie);
             }
             return movies;
@@ -285,7 +298,7 @@ public class MovieSQLDAO implements MovieDAO {
 
             st = con.prepareStatement(SHOW_OF_TEN_YEARS_PERIOD);
             st.setInt(1, years);
-            st.setInt(2, years+9);
+            st.setInt(2, years + 9);
             rs = st.executeQuery();
 
             List<Movie> movies = new ArrayList<>();

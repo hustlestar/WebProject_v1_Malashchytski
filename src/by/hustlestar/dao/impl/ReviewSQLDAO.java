@@ -6,10 +6,7 @@ import by.hustlestar.dao.iface.ReviewDAO;
 import by.hustlestar.dao.impl.pool.ConnectionPoolSQLDAO;
 import by.hustlestar.dao.impl.pool.ConnectionPoolException;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,13 +15,13 @@ import java.util.List;
  */
 public class ReviewSQLDAO implements ReviewDAO {
     private final static String SHOW_REVIEWS_BY_ID =
-            "SELECT user_u_nick, review FROM reviews WHERE movies_m_id=? AND review_lang=?";
+            "SELECT user_u_nick, review, review_date FROM reviews WHERE movies_m_id=? AND review_lang=?";
 
     private static final String SHOW_REVIEWS_BY_USER =
-            "SELECT movies_m_id, review FROM reviews WHERE user_u_nick=?";
+            "SELECT movies_m_id, review, review_date FROM reviews WHERE user_u_nick=?";
 
     private static final String ADD_REVIEW =
-            "INSERT INTO reviews (movies_m_id, user_u_nick, review, review_lang) VALUES (?, ?, ?, ?)";
+            "INSERT INTO reviews (movies_m_id, user_u_nick, review, review_lang, review_date) VALUES (?, ?, ?, ?, ?)";
 
     private static final String DELETE_REVIEW =
             "DELETE FROM `jackdb`.`reviews`\n" +
@@ -33,6 +30,8 @@ public class ReviewSQLDAO implements ReviewDAO {
     private static final String REVIEW = "review";
     private static final String USER_U_NICK = "user_u_nick";
     private static final String MOVIES_M_ID = "movies_m_id";
+    private static final String REVIEW_DATE = "review_date";
+
 
     @Override
     public List<Review> getReviewsForMovie(int id, String lang) throws DAOException {
@@ -54,6 +53,7 @@ public class ReviewSQLDAO implements ReviewDAO {
                 review.setMovieID(id);
                 review.setUserNickname(rs.getString(USER_U_NICK));
                 review.setReview(rs.getString(REVIEW));
+                review.setReviewDate(rs.getTimestamp(REVIEW_DATE));
                 reviewList.add(review);
             }
             return reviewList;
@@ -104,6 +104,7 @@ public class ReviewSQLDAO implements ReviewDAO {
                 review.setMovieID(rs.getInt(MOVIES_M_ID));
                 review.setUserNickname(nickname);
                 review.setReview(rs.getString(REVIEW));
+                review.setReviewDate(rs.getTimestamp(REVIEW_DATE));
                 reviewList.add(review);
             }
             return reviewList;
@@ -146,6 +147,7 @@ public class ReviewSQLDAO implements ReviewDAO {
             st.setString(2, userNickname);
             st.setString(3, review);
             st.setString(4, lang);
+            st.setTimestamp(5, new Timestamp(System.currentTimeMillis()));
             int update = st.executeUpdate();
             if (update > 0) {
                 System.out.println("Review dobavlen vse ok"+userNickname+" "+review);
