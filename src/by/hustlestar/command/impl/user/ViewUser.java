@@ -45,7 +45,7 @@ public class ViewUser implements Command {
             user = userService.showUserByNickname(nickname);
 
             request.setAttribute(REQUEST_ATTRIBUTE, user);
-            request.getRequestDispatcher(JSP_PAGE_PATH).include(request, response);
+            request.getRequestDispatcher(JSP_PAGE_PATH).forward(request, response);
         } catch (ServiceException e) {
             LOGGER.error(e.getMessage(), e);
             request.setAttribute(ERROR, MESSAGE_OF_ERROR);

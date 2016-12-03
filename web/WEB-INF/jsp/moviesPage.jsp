@@ -121,7 +121,7 @@
             <script type="text/javascript">
                 function MakeSort(element) {
                     var selected = $('option:selected', element),
-                            href = selected.val();
+                        href = selected.val();
                     if (/*selected.text() === '-' || */!href) {
                         return false;
                     }
@@ -138,18 +138,24 @@
             <table border="1">
                 <c:forEach var="movie" items="${requestScope.all_movies}">
                     <tr>
-                        <c:if test="${sessionScope.get('language') eq 'ru' || sessionScope.get('language')==null}"><td><a href="Controller?command=movie-by-id&id=${movie.id}"><c:out
-                                value="${movie.titleRu}"/></a></td></c:if>
+                        <c:if test="${sessionScope.get('language') eq 'ru' || sessionScope.get('language')==null}">
+                            <td><a href="Controller?command=movie-by-id&id=${movie.id}"><c:out
+                                    value="${movie.titleRu}"/></a></td>
+                        </c:if>
                         <c:if test="${sessionScope.get('language') eq 'en'}">
                             <td><a href="Controller?command=movie-by-id&id=${movie.id}"><c:out
                                     value="${movie.titleEn}"/></a></td>
                         </c:if>
-                        <td><c:forEach var="rating" items="${sessionScope.get('user').ratings}">
-                            <c:if test="${rating.movieID==movie.id}">
-                                <c:out value="${rating.ratingScore}"/>
-                            </c:if></c:forEach>
+                        <td>
+                            <c:forEach var="rating" items="${movie.ratings}">
+                                <c:if test="${rating.userNickname eq sessionScope.get('user').nickname}">
+                                    <c:out value="${rating.ratingScore}"/>
+                                </c:if>
+                            </c:forEach>
                         </td>
-                        <td><c:out value="${movie.avgRating}"/><small>(<c:out value="${movie.ratingVotes}"/>)</small></td>
+                        <td><c:out value="${movie.avgRating}"/>
+                            <small>(<c:out value="${movie.ratingVotes}"/>)</small>
+                        </td>
                     </tr>
                 </c:forEach>
 

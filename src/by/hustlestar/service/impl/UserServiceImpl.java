@@ -33,7 +33,7 @@ public class UserServiceImpl implements UserService {
             if (user != null) {
                 reviewList = reviewDAO.getReviewsForUser(nickname);
 
-                new UtilService().fillRevieWithScore(reviewList);
+                UtilService.fillReviewWithScore(reviewList);
 
                 user.setReviews(reviewList);
             } else {
@@ -53,25 +53,25 @@ public class UserServiceImpl implements UserService {
         }
         DAOFactory daoFactory = DAOFactory.getInstance();
         UserDAO dao = daoFactory.getUserDAO();
-        ReviewDAO reviewDAO = daoFactory.getReviewDAO();
-        RatingDAO ratingDAO = daoFactory.getRatingDAO();
-        UtilService utilService = new UtilService();
+        //ReviewDAO reviewDAO = daoFactory.getReviewDAO();
+        //RatingDAO ratingDAO = daoFactory.getRatingDAO();
+        //UtilService utilService = new UtilService();
         User user;
-        List<Review> reviewList;
-        List<Rating> ratingList;
+        //List<Review> reviewList;
+        //List<Rating> ratingList;
         try {
             user = dao.authorize(login, password);
 
             if (user == null) {
                 throw new ServiceAuthException("Wrong login or password!");
             }
-            reviewList = reviewDAO.getReviewsForUser(login);
-            ratingList = ratingDAO.getRatingsOfUser(login);
+            //reviewList = reviewDAO.getReviewsForUser(login);
+            //ratingList = ratingDAO.getRatingsOfUser(login);
 
-            utilService.fillRevieWithScore(reviewList);
+            //utilService.fillReviewWithScore(reviewList);
 
-            user.setReviews(reviewList);
-            user.setRatings(ratingList);
+            //user.setReviews(reviewList);
+            //user.setRatings(ratingList);
         } catch (DAOException e) {
             throw new ServiceException("Error in source", e);
         }
@@ -101,5 +101,4 @@ public class UserServiceImpl implements UserService {
 
         return user;
     }
-
 }

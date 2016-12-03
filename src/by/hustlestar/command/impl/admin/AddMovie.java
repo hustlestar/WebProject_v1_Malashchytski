@@ -1,6 +1,7 @@
 package by.hustlestar.command.impl.admin;
 
 import by.hustlestar.command.Command;
+import by.hustlestar.command.util.CommandsUtil;
 import by.hustlestar.command.util.QueryUtil;
 import by.hustlestar.service.iface.AdminService;
 import by.hustlestar.service.exception.ServiceException;
@@ -18,8 +19,6 @@ import java.io.IOException;
 public class AddMovie implements Command {
 
     private static final String JSP_PAGE_PATH = "WEB-INF/jsp/addMoviePage.jsp";
-    private static final String WELCOME_PAGE = "index.jsp";
-    private static final String ERROR_PAGE = "WEB-INF/jsp/error.jsp";
 
     private static final Logger LOGGER = LogManager.getLogger();
 
@@ -34,10 +33,12 @@ public class AddMovie implements Command {
 
     private static final String ERROR = "errorMessage";
     private static final String MESSAGE_OF_ERROR = "Cannot add movie";
-    private static final String MESSAGE_OF_ERROR_2 = "Cannot add movie, wrong input";
+    private static final String SUCCESS = "successMessage";
+    private static final String MESSAGE_OF_SUCCESS = "Movie successfully added";
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+        QueryUtil.saveCurrentQueryToSession(request);
         response.setContentType(CONTENT_TYPE);
         request.setCharacterEncoding(CHARACTER_ENCODING);
 
@@ -46,23 +47,23 @@ public class AddMovie implements Command {
         String year = request.getParameter(YEAR);
         String budget = request.getParameter(BUDGET);
         String gross = request.getParameter(GROSS);
-
         AdminService adminService = AdminUtil.getAdminService(request, response);
 
-        if (titleRu != null && titleEn != null && year != null && budget != null && gross !=null) {
+        if (titleRu == null && titleEn == null && year == null && budget == null && gross == null) {
+
+            request.getRequestDispatcher(JSP_PAGE_PATH).forward(request, response);
+
+        } else {
             try {
                 adminService.addMovie(titleRu, titleEn, year, budget, gross);
-
-                request.getRequestDispatcher(WELCOME_PAGE).include(request, response);
-            }  catch (ServiceException e) {
+                request.setAttribute(SUCCESS, MESSAGE_OF_SUCCESS);
+                //response.sendRedirect(JSP_PAGE_PATH);
+                request.getRequestDispatcher(JSP_PAGE_PATH).forward(request, response);
+            } catch (ServiceException e) {
                 LOGGER.error(e.getMessage(), e);
                 request.setAttribute(ERROR, MESSAGE_OF_ERROR);
-                request.getRequestDispatcher(ERROR_PAGE).include(request, response);
+                request.getRequestDispatcher(JSP_PAGE_PATH).forward(request, response);
             }
-        } else {
-            request.setAttribute(ERROR, MESSAGE_OF_ERROR_2);
-            request.getRequestDispatcher(ERROR_PAGE).include(request, response);
         }
-        request.getRequestDispatcher(JSP_PAGE_PATH).forward(request, response);
     }
 }

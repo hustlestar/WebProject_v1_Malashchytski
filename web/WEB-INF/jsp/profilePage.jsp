@@ -1,6 +1,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8" language="java" %>
-<jsp:useBean id="user" class="by.hustlestar.bean.entity.User" scope="session"/>
+<jsp:useBean id="user" class="by.hustlestar.bean.entity.User" scope="request"/>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <fmt:setLocale value="${sessionScope.language}"/>
 <fmt:setBundle basename="locale" var="locale"/>
@@ -27,7 +27,7 @@
         <c:import url="template/sideleft.jsp"/>
 
         <div class="col-sm-8 text-left">
-            <h1>Welcome</h1>
+            <h1><c:out value="${user.nickname}"/> profile</h1>
 
             <c:out value="${user.nickname}"/><br/>
             <c:out value="${user.email}"/><br/>
@@ -35,7 +35,7 @@
             <c:out value="${user.sex}"/>
             <h3>${reviews}</h3>
             <c:if test="${user.reviews.size()>0}">
-                <c:forEach var="review" items="${sessionScope.user.reviews}">
+                <c:forEach var="review" items="${user.reviews}">
                     <c:out value="${review.userNickname}"/>
                     <i class="green"><c:out value="${review.thumbsUp}"/></i> /
                     <i class="red"><c:out value="${review.thumbsDown}"/></i>
@@ -43,7 +43,7 @@
                 </c:forEach>
             </c:if>
             <c:if test="${user.reviews.size()>0}">
-                <c:forEach var="review" items="${sessionScope.user.reviews}">
+                <c:forEach var="review" items="${user.reviews}">
                     <div class="col-sm-2 text-center">
                         <img src="images/users/anon.jpg" class="img-circle" height="65" width="65" alt="Avatar">
                     </div>
@@ -63,9 +63,9 @@
                         <p><c:out value="${review.review}"/></p>
                         <p>
                             <small>Полезная рецензия? <c:if test="${sessionScope.get('user') != null}">
-                                <a href="Controller?command=like-review&movieID=${movie.id}&reviewer=${review.userNickname}&score=up"><i
+                                <a href="Controller?command=like-review&movieID=${review.movieID}&reviewer=${review.userNickname}&score=up"><i
                                         class="green"><c:out value="${review.thumbsUp}"/></i></a> /
-                                <a href="Controller?command=like-review&movieID=${movie.id}&reviewer=${review.userNickname}&score=down"><i
+                                <a href="Controller?command=like-review&movieID=${review.movieID}&reviewer=${review.userNickname}&score=down"><i
                                         class="red"><c:out value="${review.thumbsDown}"/></i></a>
                                 <br/></c:if>
                                 <c:if test="${sessionScope.get('user') == null}">

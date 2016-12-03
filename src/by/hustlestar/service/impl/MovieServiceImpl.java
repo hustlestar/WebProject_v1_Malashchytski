@@ -19,28 +19,34 @@ public class MovieServiceImpl implements MovieService {
 
         DAOFactory daoFactory = DAOFactory.getInstance();
         MovieDAO dao = daoFactory.getMovieDAO();
+        RatingDAO ratingDAO = daoFactory.getRatingDAO();
         List<Movie> movies;
         try {
             movies = dao.fullList();
             if (movies == null || movies.size() == 0) {
                 throw new ServiceException("No movies matching your query");
             }
+            UtilService.fillRatingsForMovie(ratingDAO, movies);
         } catch (DAOException e) {
             throw new ServiceException("Error in source!", e);
         }
         return movies;
     }
 
+
+
     @Override
     public List<Movie> showMoviesByCountry(String country) throws ServiceException {
         DAOFactory daoFactory = DAOFactory.getInstance();
         MovieDAO dao = daoFactory.getMovieDAO();
+        RatingDAO ratingDAO = daoFactory.getRatingDAO();
         List<Movie> movies;
         try {
             movies = dao.showMoviesByCountry(country);
             if (movies == null || movies.size() == 0) {
                 throw new ServiceException("No movies matching your query" + country);
             }
+            UtilService.fillRatingsForMovie(ratingDAO, movies);
         } catch (DAOException e) {
             throw new ServiceException("Error in source!", e);
         }
@@ -51,12 +57,14 @@ public class MovieServiceImpl implements MovieService {
     public List<Movie> showMoviesByGenre(String genre) throws ServiceException {
         DAOFactory daoFactory = DAOFactory.getInstance();
         MovieDAO dao = daoFactory.getMovieDAO();
+        RatingDAO ratingDAO = daoFactory.getRatingDAO();
         List<Movie> movies;
         try {
             movies = dao.showMoviesByGenre(genre);
             if (movies == null || movies.size() == 0) {
                 throw new ServiceException("No movies matching your query");
             }
+            UtilService.fillRatingsForMovie(ratingDAO, movies);
         } catch (DAOException e) {
             throw new ServiceException("Error in source!", e);
         }
@@ -71,7 +79,6 @@ public class MovieServiceImpl implements MovieService {
         RatingDAO ratingDAO = daoFactory.getRatingDAO();
         ReviewDAO reviewDAO = daoFactory.getReviewDAO();
         GenreDAO genreDAO = daoFactory.getGenreDAO();
-        UtilService utilService = UtilService.getInstance();
         Movie movie;
         List<Country> countryList;
         List<Rating> ratingList;
@@ -94,14 +101,12 @@ public class MovieServiceImpl implements MovieService {
                 ratingList = ratingDAO.getRatingsForMovie(normId);
 
                 reviewList = reviewDAO.getReviewsForMovie(normId, lang);
-                utilService.fillRevieWithScore(reviewList);
+                UtilService.fillReviewWithScore(reviewList);
 
                 movie.setCountries(countryList);
                 movie.setGenres(genreList);
                 movie.setRatings(ratingList);
                 movie.setReviews(reviewList);
-
-                //utilService.countRatingAndVotes(movie);
 
             } else {
                 throw new ServiceException("No movies matching your query");
@@ -116,12 +121,14 @@ public class MovieServiceImpl implements MovieService {
     public List<Movie> findMovieByTitle(String title) throws ServiceException {
         DAOFactory daoFactory = DAOFactory.getInstance();
         MovieDAO dao = daoFactory.getMovieDAO();
+        RatingDAO ratingDAO = daoFactory.getRatingDAO();
         List<Movie> movies;
         try {
             movies = dao.findMovieByTitle(title);
             if (movies == null || movies.size() == 0) {
                 throw new ServiceException("No movies matching your query");
             }
+            UtilService.fillRatingsForMovie(ratingDAO, movies);
         } catch (DAOException e) {
             throw new ServiceException("Error in source!", e);
         }
@@ -132,6 +139,7 @@ public class MovieServiceImpl implements MovieService {
     public List<Movie> showMoviesOfTenYearsPeriod(String years) throws ServiceException {
         DAOFactory daoFactory = DAOFactory.getInstance();
         MovieDAO dao = daoFactory.getMovieDAO();
+        RatingDAO ratingDAO = daoFactory.getRatingDAO();
         List<Movie> movies;
         int intYears;
         try {
@@ -144,6 +152,7 @@ public class MovieServiceImpl implements MovieService {
             if (movies == null || movies.size() == 0) {
                 throw new ServiceException("No movies matching your query");
             }
+            UtilService.fillRatingsForMovie(ratingDAO, movies);
         } catch (DAOException e) {
             throw new ServiceException("Error in source!", e);
         }
@@ -154,6 +163,7 @@ public class MovieServiceImpl implements MovieService {
     public List<Movie> showMoviesOfYear(String year) throws ServiceException {
         DAOFactory daoFactory = DAOFactory.getInstance();
         MovieDAO dao = daoFactory.getMovieDAO();
+        RatingDAO ratingDAO = daoFactory.getRatingDAO();
         List<Movie> movies;
         int intYear;
         try {
@@ -166,6 +176,7 @@ public class MovieServiceImpl implements MovieService {
             if (movies == null || movies.size() == 0) {
                 throw new ServiceException("No movies matching your query");
             }
+            UtilService.fillRatingsForMovie(ratingDAO, movies);
         } catch (DAOException e) {
             throw new ServiceException("Error in source!", e);
         }

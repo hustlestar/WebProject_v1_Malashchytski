@@ -35,6 +35,10 @@
         <listener-class>by.hustlestar.controller.listener.ConnectionPoolListener</listener-class>
     </listener>
 
+    <error-page>
+        <location>/WEB-INF/jsp/error.jsp</location>
+    </error-page>
+
     <jsp-config>
         <jsp-property-group>
             <url-pattern>*.jsp</url-pattern>

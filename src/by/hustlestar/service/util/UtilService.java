@@ -6,6 +6,7 @@ import by.hustlestar.bean.entity.Review;
 import by.hustlestar.bean.entity.ReviewScore;
 import by.hustlestar.dao.DAOFactory;
 import by.hustlestar.dao.exception.DAOException;
+import by.hustlestar.dao.iface.RatingDAO;
 import by.hustlestar.dao.iface.ReviewScoreDAO;
 
 import java.util.List;
@@ -17,11 +18,14 @@ public class UtilService {
 
     private static final UtilService instance = new UtilService();
 
+    private UtilService() {
+    }
+
     public static UtilService getInstance() {
         return instance;
     }
 
-    public void fillRevieWithScore(List<Review> reviewList) throws DAOException {
+    public static void fillReviewWithScore(List<Review> reviewList) throws DAOException {
         DAOFactory daoFactory = DAOFactory.getInstance();
         ReviewScoreDAO reviewScoreDAO = daoFactory.getReviewScoreDAO();
         for (Review review : reviewList) {
@@ -40,6 +44,14 @@ public class UtilService {
             //System.out.println(review.getReview()+" "+thumbsUp+"/"+thumbsDown);
             review.setThumbsUp(thumbsUp);
             review.setThumbsDown(thumbsDown);
+        }
+    }
+
+    public static void fillRatingsForMovie(RatingDAO ratingDAO, List<Movie> movies) throws DAOException {
+        List<Rating> ratingList;
+        for (Movie movie : movies) {
+            ratingList = ratingDAO.getRatingsForMovie(movie.getId());
+            movie.setRatings(ratingList);
         }
     }
 

@@ -73,9 +73,9 @@
                                     <c:out value="${country.nameEn}"/></a>
                                 <a href="Controller?command=delete-country-for-movie&id=${movie.id}&country=${country.nameEn}">x</a>
                             </c:forEach>
-                            <br>
-                            <a data-toggle="modal" data-target="#add-country" href="#">Add country</a>
                         </c:if>
+                        <br>
+                        <a data-toggle="modal" data-target="#add-country" href="#">Add country</a>
                         <br/>
                         <c:if test="${movie.genres.size()>0}">
                             ${genre}
@@ -84,9 +84,9 @@
                                         value="${genre.nameEn}"/></a>
                                 <a href="Controller?command=delete-genre-for-movie&id=${movie.id}&genre=${genre.nameEn}">x</a>
                             </c:forEach>
-                            <br>
-                            <a data-toggle="modal" data-target="#add-genre" href="#">Add genre</a>
                         </c:if>
+                        <br>
+                        <a data-toggle="modal" data-target="#add-genre" href="#">Add genre</a>
                         <br/>
                     </c:if>
                     <c:if test="${sessionScope.get('language') eq 'ru' || sessionScope.get('language')==null}">
@@ -97,9 +97,9 @@
                                         value="${country.nameRu}"/></a>
                                 <a href="Controller?command=delete-country-for-movie&id=${movie.id}&country=${country.nameEn}">x</a>
                             </c:forEach>
-                            <br>
-                            <a data-toggle="modal" data-target="#add-country" href="#">Добавить страну</a>
                         </c:if>
+                        <br>
+                        <a data-toggle="modal" data-target="#add-country" href="#">Добавить страну</a>
                         <br/>
                         <c:if test="${movie.genres.size()>0}">
                             ${genre}
@@ -108,9 +108,9 @@
                                     <c:out value="${genre.nameRu}"/></a>
                                 <a href="Controller?command=delete-genre-for-movie&id=${movie.id}&genre=${genre.nameEn}">x</a>
                             </c:forEach>
-                            <br>
-                            <a data-toggle="modal" data-target="#add-genre" href="#">Добавить жанр</a>
                         </c:if>
+                        <br>
+                        <a data-toggle="modal" data-target="#add-genre" href="#">Добавить жанр</a>
                         <br/>
                     </c:if>
                     <c:import url="template/addcountry.jsp"/>
