@@ -25,6 +25,8 @@ public class DAOFactory {
     private ReviewDAO reviewDAO = new ReviewSQLDAO();
     private ReviewScoreDAO reviewScoreDAO = new ReviewScoreSQLDAO();
     private GenreDAO genreDAO = new GenreSQLDAO();
+    private ActorDAO actorDAO = new ActorSQLDAO();
+    private NewsDAO newsDAO = new NewsSQLDAO();
     private ConnectionPoolDAO connectionPoolDAO = new ConnectionPoolSQLDAO();
 
     public UserDAO getUserDAO() {
@@ -57,5 +59,13 @@ public class DAOFactory {
 
     public ConnectionPoolDAO getConnectionPoolDAO() {
         return connectionPoolDAO;
+    }
+
+    public ActorDAO getActorDAO() {
+        return actorDAO;
+    }
+
+    public NewsDAO getNewsDAO() {
+        return newsDAO;
     }
 }

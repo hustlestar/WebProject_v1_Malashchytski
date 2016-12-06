@@ -1,9 +1,6 @@
 package by.hustlestar.service;
 
-import by.hustlestar.service.iface.AdminService;
-import by.hustlestar.service.iface.MovieService;
-import by.hustlestar.service.iface.PoolService;
-import by.hustlestar.service.iface.UserService;
+import by.hustlestar.service.iface.*;
 import by.hustlestar.service.impl.*;
 
 /**
@@ -20,6 +17,9 @@ public class ServiceFactory {
     private AdminService adminService = new AdminServiceImpl();
     private UserService userService = new UserServiceImpl();
     private PoolService poolService = new PoolServiceImpl();
+    private ActorService actorService = new ActorServiceImpl();
+    private NewsService newsService = new NewsServiceImpl();
+
 
     public MovieService getMovieService() {
         return movieService;
@@ -35,5 +35,13 @@ public class ServiceFactory {
 
     public PoolService getPoolService() {
         return poolService;
+    }
+
+    public ActorService getActorService() {
+        return actorService;
+    }
+
+    public NewsService getNewsService() {
+        return newsService;
     }
 }

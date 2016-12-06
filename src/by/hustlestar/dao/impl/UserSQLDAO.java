@@ -146,7 +146,7 @@ public class UserSQLDAO implements UserDAO {
     }
 
     @Override
-    public List<User> viewAllUsers() throws DAOException {
+    public List<User> getAllUsers() throws DAOException {
         Connection con = null;
         PreparedStatement st = null;
         ResultSet rs = null;
@@ -198,7 +198,7 @@ public class UserSQLDAO implements UserDAO {
     }
 
     @Override
-    public List<User> viewAllBannedUsers() throws DAOException {
+    public List<User> getAllBannedUsers() throws DAOException {
         Connection con = null;
         PreparedStatement st = null;
         ResultSet rs = null;
@@ -250,7 +250,7 @@ public class UserSQLDAO implements UserDAO {
     }
 
     @Override
-    public User viewUserByNickname(String nickname) throws DAOException {
+    public User getUserByNickname(String nickname) throws DAOException {
         Connection con = null;
         PreparedStatement st = null;
         ResultSet rs = null;

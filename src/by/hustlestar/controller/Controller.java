@@ -55,9 +55,11 @@ public class Controller extends HttpServlet {
         if (commandString != null && !commandString.isEmpty()) {
             try {
                 User user = (User) request.getSession(false).getAttribute(USER);
-                String type= GUEST;
+                String type;
                 if (user != null) {
                     type = user.getType();
+                } else{
+                    type = GUEST;
                 }
                 Command command = CommandProvider.getInstance().getCommandForUser(type, commandString);
                 command.execute(request, response);

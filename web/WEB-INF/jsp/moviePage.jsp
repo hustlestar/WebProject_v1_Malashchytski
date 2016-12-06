@@ -7,6 +7,7 @@
 <fmt:message bundle="${locale}" key="locale.year" var="year"/>
 <fmt:message bundle="${locale}" key="locale.country" var="country"/>
 <fmt:message bundle="${locale}" key="locale.genre" var="genre"/>
+<fmt:message bundle="${locale}" key="locale.director" var="director"/>
 <fmt:message bundle="${locale}" key="locale.budget" var="budget"/>
 <fmt:message bundle="${locale}" key="locale.gross" var="gross"/>
 <fmt:message bundle="${locale}" key="locale.rating" var="rating"/>
@@ -16,6 +17,10 @@
 <fmt:message bundle="${locale}" key="locale.yourRating" var="yourRating"/>
 <fmt:message bundle="${locale}" key="locale.rateMovie" var="rateMovie"/>
 <fmt:message bundle="${locale}" key="locale.reviews" var="reviews"/>
+<fmt:message bundle="${locale}" key="locale.cast" var="cast"/>
+<fmt:message bundle="${locale}" key="locale.deleteReview" var="deleteReview"/>
+<fmt:message bundle="${locale}" key="locale.banUser" var="banUser"/>
+<fmt:message bundle="${locale}" key="locale.usefulReview" var="usefulReview"/>
 
 
 <!DOCTYPE html>
@@ -24,8 +29,8 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    <link rel="stylesheet" href="src/first.css">
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="src/first.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <title><c:out value="${movie.titleRu}"/></title>
@@ -71,22 +76,31 @@
                             <c:forEach var="country" items="${requestScope.movie.countries}">
                                 <a href="Controller?command=movies-by-country&country=${country.nameEn}">
                                     <c:out value="${country.nameEn}"/></a>
-                                <a href="Controller?command=delete-country-for-movie&id=${movie.id}&country=${country.nameEn}">x</a>
+                                <a class="edit" href="Controller?command=delete-country-for-movie&id=${movie.id}&country=${country.nameEn}">x</a>
                             </c:forEach>
                         </c:if>
                         <br>
-                        <a data-toggle="modal" data-target="#add-country" href="#">Add country</a>
+                        <a  class="edit"  data-toggle="modal" data-target="#add-country" href="#">Add country</a>
                         <br/>
                         <c:if test="${movie.genres.size()>0}">
                             ${genre}
                             <c:forEach var="genre" items="${requestScope.movie.genres}">
                                 <a href="Controller?command=movies-by-genre&genre=${genre.nameEn}"><c:out
                                         value="${genre.nameEn}"/></a>
-                                <a href="Controller?command=delete-genre-for-movie&id=${movie.id}&genre=${genre.nameEn}">x</a>
+                                <a class="edit"  href="Controller?command=delete-genre-for-movie&id=${movie.id}&genre=${genre.nameEn}">x</a>
                             </c:forEach>
                         </c:if>
                         <br>
-                        <a data-toggle="modal" data-target="#add-genre" href="#">Add genre</a>
+                        <a  class="edit"  data-toggle="modal" data-target="#add-genre" href="#">Add genre</a>
+                        <br/>
+                        <c:if test="${movie.director ne null}">
+                            ${director}
+                            <a href="Controller?command=view-actor&actor-id=${movie.director.id}">
+                                <c:out value="${movie.director.nameEn}"/></a>
+                            <a  class="edit"  href="Controller?command=delete-director-for-movie&actor-id=${movie.director.id}&id=${movie.id}">x</a>
+                        </c:if>
+                        <br>
+                        <a class="edit"  data-toggle="modal" data-target="#add-director" href="#">Add director</a>
                         <br/>
                     </c:if>
                     <c:if test="${sessionScope.get('language') eq 'ru' || sessionScope.get('language')==null}">
@@ -95,57 +109,79 @@
                             <c:forEach var="country" items="${requestScope.movie.countries}">
                                 <a href="Controller?command=movies-by-country&country=${country.nameEn}"><c:out
                                         value="${country.nameRu}"/></a>
-                                <a href="Controller?command=delete-country-for-movie&id=${movie.id}&country=${country.nameEn}">x</a>
+                                <a class="edit"  href="Controller?command=delete-country-for-movie&actor-id=${movie.id}&country=${country.nameEn}">x</a>
                             </c:forEach>
                         </c:if>
                         <br>
-                        <a data-toggle="modal" data-target="#add-country" href="#">Добавить страну</a>
+                        <a class="edit"  data-toggle="modal" data-target="#add-country" href="#">Добавить страну</a>
                         <br/>
                         <c:if test="${movie.genres.size()>0}">
                             ${genre}
                             <c:forEach var="genre" items="${requestScope.movie.genres}">
                                 <a href="Controller?command=movies-by-genre&genre=${genre.nameEn}">
                                     <c:out value="${genre.nameRu}"/></a>
-                                <a href="Controller?command=delete-genre-for-movie&id=${movie.id}&genre=${genre.nameEn}">x</a>
+                                <a class="edit"  href="Controller?command=delete-genre-for-movie&id=${movie.id}&genre=${genre.nameEn}">x</a>
                             </c:forEach>
                         </c:if>
                         <br>
-                        <a data-toggle="modal" data-target="#add-genre" href="#">Добавить жанр</a>
+                        <a class="edit"  data-toggle="modal" data-target="#add-genre" href="#">Добавить жанр</a>
+                        <br/>
+                        <c:if test="${movie.director ne null}">
+                            ${director}
+                            <a href="Controller?command=view-actor&actor-id=${movie.director.id}">
+                                <c:out value="${movie.director.nameRu}"/></a>
+                            <a class="edit"  href="Controller?command=delete-director-for-movie&actor-id=${movie.director.id}&id=${movie.id}">x</a>
+                        </c:if>
+                        <br>
+                        <a class="edit"  data-toggle="modal" data-target="#add-director" href="#">Добавить режиссера</a>
                         <br/>
                     </c:if>
                     <c:import url="template/addcountry.jsp"/>
                     <c:import url="template/addgenre.jsp"/>
+                    <c:import url="template/adddirector.jsp"/>
                 </c:if>
                 <c:if test="${sessionScope.get('user').type ne 'admin' && sessionScope.get('user').type ne 'moder'}">
                     <c:if test="${sessionScope.get('language') eq 'en'}">
                         <c:if test="${movie.countries.size()>0}">
                             ${country} <c:forEach var="country" items="${requestScope.movie.countries}">
-                            <a href="Controller?command=movies-by-country&country=${country.nameEn}"><c:out
-                                    value="${country.nameEn}"/></a>
+                            <a href="Controller?command=movies-by-country&country=${country.nameEn}">
+                                <c:out value="${country.nameEn}"/></a>
                         </c:forEach>
                         </c:if>
                         <br/>
                         <c:if test="${movie.genres.size()>0}">
                             ${genre} <c:forEach var="genre" items="${requestScope.movie.genres}">
-                            <a href="Controller?command=movies-by-genre&genre=${genre.nameEn}"><c:out
-                                    value="${genre.nameEn}"/></a>
+                            <a href="Controller?command=movies-by-genre&genre=${genre.nameEn}">
+                                <c:out value="${genre.nameEn}"/></a>
                         </c:forEach>
+                        </c:if>
+                        <br/>
+                        <c:if test="${movie.director ne null}">
+                            ${director}
+                            <a href="Controller?command=view-actor&actor-id=${movie.director.id}">
+                                <c:out value="${movie.director.nameEn}"/></a>
                         </c:if>
                         <br/>
                     </c:if>
                     <c:if test="${sessionScope.get('language') eq 'ru' || sessionScope.get('language')==null}">
                         <c:if test="${movie.countries.size()>0}">
                             ${country} <c:forEach var="country" items="${requestScope.movie.countries}">
-                            <a href="Controller?command=movies-by-country&country=${country.nameEn}"><c:out
-                                    value="${country.nameRu}"/></a>
+                            <a href="Controller?command=movies-by-country&country=${country.nameEn}">
+                                <c:out value="${country.nameRu}"/></a>
                         </c:forEach>
                         </c:if>
                         <br/>
                         <c:if test="${movie.genres.size()>0}">
                             ${genre} <c:forEach var="genre" items="${requestScope.movie.genres}">
-                            <a href="Controller?command=movies-by-genre&genre=${genre.nameEn}"><c:out
-                                    value="${genre.nameRu}"/></a>
+                            <a href="Controller?command=movies-by-genre&genre=${genre.nameEn}">
+                                <c:out value="${genre.nameRu}"/></a>
                         </c:forEach>
+                        </c:if>
+                        <br/>
+                        <c:if test="${movie.director ne null}">
+                            ${director}
+                            <a href="Controller?command=view-actor&actor-id=${movie.director.id}">
+                                <c:out value="${movie.director.nameRu}"/></a>
                         </c:if>
                         <br/>
                     </c:if>
@@ -189,6 +225,60 @@
                     <br>
                 </c:if>
                 <hr>
+                <c:if test="${sessionScope.get('user').type ne 'admin' && sessionScope.get('user').type ne 'moder'}">
+                    <c:if test="${sessionScope.get('language') eq 'ru' || sessionScope.get('language')==null}">
+                        <c:if test="${movie.actors.size()>0}">
+                            ${cast}
+                            <c:forEach var="actor" items="${requestScope.movie.actors}">
+                                <a href="Controller?command=view-actor&actor-id=${actor.id}">
+                                    <c:out value="${actor.nameRu}"/></a>
+                            </c:forEach>
+                        </c:if>
+                    </c:if>
+                    <c:if test="${sessionScope.get('language') eq 'en'}">
+                        <c:if test="${movie.actors.size()>0}">
+                            ${cast}
+                            <c:forEach var="actor" items="${requestScope.movie.actors}">
+                                <a href="Controller?command=view-actor&actor-id=${actor.id}">
+                                    <c:out value="${actor.nameEn}"/></a>
+                            </c:forEach>
+                        </c:if>
+                    </c:if>
+                </c:if>
+                <c:if test="${sessionScope.get('user').type eq 'admin' || sessionScope.get('user').type eq 'moder'}">
+                    <c:if test="${sessionScope.get('language') eq 'ru' || sessionScope.get('language')==null}">
+                        <c:if test="${movie.actors.size()>0}">
+                            ${cast}
+                            <c:forEach var="actor" items="${requestScope.movie.actors}">
+                                <a href="Controller?command=view-actor&actor-id=${actor.id}">
+                                    <c:out value="${actor.nameRu}"/></a>
+                            <a class="edit"  href="Controller?command=delete-actor-for-movie&actor-id=${actor.id}&id=${movie.id}">x</a>
+
+                            </c:forEach>
+                            <br>
+                            <a class="edit"  data-toggle="modal" data-target="#add-actor" href="#">Добавить актера</a>
+                            <br>
+                        </c:if>
+                    </c:if>
+                    <c:if test="${sessionScope.get('language') eq 'en'}">
+                        <c:if test="${movie.actors.size()>0}">
+                            ${cast}
+                            <c:forEach var="actor" items="${requestScope.movie.actors}">
+                                <a href="Controller?command=view-actor&actor-id=${actor.id}">
+                                    <c:out value="${actor.nameEn}"/></a>
+                                <a class="edit"  href="Controller?command=delete-actor-for-movie&actor-id=${actor.id}&id=${movie.id}">x</a>
+                            </c:forEach>
+                            <br>
+                            <a class="edit"  data-toggle="modal" data-target="#add-actor" href="#">Add actor</a>
+                            <br>
+                        </c:if>
+                    </c:if>
+
+                    <c:import url="template/addactor.jsp"/>
+
+                </c:if>
+
+
             </div>
             <div class="col-sm-12">
                 <hr>
@@ -234,14 +324,13 @@
                                 </h4>
                                 <c:if test="${sessionScope.get('user').type eq 'admin' || sessionScope.get('user').type eq 'moder'}">
                                     <p>
-                                        <a href="Controller?command=delete-review&movieID=${movie.id}&userNickname=${review.userNickname}">Удалить
-                                            рецензию</a>
-                                        <a href="Controller?command=ban-user&userNickname=${review.userNickname}">Забанить
-                                            пользователя</a></p>
+                                        <a  class="edit"  href="Controller?command=delete-review&movieID=${movie.id}&userNickname=${review.userNickname}">
+                                        ${deleteReview}</a>
+                                        <a  class="edit"  href="Controller?command=ban-user&userNickname=${review.userNickname}">${banUser}</a></p>
                                 </c:if>
                                 <p><c:out value="${review.review}"/></p>
                                 <p>
-                                    <small>Полезная рецензия? <c:if test="${sessionScope.get('user') != null}">
+                                    <small>${usefulReview}<c:if test="${sessionScope.get('user') != null}">
                                         <a href="Controller?command=like-review&movieID=${movie.id}&reviewer=${review.userNickname}&score=up"><i
                                                 class="green"><c:out value="${review.thumbsUp}"/></i></a> /
                                         <a href="Controller?command=like-review&movieID=${movie.id}&reviewer=${review.userNickname}&score=down"><i

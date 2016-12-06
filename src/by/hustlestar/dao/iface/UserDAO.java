@@ -14,11 +14,11 @@ public interface UserDAO {
 
     User register(String login, String email, String password, String sex) throws DAOException;
 
-    List<User> viewAllUsers() throws DAOException;
+    List<User> getAllUsers() throws DAOException;
 
-    List<User> viewAllBannedUsers() throws DAOException;
+    List<User> getAllBannedUsers() throws DAOException;
 
-    User viewUserByNickname(String nickname) throws DAOException;
+    User getUserByNickname(String nickname) throws DAOException;
 
     void banUser(String userNickname) throws DAOException;
 

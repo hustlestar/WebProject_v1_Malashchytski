@@ -31,4 +31,20 @@ public interface AdminService {
     void addGenreForMovie(String movieID, String nameRu, String nameEn) throws ServiceException;
 
     void deleteGenreForMovie(String movieID, String nameEn) throws ServiceException;
+
+    void addActor(String nameRu, String nameEn) throws ServiceException;
+
+    void updateActor(String actorID, String nameRu, String nameEn) throws ServiceException;
+
+    void addActorForMovie(String actorID, String movieID) throws ServiceException;
+
+    void addDirectorForMovie(String actorID, String movieID) throws ServiceException;
+
+    void deleteActorForMovie(String actorID, String movieID) throws ServiceException;
+
+    void deleteDirectorForMovie(String actorID, String movieID) throws ServiceException;
+
+    void addNews(String newsTitleRu, String newsTitleEn, String newsTextRu, String newsTextEn, String actorID, String movieID) throws ServiceException;
+
+    void updateNews(String newsTitleRu, String newsTitleEn, String newsTextRu, String newsTextEn, String actorID, String movieID, String newsID) throws ServiceException;
 }

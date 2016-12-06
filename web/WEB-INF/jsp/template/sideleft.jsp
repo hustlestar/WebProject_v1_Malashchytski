@@ -19,6 +19,7 @@
 <div class="col-sm-2 sidenav">
     <c:if test='${sessionScope.get("user").type eq "admin" || sessionScope.get("user").type eq "moder"}'>
         <p><a href="Controller?command=add-movie">Add movie</a></p>
+        <p><a href="Controller?command=add-actor">Add actor</a></p>
         <p><a href="Controller?command=view-all-users">View all users</a></p>
         <p><a href="Controller?command=view-all-banned-users">View all banned users</a></p>
     </c:if>

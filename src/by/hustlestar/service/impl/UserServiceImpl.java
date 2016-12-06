@@ -29,7 +29,7 @@ public class UserServiceImpl implements UserService {
         User user;
         List<Review> reviewList;
         try {
-            user = dao.viewUserByNickname(nickname);
+            user = dao.getUserByNickname(nickname);
             if (user != null) {
                 reviewList = reviewDAO.getReviewsForUser(nickname);
 

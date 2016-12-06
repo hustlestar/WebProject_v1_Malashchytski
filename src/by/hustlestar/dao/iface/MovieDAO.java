@@ -9,15 +9,23 @@ import java.util.List;
  * Created by Hustler on 01.11.2016.
  */
 public interface MovieDAO {
-    List<Movie> fullList() throws DAOException;
-    List<Movie> showMoviesByCountry(String country) throws DAOException;
-    List<Movie> showMoviesByGenre(String genre) throws DAOException;
+    List<Movie> getFullMovieList() throws DAOException;
+
+    List<Movie> getMoviesByCountry(String country) throws DAOException;
+
+    List<Movie> getMoviesByGenre(String genre) throws DAOException;
+
     List<Movie> findMovieByTitle(String title) throws DAOException;
-    List<Movie> showMoviesOfTenYearsPeriod(int years) throws DAOException;
-    List<Movie> showMoviesOfYear(int year) throws DAOException;
-    Movie showMovieByID(int id) throws DAOException;
+
+    List<Movie> getMoviesOfTenYearsPeriod(int years) throws DAOException;
+
+    List<Movie> getMoviesOfYear(int year) throws DAOException;
+
+    Movie getMovieByID(int id) throws DAOException;
+
     void addMovie(String titleRu, String titleEn, int year, long budget, long gross) throws DAOException;
+
     void updateMovie(int id, String titleRu, String titleEn, int year, long budget, long gross) throws DAOException;
 
-
+    List<Movie> getMoviesForActor(int actorID) throws DAOException;
 }

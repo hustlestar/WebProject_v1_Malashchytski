@@ -1,10 +1,11 @@
 package by.hustlestar.controller;
 
-import by.hustlestar.bean.entity.User;
 import by.hustlestar.command.Command;
+import by.hustlestar.command.impl.actor.*;
 import by.hustlestar.command.impl.admin.*;
 import by.hustlestar.command.impl.common.ChangeLanguage;
 import by.hustlestar.command.impl.movie.*;
+import by.hustlestar.command.impl.news.ViewNews;
 import by.hustlestar.command.impl.rating.AddRating;
 import by.hustlestar.command.impl.review.AddReview;
 import by.hustlestar.command.impl.review.LikeReview;
@@ -21,7 +22,7 @@ import java.util.Map;
 class CommandProvider {
     private static final Logger LOGGER = LogManager.getLogger();
 
-    private Map<CommandName, Map<CommandName, Command>> allCommands = new HashMap<>();
+    //private Map<CommandName, Map<CommandName, Command>> allCommands = new HashMap<>();
     //private Map<CommandName, Command> commands = new HashMap<>();
     private Map<CommandName, Command> adminCommands = new HashMap<>();
     private Map<CommandName, Command> userCommands = new HashMap<>();
@@ -35,7 +36,7 @@ class CommandProvider {
     private static final CommandProvider instance = new CommandProvider();
 
     private CommandProvider() {
-
+/*
         allCommands.put(CommandName.LOGIN, guestCommands);
         allCommands.put(CommandName.REGISTER, guestCommands);
         allCommands.put(CommandName.VIEW_USER, guestCommands);
@@ -47,6 +48,7 @@ class CommandProvider {
         allCommands.put(CommandName.MOVIES_BY_GENRE, guestCommands);
         allCommands.put(CommandName.MOVIES_OF_TEN_YEAR_PERIOD, guestCommands);
         allCommands.put(CommandName.MOVIES_OF_YEAR, guestCommands);
+        allCommands.put(CommandName.VIEW_ACTOR, guestCommands);
         allCommands.put(CommandName.VIEW_ALL_USERS, guestCommands);
 
         allCommands.put(CommandName.ADD_REVIEW, userCommands);
@@ -66,7 +68,13 @@ class CommandProvider {
         allCommands.put(CommandName.DELETE_REVIEW, adminCommands);
         allCommands.put(CommandName.UPDATE_MOVIE, adminCommands);
         allCommands.put(CommandName.VIEW_ALL_BANNED_USERS, adminCommands);
-
+        allCommands.put(CommandName.ADD_ACTOR, adminCommands);
+        allCommands.put(CommandName.UPDATE_ACTOR, adminCommands);
+        allCommands.put(CommandName.ADD_ACTOR_FOR_MOVIE, adminCommands);
+        allCommands.put(CommandName.DELETE_ACTOR_FOR_MOVIE, adminCommands);
+        allCommands.put(CommandName.ADD_DIRECTOR_FOR_MOVIE, adminCommands);
+        allCommands.put(CommandName.DELETE_DIRECTOR_FOR_MOVIE, adminCommands);
+*/
 
         guestCommands.put(CommandName.LOGIN, new Login());
         guestCommands.put(CommandName.REGISTER, new Register());
@@ -79,7 +87,9 @@ class CommandProvider {
         guestCommands.put(CommandName.MOVIES_BY_GENRE, new ShowMoviesByGenre());
         guestCommands.put(CommandName.MOVIES_OF_TEN_YEAR_PERIOD, new ShowMoviesOfTenYearPeriod());
         guestCommands.put(CommandName.MOVIES_OF_YEAR, new ShowMoviesOfYear());
+        guestCommands.put(CommandName.VIEW_ACTOR, new ViewActor());
         guestCommands.put(CommandName.VIEW_ALL_USERS, new ViewAllUser());
+        guestCommands.put(CommandName.VIEW_NEWS, new ViewNews());
 
 
         userCommands.putAll(guestCommands);
@@ -102,6 +112,14 @@ class CommandProvider {
         adminCommands.put(CommandName.DELETE_REVIEW, new DeleteReview());
         adminCommands.put(CommandName.UPDATE_MOVIE, new UpdateMovie());
         adminCommands.put(CommandName.VIEW_ALL_BANNED_USERS, new ViewAllBannedUser());
+        adminCommands.put(CommandName.ADD_ACTOR, new AddActor());
+        adminCommands.put(CommandName.UPDATE_ACTOR, new UpdateActor());
+        adminCommands.put(CommandName.ADD_ACTOR_FOR_MOVIE, new AddActorForMovie());
+        adminCommands.put(CommandName.DELETE_ACTOR_FOR_MOVIE, new DeleteActorForMovie());
+        adminCommands.put(CommandName.ADD_DIRECTOR_FOR_MOVIE, new AddDirectorForMovie());
+        adminCommands.put(CommandName.DELETE_DIRECTOR_FOR_MOVIE, new DeleteDirectorForMovie());
+        adminCommands.put(CommandName.ADD_NEWS, new AddNews());
+        adminCommands.put(CommandName.UPDATE_NEWS, new UpdateNews());
 
         /*
         commands.put(CommandName.LOGIN, new Login());

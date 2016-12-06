@@ -36,7 +36,7 @@
     </listener>
 
     <error-page>
-        <location>/WEB-INF/jsp/error.jsp</location>
+        <location>/error.jsp</location>
     </error-page>
 
     <jsp-config>

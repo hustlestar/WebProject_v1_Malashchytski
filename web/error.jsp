@@ -42,7 +42,7 @@
         </div>
         <div class="collapse navbar-collapse" id="myNavbar">
             <ul class="nav navbar-nav">
-                <li id="index-page"><a href="../index.jsp">${home}</a></li>
+                <li id="index-page"><a href="index.jsp">${home}</a></li>
                 <li id="movies-page"><a href="Controller?command=all-movies">${movies}</a></li>
                 <li id="reviews-page"><a href="#">Reviews</a></li>
                 <li id="users-page"><a href="#">Users</a></li>

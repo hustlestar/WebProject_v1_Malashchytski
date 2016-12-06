@@ -51,7 +51,18 @@ footer {
     color: #c02537;
     background-color: transparent;
 }
-
+body > div.container-fluid.text-center > div > div.col-sm-8.text-left > div.col-sm-9.text-left > a.edit{
+    color: #ff5b62;
+}
+body > div.container-fluid.text-center > div > div.col-sm-8.text-left > div.col-sm-9.text-left > a.edit:hover{
+    color: #ff182f;
+}
+body > div.container-fluid.text-center > div > div.col-sm-8.text-left > div.col-sm-9.text-left > .edit{
+    color: #ff5b62;
+}
+body > div.container-fluid.text-center > div > div.col-sm-8.text-left > div.col-sm-9.text-left > .edit:hover{
+    color: #ff182f;
+}
 .flex{
     display: flex;
     /*flex-direction: row;*/

@@ -22,7 +22,7 @@ public class MovieServiceImpl implements MovieService {
         RatingDAO ratingDAO = daoFactory.getRatingDAO();
         List<Movie> movies;
         try {
-            movies = dao.fullList();
+            movies = dao.getFullMovieList();
             if (movies == null || movies.size() == 0) {
                 throw new ServiceException("No movies matching your query");
             }
@@ -33,8 +33,6 @@ public class MovieServiceImpl implements MovieService {
         return movies;
     }
 
-
-
     @Override
     public List<Movie> showMoviesByCountry(String country) throws ServiceException {
         DAOFactory daoFactory = DAOFactory.getInstance();
@@ -42,7 +40,7 @@ public class MovieServiceImpl implements MovieService {
         RatingDAO ratingDAO = daoFactory.getRatingDAO();
         List<Movie> movies;
         try {
-            movies = dao.showMoviesByCountry(country);
+            movies = dao.getMoviesByCountry(country);
             if (movies == null || movies.size() == 0) {
                 throw new ServiceException("No movies matching your query" + country);
             }
@@ -60,7 +58,7 @@ public class MovieServiceImpl implements MovieService {
         RatingDAO ratingDAO = daoFactory.getRatingDAO();
         List<Movie> movies;
         try {
-            movies = dao.showMoviesByGenre(genre);
+            movies = dao.getMoviesByGenre(genre);
             if (movies == null || movies.size() == 0) {
                 throw new ServiceException("No movies matching your query");
             }
@@ -79,11 +77,14 @@ public class MovieServiceImpl implements MovieService {
         RatingDAO ratingDAO = daoFactory.getRatingDAO();
         ReviewDAO reviewDAO = daoFactory.getReviewDAO();
         GenreDAO genreDAO = daoFactory.getGenreDAO();
+        ActorDAO actorDAO = daoFactory.getActorDAO();
         Movie movie;
         List<Country> countryList;
         List<Rating> ratingList;
         List<Review> reviewList;
         List<Genre> genreList;
+        List<Actor> actorList;
+        Actor director;
         int normId;
         try {
             normId = Integer.parseInt(id);
@@ -91,7 +92,7 @@ public class MovieServiceImpl implements MovieService {
             throw new ServiceException("No film with such ID");
         }
         try {
-            movie = dao.showMovieByID(normId);
+            movie = dao.getMovieByID(normId);
             if (movie != null) {
 
                 countryList = countryDAO.getCountriesByMovie(normId);
@@ -103,10 +104,15 @@ public class MovieServiceImpl implements MovieService {
                 reviewList = reviewDAO.getReviewsForMovie(normId, lang);
                 UtilService.fillReviewWithScore(reviewList);
 
+                actorList = actorDAO.getActorsForMovie(normId);
+                director = actorDAO.getDirectorForMovie(normId);
+
                 movie.setCountries(countryList);
                 movie.setGenres(genreList);
                 movie.setRatings(ratingList);
                 movie.setReviews(reviewList);
+                movie.setActors(actorList);
+                movie.setDirector(director);
 
             } else {
                 throw new ServiceException("No movies matching your query");
@@ -148,7 +154,7 @@ public class MovieServiceImpl implements MovieService {
             throw new ServiceException("Wrong years input!");
         }
         try {
-            movies = dao.showMoviesOfTenYearsPeriod(intYears);
+            movies = dao.getMoviesOfTenYearsPeriod(intYears);
             if (movies == null || movies.size() == 0) {
                 throw new ServiceException("No movies matching your query");
             }
@@ -172,7 +178,7 @@ public class MovieServiceImpl implements MovieService {
             throw new ServiceException("Wrong years input!");
         }
         try {
-            movies = dao.showMoviesOfYear(intYear);
+            movies = dao.getMoviesOfYear(intYear);
             if (movies == null || movies.size() == 0) {
                 throw new ServiceException("No movies matching your query");
             }

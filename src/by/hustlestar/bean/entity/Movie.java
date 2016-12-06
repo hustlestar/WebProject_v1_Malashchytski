@@ -12,11 +12,13 @@ public class Movie {
     private int year;
     private long budget;
     private long gross;
+    private Actor director;
 
     private List<Country> countries;
     private List<Review> reviews;
     private List<Rating> ratings;
     private List<Genre> genres;
+    private List<Actor> actors;
 
     private double avgRating;
     private int ratingVotes;
@@ -44,7 +46,6 @@ public class Movie {
     public void setGenres(List<Genre> genres) {
         this.genres = genres;
     }
-
 
     public List<Country> getCountries() {
         return countries;
@@ -116,6 +117,22 @@ public class Movie {
 
     public void setGross(long gross) {
         this.gross = gross;
+    }
+
+    public Actor getDirector() {
+        return director;
+    }
+
+    public void setDirector(Actor director) {
+        this.director = director;
+    }
+
+    public List<Actor> getActors() {
+        return actors;
+    }
+
+    public void setActors(List<Actor> actors) {
+        this.actors = actors;
     }
 
     @Override
