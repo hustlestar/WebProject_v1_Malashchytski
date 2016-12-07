@@ -27,8 +27,6 @@ public class UpdateNews implements by.hustlestar.command.Command {
     private static final String NEWS_TITLE_EN = "newsTitleEn";
     private static final String NEWS_TEXT_RU = "newsTextRu";
     private static final String NEWS_TEXT_EN = "newsTextEn";
-    private static final String ACTOR_ID = "actor-id";
-    private static final String MOVIE_ID = "id";
     private static final String NEWS_ID = "news-id";
 
     private static final String ERROR = "errorMessage";
@@ -46,18 +44,16 @@ public class UpdateNews implements by.hustlestar.command.Command {
         String newsTitleEn = request.getParameter(NEWS_TITLE_EN);
         String newsTextRu = request.getParameter(NEWS_TEXT_RU);
         String newsTextEn = request.getParameter(NEWS_TEXT_EN);
-        String actorID = request.getParameter(ACTOR_ID);
-        String movieID = request.getParameter(MOVIE_ID);
         String newsID = request.getParameter(NEWS_ID);
         AdminService adminService = AdminUtil.getAdminService(request, response);
         if (newsTitleRu == null && newsTitleEn == null && newsTextRu == null
-                && newsTextEn ==null && actorID==null && movieID == null && newsID ==null) {
+                && newsTextEn ==null && newsID ==null) {
 
             request.getRequestDispatcher(JSP_PAGE_PATH).forward(request, response);
 
         } else {
             try {
-                adminService.updateNews(newsTitleRu, newsTitleEn, newsTextRu, newsTextEn, actorID, movieID, newsID);
+                adminService.updateNews(newsTitleRu, newsTitleEn, newsTextRu, newsTextEn, newsID);
                 request.setAttribute(SUCCESS, MESSAGE_OF_SUCCESS);
                 response.sendRedirect(REDIRECT);
                 //request.getRequestDispatcher(JSP_PAGE_PATH).forward(request, response);

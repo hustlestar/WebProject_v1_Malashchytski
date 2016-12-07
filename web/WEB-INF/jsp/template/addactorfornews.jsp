@@ -3,9 +3,8 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <fmt:setLocale value="${sessionScope.language}"/>
 <fmt:setBundle basename="locale" var="locale"/>
-<fmt:message bundle="${locale}" key="locale.addCountryForMovie" var="addCountryForMovie"/>
-<fmt:message bundle="${locale}" key="locale.countryNameRu" var="countryNameRu"/>
-<fmt:message bundle="${locale}" key="locale.countryNameEn" var="countryNameEn"/>
+<fmt:message bundle="${locale}" key="locale.addActorForMovie" var="addActorForMovie"/>
+<fmt:message bundle="${locale}" key="locale.actorID" var="actorID"/>
 <fmt:message bundle="${locale}" key="locale.submit" var="submit"/>
 <fmt:message bundle="${locale}" key="locale.cancel" var="cancel"/>
 <html>
@@ -20,29 +19,22 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </head>
 <body>
-<div id="add-country" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div id="add-actor-for-news" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;  </button>
-                <h4 class="modal-title" id="myModalLabel">${addCountryForMovie}</h4>
+                <h4 class="modal-title" id="myModalLabel">${addActorForMovie}</h4>
             </div>
             <div class="modal-body text-center">
                 <form class="form-horizontal" method="post" action="Controller">
-                    <input type="hidden" name="command" value="add-country-for-movie"/>
-                    <input type="hidden" name="id" value="${movie.id}"/>
+                    <input type="hidden" name="command" value="add-actor-for-news"/>
+                    <input type="hidden" name="news-id" value="${news.id}"/>
                     <div class="form-group">
-                        <label for="inputNickname" class="col-sm-3 control-label">${countryNameRu}</label>
+                        <label for="inputNickname" class="col-sm-3 control-label">${actorID}</label>
                         <div class="col-sm-7">
-                            <input type="text" class="form-control" id="inputNickname" placeholder="${countryNameRu}"
-                                   name="nameRu" required>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="inputPassword3" class="col-sm-3 control-label">${countryNameEn}</label>
-                        <div class="col-sm-7">
-                            <input type="text" class="form-control" id="inputPassword3" placeholder="${countryNameEn}"
-                                   name="nameEn" required>
+                            <input type="number" class="form-control" id="inputNickname" placeholder="${actorID}"
+                                   name="actor-id" required>
                         </div>
                     </div>
                     <div class="form-group">

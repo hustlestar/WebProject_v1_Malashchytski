@@ -28,4 +28,5 @@ public interface ActorDAO {
 
     void deleteDirectorForMovie(int actorID,int movieID) throws DAOException;
 
+    List<Actor> getActorsForNews(int id) throws DAOException;
 }

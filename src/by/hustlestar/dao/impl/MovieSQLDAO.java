@@ -77,6 +77,11 @@ public class MovieSQLDAO implements MovieDAO {
                     "LEFT JOIN actor_starred ON m_id= actor_starred.movies_m_id\n" +
                     "LEFT JOIN director ON m_id= director.movies_m_id\n" +
                     "WHERE director.actors_a_id = ? OR actor_starred.actors_a_id = ?;";
+    private static final String MOVIES_FOR_NEWS =
+            "SELECT DISTINCT m_id, m_title_ru, m_title_en\n" +
+                    "FROM movies\n" +
+                    "LEFT JOIN news_about_movies ON m_id= news_about_movies.movies_m_id\n" +
+                    "WHERE news_about_movies.news_n_id = ?;";
 
 
     private static final String M_ID = "m_id";
@@ -556,6 +561,56 @@ public class MovieSQLDAO implements MovieDAO {
                 movie.setTitleEn(rs.getString(M_TITLE_EN));
                 movie.setAvgRating(rs.getDouble(M_RATING));
                 movie.setRatingVotes(rs.getInt(M_VOTES));
+                movies.add(movie);
+            }
+            return movies;
+
+        } catch (SQLException e) {
+            throw new DAOException("Movie sql error", e);
+        } catch (ConnectionPoolException e) {
+            throw new DAOException("Movie pool connection error", e);
+        } finally {
+            if (rs != null) {
+                try {
+                    rs.close();
+                } catch (SQLException e) {
+                    throw new DAOException("Exception while closing result set", e);
+                }
+            }
+            if (st != null) {
+                try {
+                    st.close();
+                } catch (SQLException e) {
+                    throw new DAOException("Exception while closing statement", e);
+                }
+            }
+            try {
+                ConnectionPoolSQLDAO.getInstance().returnConnection(con);
+            } catch (ConnectionPoolException e) {
+                throw new DAOException("Exception while returning connection", e);
+            }
+        }
+    }
+
+    @Override
+    public List<Movie> getMoviesForNews(int id) throws DAOException {
+        Connection con = null;
+        PreparedStatement st = null;
+        ResultSet rs = null;
+        try {
+            con = ConnectionPoolSQLDAO.getInstance().takeConnection();
+
+            st = con.prepareStatement(MOVIES_FOR_NEWS);
+            st.setInt(1, id);
+            rs = st.executeQuery();
+
+            List<Movie> movies = new ArrayList<>();
+            Movie movie;
+            while (rs.next()) {
+                movie = new Movie();
+                movie.setId(rs.getInt(M_ID));
+                movie.setTitleRu(rs.getString(M_TITLE_RU));
+                movie.setTitleEn(rs.getString(M_TITLE_EN));
                 movies.add(movie);
             }
             return movies;

@@ -28,4 +28,6 @@ public interface MovieDAO {
     void updateMovie(int id, String titleRu, String titleEn, int year, long budget, long gross) throws DAOException;
 
     List<Movie> getMoviesForActor(int actorID) throws DAOException;
+
+    List<Movie> getMoviesForNews(int id) throws DAOException;
 }

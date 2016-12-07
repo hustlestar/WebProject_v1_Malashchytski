@@ -12,7 +12,7 @@
     <title>Title</title>
 </head>
 <body>
-<c:import var="data" url="http://www.tutorialspoint.com"/>
+<c:import var="data" url="Controller?command=view-news&news-id=1"/>
 ${data}
 </body>
 </html>

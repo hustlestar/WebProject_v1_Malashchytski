@@ -120,6 +120,10 @@ class CommandProvider {
         adminCommands.put(CommandName.DELETE_DIRECTOR_FOR_MOVIE, new DeleteDirectorForMovie());
         adminCommands.put(CommandName.ADD_NEWS, new AddNews());
         adminCommands.put(CommandName.UPDATE_NEWS, new UpdateNews());
+        adminCommands.put(CommandName.ADD_ACTOR_FOR_NEWS, new AddActorForNews());
+        adminCommands.put(CommandName.DELETE_ACTOR_FOR_NEWS, new DeleteActorForNews());
+        adminCommands.put(CommandName.ADD_MOVIE_FOR_NEWS, new AddMovieForNews());
+        adminCommands.put(CommandName.DELETE_MOVIE_FOR_NEWS, new DeleteMovieForNews());
 
         /*
         commands.put(CommandName.LOGIN, new Login());

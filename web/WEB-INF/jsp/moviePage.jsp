@@ -109,7 +109,7 @@
                             <c:forEach var="country" items="${requestScope.movie.countries}">
                                 <a href="Controller?command=movies-by-country&country=${country.nameEn}"><c:out
                                         value="${country.nameRu}"/></a>
-                                <a class="edit"  href="Controller?command=delete-country-for-movie&actor-id=${movie.id}&country=${country.nameEn}">x</a>
+                                <a class="edit"  href="Controller?command=delete-country-for-movie&id=${movie.id}&country=${country.nameEn}">x</a>
                             </c:forEach>
                         </c:if>
                         <br>

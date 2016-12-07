@@ -4,23 +4,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <fmt:setLocale value="${sessionScope.language}"/>
 <fmt:setBundle basename="locale" var="locale"/>
-<fmt:message bundle="${locale}" key="locale.year" var="year"/>
-<fmt:message bundle="${locale}" key="locale.country" var="country"/>
-<fmt:message bundle="${locale}" key="locale.genre" var="genre"/>
-<fmt:message bundle="${locale}" key="locale.director" var="director"/>
-<fmt:message bundle="${locale}" key="locale.budget" var="budget"/>
-<fmt:message bundle="${locale}" key="locale.gross" var="gross"/>
-<fmt:message bundle="${locale}" key="locale.rating" var="rating"/>
-<fmt:message bundle="${locale}" key="locale.votes" var="votes"/>
-<fmt:message bundle="${locale}" key="locale.noRating" var="noRating"/>
-<fmt:message bundle="${locale}" key="locale.noVotes" var="noVotes"/>
-<fmt:message bundle="${locale}" key="locale.yourRating" var="yourRating"/>
-<fmt:message bundle="${locale}" key="locale.rateMovie" var="rateMovie"/>
-<fmt:message bundle="${locale}" key="locale.reviews" var="reviews"/>
-<fmt:message bundle="${locale}" key="locale.cast" var="cast"/>
-<fmt:message bundle="${locale}" key="locale.deleteReview" var="deleteReview"/>
-<fmt:message bundle="${locale}" key="locale.banUser" var="banUser"/>
-<fmt:message bundle="${locale}" key="locale.usefulReview" var="usefulReview"/>
 
 
 <!DOCTYPE html>

@@ -321,40 +321,104 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public void addNews(String newsTitleRu, String newsTitleEn, String newsTextRu, String newsTextEn, String actorID, String movieID) throws ServiceException {
+    public void addNews(String newsTitleRu, String newsTitleEn, String newsTextRu, String newsTextEn) throws ServiceException {
         DAOFactory daoFactory = DAOFactory.getInstance();
         NewsDAO dao = daoFactory.getNewsDAO();
-        int intMovieID;
-        int intActorID;
         try {
-            intMovieID = Integer.parseInt(movieID);
-            intActorID = Integer.parseInt(actorID);
-        } catch (NumberFormatException e) {
-            throw new ServiceException("Wrong data input, while adding news for movie");
-        }
-        try {
-            dao.addNews(newsTitleRu, newsTitleEn, newsTextRu, newsTextEn, intActorID, intMovieID);
+            dao.addNews(newsTitleRu, newsTitleEn, newsTextRu, newsTextEn);
         } catch (DAOException e) {
             throw new ServiceException("Error in source!", e);
         }
     }
 
     @Override
-    public void updateNews(String newsTitleRu, String newsTitleEn, String newsTextRu, String newsTextEn, String actorID, String movieID, String newsID) throws ServiceException {
+    public void updateNews(String newsTitleRu, String newsTitleEn, String newsTextRu, String newsTextEn, String newsID) throws ServiceException {
         DAOFactory daoFactory = DAOFactory.getInstance();
         NewsDAO dao = daoFactory.getNewsDAO();
-        int intMovieID;
-        int intActorID;
         int intNewsID;
         try {
-            intMovieID = Integer.parseInt(movieID);
-            intActorID = Integer.parseInt(actorID);
             intNewsID = Integer.parseInt(newsID);
         } catch (NumberFormatException e) {
             throw new ServiceException("Wrong data input, while adding news for movie");
         }
         try {
-            dao.updateNews(newsTitleRu, newsTitleEn, newsTextRu, newsTextEn, intActorID, intMovieID, intNewsID);
+            dao.updateNews(newsTitleRu, newsTitleEn, newsTextRu, newsTextEn, intNewsID);
+        } catch (DAOException e) {
+            throw new ServiceException("Error in source!", e);
+        }
+    }
+
+    @Override
+    public void addActorForNews(String actorID, String newsID) throws ServiceException {
+        DAOFactory daoFactory = DAOFactory.getInstance();
+        NewsDAO dao = daoFactory.getNewsDAO();
+        int intNewsID;
+        int intActorID;
+        try {
+            intNewsID = Integer.parseInt(newsID);
+            intActorID = Integer.parseInt(actorID);
+        } catch (NumberFormatException e) {
+            throw new ServiceException("Wrong data input, while adding actor for movie");
+        }
+        try {
+            dao.addActorForNews(intActorID, intNewsID);
+        } catch (DAOException e) {
+            throw new ServiceException("Error in source!", e);
+        }
+    }
+
+    @Override
+    public void deleteActorForNews(String actorID, String newsID) throws ServiceException {
+        DAOFactory daoFactory = DAOFactory.getInstance();
+        NewsDAO dao = daoFactory.getNewsDAO();
+        int intNewsID;
+        int intActorID;
+        try {
+            intNewsID = Integer.parseInt(newsID);
+            intActorID = Integer.parseInt(actorID);
+        } catch (NumberFormatException e) {
+            throw new ServiceException("Wrong data input, while adding actor for movie");
+        }
+        try {
+            dao.deleteActorForNews(intActorID, intNewsID);
+        } catch (DAOException e) {
+            throw new ServiceException("Error in source!", e);
+        }
+    }
+
+    @Override
+    public void addMovieForNews(String newsID, String movieID) throws ServiceException {
+        DAOFactory daoFactory = DAOFactory.getInstance();
+        NewsDAO dao = daoFactory.getNewsDAO();
+        int intNewsID;
+        int intMovieID;
+        try {
+            intNewsID = Integer.parseInt(newsID);
+            intMovieID = Integer.parseInt(movieID);
+        } catch (NumberFormatException e) {
+            throw new ServiceException("Wrong data input, while adding actor for movie");
+        }
+        try {
+            dao.addMovieForNews(intNewsID, intMovieID);
+        } catch (DAOException e) {
+            throw new ServiceException("Error in source!", e);
+        }
+    }
+
+    @Override
+    public void deleteMovieForNews(String newsID, String movieID) throws ServiceException {
+        DAOFactory daoFactory = DAOFactory.getInstance();
+        NewsDAO dao = daoFactory.getNewsDAO();
+        int intNewsID;
+        int intMovieID;
+        try {
+            intNewsID = Integer.parseInt(newsID);
+            intMovieID = Integer.parseInt(movieID);
+        } catch (NumberFormatException e) {
+            throw new ServiceException("Wrong data input, while adding actor for movie");
+        }
+        try {
+            dao.deleteMovieForNews(intNewsID, intMovieID);
         } catch (DAOException e) {
             throw new ServiceException("Error in source!", e);
         }

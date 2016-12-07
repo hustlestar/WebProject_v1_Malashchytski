@@ -1,6 +1,7 @@
 package by.hustlestar.bean.entity;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 /**
  * Created by dell on 05.12.2016.
@@ -13,8 +14,8 @@ public class News {
     private String textEn;
     private Timestamp newsDate;
 
-    private int newsActorID;
-    private int newsMovieID;
+    private List<Movie> newsMovies;
+    private List<Actor> newsActors;
 
     public int getId() {
         return id;
@@ -64,19 +65,19 @@ public class News {
         this.newsDate = newsDate;
     }
 
-    public int getNewsActorID() {
-        return newsActorID;
+    public List<Movie> getNewsMovies() {
+        return newsMovies;
     }
 
-    public void setNewsActorID(int newsActorID) {
-        this.newsActorID = newsActorID;
+    public void setNewsMovies(List<Movie> newsMovies) {
+        this.newsMovies = newsMovies;
     }
 
-    public int getNewsMovieID() {
-        return newsMovieID;
+    public List<Actor> getNewsActors() {
+        return newsActors;
     }
 
-    public void setNewsMovieID(int newsMovieID) {
-        this.newsMovieID = newsMovieID;
+    public void setNewsActors(List<Actor> newsActors) {
+        this.newsActors = newsActors;
     }
 }

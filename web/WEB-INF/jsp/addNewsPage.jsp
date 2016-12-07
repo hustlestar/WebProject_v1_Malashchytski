@@ -1,14 +1,14 @@
-﻿<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <fmt:setLocale value="${sessionScope.language}"/>
 <fmt:setBundle basename="locale" var="locale"/>
-<fmt:message bundle="${locale}" key="locale.movieID" var="movieID"/>
-<fmt:message bundle="${locale}" key="locale.leaveBlank" var="leaveBlankMovieID"/>
-<fmt:message bundle="${locale}" key="locale.titleRu" var="titleRu"/>
-<fmt:message bundle="${locale}" key="locale.titleEn" var="titleEn"/>
-<fmt:message bundle="${locale}" key="locale.year" var="year"/>
-<fmt:message bundle="${locale}" key="locale.budget" var="budget"/>
+<fmt:message bundle="${locale}" key="locale.newsID" var="newsID"/>
+<fmt:message bundle="${locale}" key="locale.leaveBlank" var="leaveBlankNewsID"/>
+<fmt:message bundle="${locale}" key="locale.newsTitleRu" var="newsTitleRu"/>
+<fmt:message bundle="${locale}" key="locale.newsTitleEn" var="newsTitleEn"/>
+<fmt:message bundle="${locale}" key="locale.newsTextRu" var="newsTextRu"/>
+<fmt:message bundle="${locale}" key="locale.newsTextEn" var="newsTextEn"/>
 <fmt:message bundle="${locale}" key="locale.gross" var="gross"/>
 <fmt:message bundle="${locale}" key="locale.addMovie" var="addMovie"/>
 <fmt:message bundle="${locale}" key="locale.updateMovie" var="updateMovie"/>
@@ -49,26 +49,23 @@
             <br>
             <form action="Controller" method="post">
                 <p>
-                    <label><input type="radio" name="command" value="add-movie" checked/>${addMovie}</label>
-                    <label><input type="radio" name="command" value="update-movie"/>${updateMovie}</label>
+                    <label><input type="radio" name="command" value="add-news" checked/>${addMovie}</label>
+                    <label><input type="radio" name="command" value="update-news"/>${updateMovie}</label>
                 </p>
-                <label for="movieID">${movieID}<br></label>
-                <input id="movieID" class="form-control" type="text" name="id" placeholder="${leaveBlankMovieID}"/>
+                <label for="newsID">${newsID}<br></label>
+                <input id="newsID" class="form-control" type="text" name="id" placeholder="${leaveBlankNewsID}"/>
                 <br/>
-                <label for="titleRu">${titleRu}<br></label>
-                <input id="titleRu" class="form-control" type="text" name="titleRu" required/>
+                <label for="titleRu">${newsTitleRu}<br></label>
+                <input id="titleRu" class="form-control" type="text" name="newsTitleRu" required/>
                 <br/>
-                <label for="titleEn">${titleEn}<br></label>
-                <input id="titleEn" class="form-control" type="text" name="titleEn" required/>
+                <label for="titleEn">${newsTitleEn}<br></label>
+                <input id="titleEn" class="form-control" type="text" name="newsTitleEn" required/>
                 <br/>
-                <label for="year">${year}<br></label>
-                <input id="year" class="form-control" type="number" name="year" required/>
+                <label for="newsTextRu">${newsTextRu}<br></label>
+                <input id="newsTextRu" class="form-control" type="text" name="newsTextRu" required/>
                 <br/>
-                <label for="budget">${budget}<br></label>
-                <input id="budget" class="form-control" type="number" name="budget"/>
-                <br/>
-                <label for="gross">${gross}<br></label>
-                <input id="gross" class="form-control" type="number" name="gross"/>
+                <label for="newsTextEn">${newsTextEn}<br></label>
+                <input id="newsTextEn" class="form-control" type="text" name="newsTextEn"/>
                 <br/>
                 <button type="submit" class="btn btn-primary">${submit}</button>
             </form>
