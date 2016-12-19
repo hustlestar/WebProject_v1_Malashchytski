@@ -31,17 +31,24 @@ public class UserSQLDAO implements UserDAO {
                     "SET\n" +
                     "`u_type` = 'banned'\n" +
                     "WHERE `u_nick` = ?;";
-
     private static final String UNBAN_USER_BY_NICKNAME =
             "UPDATE `jackdb`.`user`\n" +
                     "SET\n" +
                     "`u_type` = 'user'\n" +
                     "WHERE `u_nick` = ?;";
+    private static final String VIEW_TOP_USERS =
+            "SELECT user.u_nick, u_register, COUNT(review_score.review_u_nick) AS reputation FROM user\n" +
+                    "LEFT JOIN review_score ON review_u_nick = u_nick\n" +
+                    "WHERE review_score.value='1'\n" +
+                    "GROUP BY review_u_nick\n" +
+                    "HAVING COUNT(review_u_nick) > 0\n" +
+                    "ORDER BY reputation DESC LIMIT 10;";
 
     private static final String U_NICK = "u_nick";
     private static final String U_MAIL = "u_mail";
     private static final String U_TYPE = "u_type";
     private static final String U_SEX = "u_sex";
+    private static final String REPUTATION = "reputation";
     private static final String U_REGISTER = "u_register";
     private static final String DATE_FORMAT = "yyyy-MM-dd";
 
@@ -352,6 +359,56 @@ public class UserSQLDAO implements UserDAO {
         } catch (ConnectionPoolException e) {
             throw new DAOException("User pool connection error", e);
         } finally {
+            if (st != null) {
+                try {
+                    st.close();
+                } catch (SQLException e) {
+                    throw new DAOException("Exception while closing statement", e);
+                }
+            }
+            try {
+                ConnectionPoolSQLDAO.getInstance().returnConnection(con);
+            } catch (ConnectionPoolException e) {
+                throw new DAOException("Exception while returning connection", e);
+            }
+        }
+    }
+
+    @Override
+    public List<User> getTopUsers() throws DAOException {
+        Connection con = null;
+        PreparedStatement st = null;
+        ResultSet rs = null;
+        try {
+            con = ConnectionPoolSQLDAO.getInstance().takeConnection();
+
+            st = con.prepareStatement(VIEW_TOP_USERS);
+
+            rs = st.executeQuery();
+
+            List<User> users = new ArrayList<>();
+            User user;
+            while (rs.next()) {
+                user = new User();
+                user.setNickname(rs.getString(U_NICK));
+                user.setRegistred(rs.getDate(U_REGISTER));
+                user.setReputation(rs.getInt(REPUTATION));
+                users.add(user);
+            }
+            return users;
+
+        } catch (SQLException e) {
+            throw new DAOException("User sql error", e);
+        } catch (ConnectionPoolException e) {
+            throw new DAOException("Movie pool connection error", e);
+        } finally {
+            if (rs != null) {
+                try {
+                    rs.close();
+                } catch (SQLException e) {
+                    throw new DAOException("Exception while closing result set", e);
+                }
+            }
             if (st != null) {
                 try {
                     st.close();

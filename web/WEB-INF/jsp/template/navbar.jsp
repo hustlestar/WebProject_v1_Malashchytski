@@ -14,18 +14,15 @@
 <fmt:message bundle="${locale}" key="locale.password" var="password"/>
 <fmt:message bundle="${locale}" key="locale.cancel" var="cancel"/>
 <fmt:message bundle="${locale}" key="locale.movies" var="movies"/>
-<html>
-<head>
-    <title>Title</title>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta http-equiv='Content-Type' content='text/html; charset=UTF-8'/>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    <link rel="stylesheet" href="../src/first.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-</head>
-<body>
+<fmt:message bundle="${locale}" key="locale.movieRateRegister" var="movieRateRegister"/>
+<fmt:message bundle="${locale}" key="locale.email" var="email"/>
+<fmt:message bundle="${locale}" key="locale.repeatPassword" var="repeatPassword"/>
+<fmt:message bundle="${locale}" key="locale.sex" var="sex"/>
+<fmt:message bundle="${locale}" key="locale.male" var="male"/>
+<fmt:message bundle="${locale}" key="locale.female" var="female"/>
+<fmt:message bundle="${locale}" key="locale.other" var="other"/>
+<fmt:message bundle="${locale}" key="locale.register" var="register"/>
+
 <nav class="navbar navbar-inverse">
     <div class="container-fluid">
         <div class="navbar-header">
@@ -47,11 +44,11 @@
             <ul class="nav navbar-nav navbar-right">
                 <c:if test="${sessionScope.get('user') == null}">
                     <li class="sign-up">
-                        <a href="Controller?command=register">
+                        <a data-toggle="modal" data-target="#register" href="#">
                             <span class="glyphicon glyphicon-user"></span>
                                 ${signUp}</a>
                     </li>
-                    <li><a data-toggle="modal" data-target="#GSCCModal" href="#">
+                    <li><a data-toggle="modal" data-target="#login" href="#">
                         <span class="glyphicon glyphicon-log-in"></span>
                             ${logIn}</a>
                     </li>
@@ -72,27 +69,27 @@
     </div>
 </nav>
 
-<div id="GSCCModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div id="login" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;  </button>
-                <h4 class="modal-title" id="myModalLabel">${movieRateEntrance}</h4>
+                <h4 class="modal-title">${movieRateEntrance}</h4>
             </div>
             <div class="modal-body text-center">
                 <form class="form-horizontal" method="post" action="Controller">
                     <input type="hidden" name="command" value="login"/>
                     <div class="form-group">
-                        <label for="inputNickname" class="col-sm-3 control-label">${nickname}</label>
+                        <label for="nickname" class="col-sm-3 control-label">${nickname}</label>
                         <div class="col-sm-7">
-                            <input type="text" class="form-control" id="inputNickname" placeholder="${nickname}"
+                            <input type="text" class="form-control" id="nickname" placeholder="${nickname}"
                                    name="nickname" required>
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="inputPassword3" class="col-sm-3 control-label">${password}</label>
+                        <label for="password3" class="col-sm-3 control-label">${password}</label>
                         <div class="col-sm-7">
-                            <input type="text" class="form-control" id="inputPassword3" placeholder="${password}"
+                            <input type="text" class="form-control" id="password3" placeholder="${password}"
                                    name="pass" required>
                         </div>
                     </div>
@@ -110,5 +107,70 @@
         </div>
     </div>
 </div>
-</body>
-</html>
+
+<div id="register" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;  </button>
+                <h4 class="modal-title" id="myModalLabel">${movieRateRegister}</h4>
+            </div>
+            <div class="modal-body text-center">
+                <form class="form-horizontal" method="post" action="Controller">
+                    <input type="hidden" name="command" value="register"/>
+                    <div class="form-group">
+                        <label for="inputNickname" class="col-sm-3 control-label">${nickname}</label>
+                        <div class="col-sm-7">
+                            <input type="text" class="form-control" id="inputNickname" placeholder="${nickname}"
+                                   name="nickname" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="email" class="col-sm-3 control-label">${email}</label>
+                        <div class="col-sm-7">
+                            <input type="email" class="form-control" id="email" placeholder="${email}"
+                                   name="email" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputPassword3" class="col-sm-3 control-label">${password}</label>
+                        <div class="col-sm-7">
+                            <input type="text" class="form-control" id="inputPassword3" placeholder="${password}"
+                                   name="pass" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputPassword4" class="col-sm-3 control-label">${repeatPassword}</label>
+                        <div class="col-sm-7">
+                            <input type="text" class="form-control" id="inputPassword4" placeholder="${repeatPassword}"
+                                   name="pass2" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <p class="col-sm-3 control-label"><b>${sex}</b></p>
+                        <div class="col-sm-7">
+                            <label class="radio-inline">
+                                <input type="radio" name="sex" id="inlineRadio1" value="m" checked> ${male}
+                            </label>
+                            <label class="radio-inline">
+                                <input type="radio" name="sex" id="inlineRadio2" value="f"> ${female}
+                            </label>
+                            <label class="radio-inline">
+                                <input type="radio" name="sex" id="inlineRadio3" value="n"> ${other}
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-offset-3 col-sm-7">
+                            <button type="submit" class="btn btn-primary">${register}</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">${cancel}</button>
+            </div>
+        </div>
+    </div>
+</div>

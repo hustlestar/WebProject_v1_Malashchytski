@@ -8,6 +8,7 @@ import by.hustlestar.dao.iface.ActorDAO;
 import by.hustlestar.dao.iface.MovieDAO;
 import by.hustlestar.service.exception.ServiceException;
 import by.hustlestar.service.iface.ActorService;
+import by.hustlestar.service.validation.Validator;
 
 import java.util.List;
 
@@ -18,6 +19,9 @@ public class ActorServiceImpl implements ActorService {
 
     @Override
     public Actor viewActor(String id) throws ServiceException {
+        if (!Validator.validateNumber(id)) {
+            throw new ServiceException("Illegal data input");
+        }
         DAOFactory daoFactory = DAOFactory.getInstance();
         MovieDAO movieDAO = daoFactory.getMovieDAO();
         ActorDAO actorDAO = daoFactory.getActorDAO();

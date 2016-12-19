@@ -1,5 +1,6 @@
 package by.hustlestar.service.iface;
 
+import by.hustlestar.bean.entity.Actor;
 import by.hustlestar.bean.entity.User;
 import by.hustlestar.service.exception.ServiceException;
 
@@ -55,4 +56,7 @@ public interface AdminService {
     void addMovieForNews(String newsID, String movieID) throws ServiceException;
 
     void deleteMovieForNews(String newsID, String movieID) throws ServiceException;
+
+    List<Actor> showAllActors() throws ServiceException;
+
 }

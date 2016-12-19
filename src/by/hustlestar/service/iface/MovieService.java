@@ -10,13 +10,13 @@ import java.util.List;
  */
 public interface MovieService {
 
-    List<Movie> showFullList() throws ServiceException;
+    List<Movie> showFullList(int offset, int recordsPerPage) throws ServiceException;
 
-    List<Movie> showMoviesByCountry(String country) throws ServiceException;
+    List<Movie> showMoviesByCountry(int offset, int recordsPerPage, String country) throws ServiceException;
 
-    List<Movie> showMoviesByGenre(String genre) throws ServiceException;
+    List<Movie> showMoviesByGenre(int offset, int recordsPerPage, String genre) throws ServiceException;
 
-    Movie showMovieByID(String id, String lang) throws ServiceException;
+    Movie showMovieByID(int offset, int recordsPerPage, String id, String lang) throws ServiceException;
 
     List<Movie> findMovieByTitle(String title) throws ServiceException;
 
@@ -30,4 +30,15 @@ public interface MovieService {
 
     void addRating(String movieID, String userNickname, String review) throws ServiceException;
 
+    List<Movie> showLatestReviews(String lang) throws ServiceException;
+
+    List<Movie> showLatestMovies() throws ServiceException;
+
+    int countAllMoviesAmount() throws ServiceException;
+
+    int countMoviesByCountry(String country) throws ServiceException;
+
+    int countMoviesByGenre(String genre) throws ServiceException;
+
+    int countReviewsForMovie(String id, String lang) throws ServiceException;
 }

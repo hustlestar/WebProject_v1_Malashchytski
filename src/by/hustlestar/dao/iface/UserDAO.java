@@ -24,4 +24,5 @@ public interface UserDAO {
 
     void unbanUser(String userNickname) throws DAOException;
 
+    List<User> getTopUsers() throws DAOException;
 }

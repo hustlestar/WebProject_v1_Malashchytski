@@ -8,7 +8,6 @@ import by.hustlestar.service.ServiceFactory;
 import by.hustlestar.service.exception.ServiceException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.mozilla.universalchardet.UniversalDetector;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -29,6 +28,11 @@ public class ShowMoviesByCountry implements Command {
 
     private static final String COUNTRY = "country";
 
+    private static final String PAGE = "page";
+    private static final String AMOUNT_OF_PAGES = "noOfPages";
+    private static final String CURRENT_PAGE = "currentPage";
+    private static final int RECORDS_PER_PAGE = 10;
+
     private static final String REQUEST_ATTRIBUTE = "all_movies";
 
     private static final String ERROR = "errorMessage";
@@ -40,50 +44,25 @@ public class ShowMoviesByCountry implements Command {
         response.setContentType(CONTENT_TYPE);
         request.setCharacterEncoding(CHARACTER_ENCODING);
 
-        //String country = new String(request.getParameter(COUNTRY), "UTF-8");
-
 
         String country = request.getParameter(COUNTRY);
-
-        System.out.println(country);
-
-        /*byte[] buf = country.getBytes();
-
-
-// (1)
-        UniversalDetector detector = new UniversalDetector(null);
-
-// (2)
-        for (byte b : buf) {
-            System.out.println(b);
-            detector.handleData(buf, 0, buf.length);
-        }
-// (3)
-        detector.dataEnd();
-
-// (4)
-        String encoding = detector.getDetectedCharset();
-        if (encoding != null) {
-            System.out.println("Detected encoding = " + encoding);
-        } else {
-            System.out.println("No encoding detected.");
-        }
-
-// (5)
-        detector.reset();*/
-
-
-       /* byte[] count  =country0.getBytes();
-        String country = new String(count, "UTF-8");
-        System.out.println(country);*/
 
         List<Movie> movies;
         MovieService movieService = ServiceFactory.getInstance().getMovieService();
         try {
-            movies = movieService.showMoviesByCountry(country);
+            int page = 1;
+            if (request.getParameter(PAGE) != null) {
+                page = Integer.parseInt(request.getParameter(PAGE));
+            }
+
+            movies = movieService.showMoviesByCountry((page-1)*RECORDS_PER_PAGE, RECORDS_PER_PAGE, country);
+
+            int numberOfMovies = movieService.countMoviesByCountry(country);
+            int noOfPages = (int) Math.ceil(numberOfMovies * 1.0 / RECORDS_PER_PAGE);
+            request.setAttribute(AMOUNT_OF_PAGES, noOfPages);
+            request.setAttribute(CURRENT_PAGE, page);
 
             request.setAttribute(REQUEST_ATTRIBUTE, movies);
-
             request.getRequestDispatcher(JSP_PAGE_PATH).forward(request, response);
         } catch (ServiceException e) {
             LOGGER.error(e.getMessage(), e);

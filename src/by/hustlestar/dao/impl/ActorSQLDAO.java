@@ -22,13 +22,11 @@ public class ActorSQLDAO implements ActorDAO {
                     "LEFT JOIN actor_starred\n" +
                     "ON actors.a_id=actor_starred.actors_a_id\n" +
                     "WHERE movies_m_id=?;";
-
     private final static String DIRECTOR_FOR_MOVIE =
             "SELECT a_id, a_name_ru, a_name_en FROM actors\n" +
                     "LEFT JOIN director\n" +
                     "ON actors.a_id=director.actors_a_id\n" +
                     "WHERE movies_m_id=?;";
-
     private static final String ACTOR_BY_ID =
             "SELECT a_name_ru, a_name_en FROM actors WHERE a_id=?;";
     private final static String ADD_ACTOR =
@@ -50,6 +48,8 @@ public class ActorSQLDAO implements ActorDAO {
                     "LEFT JOIN news_about_actors\n" +
                     "ON actors.a_id=news_about_actors.actors_a_id\n" +
                     "WHERE news_n_id=?;";
+    private static final String ALL_ACTORS =
+            "SELECT * FROM actors;";
 
     private static final String A_ID = "a_id";
     private static final String A_NAME_RU = "a_name_ru";
@@ -424,6 +424,57 @@ public class ActorSQLDAO implements ActorDAO {
 
             st = con.prepareStatement(ACTORS_FOR_NEWS);
             st.setInt(1, id);
+
+            rs = st.executeQuery();
+
+            List<Actor> actors = new ArrayList<>();
+            Actor actor;
+            while (rs.next()) {
+                actor = new Actor();
+                actor.setId(rs.getInt(A_ID));
+                actor.setNameEn(rs.getString(A_NAME_EN));
+                actor.setNameRu(rs.getString(A_NAME_RU));
+                actors.add(actor);
+            }
+            return actors;
+
+        } catch (SQLException e) {
+            throw new DAOException("Actor sql error", e);
+        } catch (ConnectionPoolException e) {
+            throw new DAOException("Actor pool connection error", e);
+        } finally {
+            if (rs != null) {
+                try {
+                    rs.close();
+                } catch (SQLException e) {
+                    throw new DAOException("Exception while closing result set", e);
+                }
+            }
+            if (st != null) {
+                try {
+                    st.close();
+                } catch (SQLException e) {
+                    throw new DAOException("Exception while closing statement", e);
+                }
+            }
+            try {
+                ConnectionPoolSQLDAO.getInstance().returnConnection(con);
+            } catch (ConnectionPoolException e) {
+                throw new DAOException("Exception while returning connection", e);
+            }
+        }
+    }
+
+    @Override
+    public List<Actor> getAllActors() throws DAOException {
+        Connection con = null;
+        PreparedStatement st = null;
+        ResultSet rs = null;
+        try {
+            con = ConnectionPoolSQLDAO.getInstance().takeConnection();
+
+            st = con.prepareStatement(ALL_ACTORS);
+            //st.setInt(1, normId);
 
             rs = st.executeQuery();
 

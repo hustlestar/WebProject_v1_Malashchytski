@@ -1,12 +1,12 @@
 /* Remove the navbar's default margin-bottom and rounded borders */
 .navbar {
     margin-bottom: 0;
-    border-radius: 5vh;
+    border-radius: 5px;
 }
 
 /* Set height of the grid so .sidenav can be 100% (adjust as needed) */
 .row.content {
-    flex: 100%;
+    height: 51vmax;
 }
 
 /* Set gray background color and 100% height */
@@ -63,12 +63,6 @@ body > div.container-fluid.text-center > div > div.col-sm-8.text-left > div.col-
 body > div.container-fluid.text-center > div > div.col-sm-8.text-left > div.col-sm-9.text-left > .edit:hover{
     color: #ff182f;
 }
-.flex{
-    display: flex;
-    /*flex-direction: row;*/
-    justify-content: space-between;
-    align-items: stretch;
-}
 
 .selectboxes {
 
@@ -109,7 +103,6 @@ select {
 input[type=text], input[type=password] {
     width: 100%;
     padding: 12px 20px;
-    margin: 8px 0;
     display: inline-block;
     border: 1px solid #ccc;
     box-sizing: border-box;
@@ -117,7 +110,6 @@ input[type=text], input[type=password] {
 label > input[type-text]{
     width: 100%;
     padding: 12px 20px;
-    margin: 8px 0;
     display: inline-block;
     border: 1px solid #ccc;
     box-sizing: border-box;

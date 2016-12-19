@@ -4,6 +4,8 @@ package by.hustlestar.dao.iface;
 import by.hustlestar.bean.entity.News;
 import by.hustlestar.dao.exception.DAOException;
 
+import java.util.List;
+
 /**
  * Created by dell on 05.12.2016.
  */
@@ -23,4 +25,5 @@ public interface NewsDAO {
 
     void deleteMovieForNews(int intNewsID, int intMovieID) throws DAOException;
 
+    List<News> getLatestNews() throws DAOException;
 }

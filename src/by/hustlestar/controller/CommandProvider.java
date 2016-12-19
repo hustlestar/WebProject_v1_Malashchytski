@@ -5,10 +5,12 @@ import by.hustlestar.command.impl.actor.*;
 import by.hustlestar.command.impl.admin.*;
 import by.hustlestar.command.impl.common.ChangeLanguage;
 import by.hustlestar.command.impl.movie.*;
+import by.hustlestar.command.impl.news.ViewLatestNews;
 import by.hustlestar.command.impl.news.ViewNews;
 import by.hustlestar.command.impl.rating.AddRating;
 import by.hustlestar.command.impl.review.AddReview;
 import by.hustlestar.command.impl.review.LikeReview;
+import by.hustlestar.command.impl.review.ViewLatestReviews;
 import by.hustlestar.command.impl.user.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -90,6 +92,10 @@ class CommandProvider {
         guestCommands.put(CommandName.VIEW_ACTOR, new ViewActor());
         guestCommands.put(CommandName.VIEW_ALL_USERS, new ViewAllUser());
         guestCommands.put(CommandName.VIEW_NEWS, new ViewNews());
+        guestCommands.put(CommandName.VIEW_LATEST_NEWS, new ViewLatestNews());
+        guestCommands.put(CommandName.VIEW_LATEST_REVIEWS, new ViewLatestReviews());
+        guestCommands.put(CommandName.LATEST_MOVIES, new ShowLatestMovies());
+        guestCommands.put(CommandName.VIEW_TOP_USERS, new ViewTopUsers());
 
 
         userCommands.putAll(guestCommands);
@@ -124,6 +130,7 @@ class CommandProvider {
         adminCommands.put(CommandName.DELETE_ACTOR_FOR_NEWS, new DeleteActorForNews());
         adminCommands.put(CommandName.ADD_MOVIE_FOR_NEWS, new AddMovieForNews());
         adminCommands.put(CommandName.DELETE_MOVIE_FOR_NEWS, new DeleteMovieForNews());
+        adminCommands.put(CommandName.VIEW_ALL_ACTORS, new ViewAllActors());
 
         /*
         commands.put(CommandName.LOGIN, new Login());

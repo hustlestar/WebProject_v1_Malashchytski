@@ -8,7 +8,7 @@ import by.hustlestar.service.iface.UserService;
 import by.hustlestar.service.exception.ServiceAuthException;
 import by.hustlestar.service.exception.ServiceException;
 import by.hustlestar.service.util.UtilService;
-import by.hustlestar.service.util.Validation;
+import by.hustlestar.service.validation.Validator;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -23,6 +23,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User showUserByNickname(String nickname) throws ServiceException {
+        if (!Validator.validate(nickname)) {
+            throw new ServiceAuthException("Wrong username!");
+        }
         DAOFactory daoFactory = DAOFactory.getInstance();
         UserDAO dao = daoFactory.getUserDAO();
         ReviewDAO reviewDAO = daoFactory.getReviewDAO();
@@ -34,7 +37,7 @@ public class UserServiceImpl implements UserService {
                 reviewList = reviewDAO.getReviewsForUser(nickname);
 
                 UtilService.fillReviewWithScore(reviewList);
-
+                UtilService.calculateReputation(reviewList, user);
                 user.setReviews(reviewList);
             } else {
                 throw new ServiceException("No user matching your query");
@@ -48,7 +51,8 @@ public class UserServiceImpl implements UserService {
     @Override
     public User authorize(String login, String password) throws ServiceException {
         logger.debug("authorize begin");
-        if (!Validation.validate(login, password)) {
+        if (!Validator.validateLogin(login) ||
+                !Validator.validatePassword(password)) {
             throw new ServiceAuthException("Wrong parameters!");
         }
         DAOFactory daoFactory = DAOFactory.getInstance();
@@ -80,8 +84,27 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User register(String login, String email, String password, String sex) throws ServiceException {
-        if (!Validation.validate(login, email, password, sex)) {
+    public List<User> showTopUsers() throws ServiceException {
+        DAOFactory daoFactory = DAOFactory.getInstance();
+        UserDAO dao = daoFactory.getUserDAO();
+        List<User> users;
+        try {
+            users = dao.getTopUsers();
+            if (users == null || users.size() == 0) {
+                throw new ServiceException("No users matching your query");
+            }
+        } catch (DAOException e) {
+            throw new ServiceException("Error in source!", e);
+        }
+        return users;
+    }
+
+    @Override
+    public User register(String login, String email, String password, String passwordrep, String sex) throws ServiceException {
+        if (!Validator.validate(login, email, password, passwordrep, sex) ||
+                !Validator.validateLogin(login) ||
+                !Validator.validatePassword(password, passwordrep) ||
+                !Validator.validateEmail(email)) {
             throw new ServiceAuthException("Check input parameters");
         }
 

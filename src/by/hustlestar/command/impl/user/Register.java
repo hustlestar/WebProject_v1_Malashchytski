@@ -2,6 +2,7 @@ package by.hustlestar.command.impl.user;
 
 import by.hustlestar.bean.entity.User;
 import by.hustlestar.command.Command;
+import by.hustlestar.command.util.CommandsUtil;
 import by.hustlestar.command.util.QueryUtil;
 import by.hustlestar.service.ServiceFactory;
 import by.hustlestar.service.iface.UserService;
@@ -13,6 +14,7 @@ import org.apache.logging.log4j.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 /**
@@ -20,7 +22,6 @@ import java.io.IOException;
  */
 public class Register implements Command {
     private static final String JSP_PAGE_PATH = "WEB-INF/jsp/registerPage.jsp";
-    private static final String WELCOME_PAGE = "index.jsp";
 
     private static final Logger LOGGER = LogManager.getLogger();
 
@@ -29,6 +30,7 @@ public class Register implements Command {
     private static final String LOGIN = "nickname";
     private static final String EMAIL = "email";
     private static final String PASSWORD = "pass";
+    private static final String PASSWORD_2 = "pass2";
     private static final String SEX = "sex";
 
     private static final String ERROR = "errorMessage";
@@ -41,17 +43,19 @@ public class Register implements Command {
         String login = request.getParameter(LOGIN);
         String email = request.getParameter(EMAIL);
         String password = request.getParameter(PASSWORD);
+        String password2 = request.getParameter(PASSWORD_2);
         String sex = request.getParameter(SEX);
         UserService userService = ServiceFactory.getInstance().getUserService();
+        String previousQuery = CommandsUtil.getPreviousQuery(request);
+        HttpSession session = request.getSession(true);
 
-        if (login != null && email != null && password != null) {
+        if (login != null && email != null && password != null && password2 != null && sex != null) {
             try {
-                User user = userService.register(login, email, password, sex);
+                User user = userService.register(login, email, password, password2, sex);
 
-                request.setAttribute(USER, user);
+                session.setAttribute(USER, user);
 
-                request.getRequestDispatcher(WELCOME_PAGE).forward(request, response);
-                System.out.println("vse ok");
+                response.sendRedirect(previousQuery);
             } catch (ServiceAuthException e) {
                 LOGGER.error(e.getMessage(), e);
                 request.setAttribute(ERROR, MESSAGE_OF_ERROR_1);

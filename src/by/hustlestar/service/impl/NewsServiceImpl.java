@@ -10,6 +10,7 @@ import by.hustlestar.dao.iface.MovieDAO;
 import by.hustlestar.dao.iface.NewsDAO;
 import by.hustlestar.service.exception.ServiceException;
 import by.hustlestar.service.iface.NewsService;
+import by.hustlestar.service.validation.Validator;
 
 import java.util.List;
 
@@ -19,6 +20,9 @@ import java.util.List;
 public class NewsServiceImpl implements NewsService {
     @Override
     public News viewNews(String id) throws ServiceException {
+        if (!Validator.validateNumber(id)) {
+            throw new ServiceException("Illegal data input");
+        }
         DAOFactory daoFactory = DAOFactory.getInstance();
         NewsDAO newsDAO = daoFactory.getNewsDAO();
         ActorDAO actorDAO = daoFactory.getActorDAO();
@@ -42,6 +46,22 @@ public class NewsServiceImpl implements NewsService {
                 news.setNewsMovies(movieList);
             } else {
                 throw new ServiceException("No persons matching your query");
+            }
+        } catch (DAOException e) {
+            throw new ServiceException("Error in source!", e);
+        }
+        return news;
+    }
+
+    @Override
+    public List<News> showLatestNews() throws ServiceException {
+        DAOFactory daoFactory = DAOFactory.getInstance();
+        NewsDAO dao = daoFactory.getNewsDAO();
+        List<News> news;
+        try {
+            news = dao.getLatestNews();
+            if (news == null || news.size() == 0) {
+                throw new ServiceException("No news matching your query");
             }
         } catch (DAOException e) {
             throw new ServiceException("Error in source!", e);

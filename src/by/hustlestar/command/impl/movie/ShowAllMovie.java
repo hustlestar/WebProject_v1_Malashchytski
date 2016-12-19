@@ -28,6 +28,11 @@ public class ShowAllMovie implements Command {
     private static final String CONTENT_TYPE = "text/html; charset=UTF-8";
     private static final String CHARACTER_ENCODING = "UTF-8";
 
+    private static final String PAGE = "page";
+    private static final String AMOUNT_OF_PAGES = "noOfPages";
+    private static final String CURRENT_PAGE = "currentPage";
+    private static final int RECORDS_PER_PAGE = 10;
+
     private static final String REQUEST_ATTRIBUTE = "all_movies";
 
     private static final String ERROR = "errorMessage";
@@ -39,11 +44,21 @@ public class ShowAllMovie implements Command {
         response.setContentType(CONTENT_TYPE);
         request.setCharacterEncoding(CHARACTER_ENCODING);
 
+
         List<Movie> movies;
         MovieService movieService = ServiceFactory.getInstance().getMovieService();
-
         try {
-            movies = movieService.showFullList();
+            int page = 1;
+            if (request.getParameter(PAGE) != null) {
+                page = Integer.parseInt(request.getParameter(PAGE));
+            }
+
+            movies = movieService.showFullList((page-1)* RECORDS_PER_PAGE, RECORDS_PER_PAGE);
+
+            int numberOfMovies = movieService.countAllMoviesAmount();
+            int noOfPages = (int) Math.ceil(numberOfMovies * 1.0 / RECORDS_PER_PAGE);
+            request.setAttribute(AMOUNT_OF_PAGES, noOfPages);
+            request.setAttribute(CURRENT_PAGE, page);
 
             request.setAttribute(REQUEST_ATTRIBUTE, movies);
             request.getRequestDispatcher(JSP_PAGE_PATH).forward(request, response);

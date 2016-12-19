@@ -7,6 +7,7 @@ import by.hustlestar.dao.exception.DAOException;
 import by.hustlestar.service.iface.MovieService;
 import by.hustlestar.service.exception.ServiceException;
 import by.hustlestar.service.util.UtilService;
+import by.hustlestar.service.validation.Validator;
 
 import java.util.List;
 
@@ -15,14 +16,16 @@ import java.util.List;
  */
 public class MovieServiceImpl implements MovieService {
     @Override
-    public List<Movie> showFullList() throws ServiceException {
-
+    public List<Movie> showFullList(int offset, int recordsPerPage) throws ServiceException {
+        if (!Validator.validate(offset, recordsPerPage)) {
+            throw new ServiceException("Illegal data input");
+        }
         DAOFactory daoFactory = DAOFactory.getInstance();
         MovieDAO dao = daoFactory.getMovieDAO();
         RatingDAO ratingDAO = daoFactory.getRatingDAO();
         List<Movie> movies;
         try {
-            movies = dao.getFullMovieList();
+            movies = dao.getFullMovieList(offset, recordsPerPage);
             if (movies == null || movies.size() == 0) {
                 throw new ServiceException("No movies matching your query");
             }
@@ -34,13 +37,17 @@ public class MovieServiceImpl implements MovieService {
     }
 
     @Override
-    public List<Movie> showMoviesByCountry(String country) throws ServiceException {
+    public List<Movie> showMoviesByCountry(int offset, int recordsPerPage, String country) throws ServiceException {
+        if (!Validator.validate(offset, recordsPerPage)
+                || !Validator.validate(country)) {
+            throw new ServiceException("Illegal data input");
+        }
         DAOFactory daoFactory = DAOFactory.getInstance();
         MovieDAO dao = daoFactory.getMovieDAO();
         RatingDAO ratingDAO = daoFactory.getRatingDAO();
         List<Movie> movies;
         try {
-            movies = dao.getMoviesByCountry(country);
+            movies = dao.getMoviesByCountry(country, offset, recordsPerPage);
             if (movies == null || movies.size() == 0) {
                 throw new ServiceException("No movies matching your query" + country);
             }
@@ -52,13 +59,17 @@ public class MovieServiceImpl implements MovieService {
     }
 
     @Override
-    public List<Movie> showMoviesByGenre(String genre) throws ServiceException {
+    public List<Movie> showMoviesByGenre(int offset, int recordsPerPage, String genre) throws ServiceException {
+        if (!Validator.validate(offset, recordsPerPage)
+                || !Validator.validate(genre)) {
+            throw new ServiceException("Illegal data input");
+        }
         DAOFactory daoFactory = DAOFactory.getInstance();
         MovieDAO dao = daoFactory.getMovieDAO();
         RatingDAO ratingDAO = daoFactory.getRatingDAO();
         List<Movie> movies;
         try {
-            movies = dao.getMoviesByGenre(genre);
+            movies = dao.getMoviesByGenre(genre, offset, recordsPerPage);
             if (movies == null || movies.size() == 0) {
                 throw new ServiceException("No movies matching your query");
             }
@@ -70,7 +81,12 @@ public class MovieServiceImpl implements MovieService {
     }
 
     @Override
-    public Movie showMovieByID(String id, String lang) throws ServiceException {
+    public Movie showMovieByID(int offset, int recordsPerPage, String id, String lang) throws ServiceException {
+        if (!Validator.validate(offset, recordsPerPage)
+                || !Validator.validate(id, lang)
+                || !Validator.validateNumber(id)) {
+            throw new ServiceException("Illegal data input");
+        }
         DAOFactory daoFactory = DAOFactory.getInstance();
         MovieDAO dao = daoFactory.getMovieDAO();
         CountryDAO countryDAO = daoFactory.getCountryDAO();
@@ -101,7 +117,7 @@ public class MovieServiceImpl implements MovieService {
 
                 ratingList = ratingDAO.getRatingsForMovie(normId);
 
-                reviewList = reviewDAO.getReviewsForMovie(normId, lang);
+                reviewList = reviewDAO.getReviewsForMovie(normId, lang, offset, recordsPerPage);
                 UtilService.fillReviewWithScore(reviewList);
 
                 actorList = actorDAO.getActorsForMovie(normId);
@@ -125,6 +141,9 @@ public class MovieServiceImpl implements MovieService {
 
     @Override
     public List<Movie> findMovieByTitle(String title) throws ServiceException {
+        if (!Validator.validate(title)) {
+            throw new ServiceException("Illegal data input");
+        }
         DAOFactory daoFactory = DAOFactory.getInstance();
         MovieDAO dao = daoFactory.getMovieDAO();
         RatingDAO ratingDAO = daoFactory.getRatingDAO();
@@ -143,6 +162,9 @@ public class MovieServiceImpl implements MovieService {
 
     @Override
     public List<Movie> showMoviesOfTenYearsPeriod(String years) throws ServiceException {
+        if (!Validator.validateYear(years)) {
+            throw new ServiceException("Illegal data input");
+        }
         DAOFactory daoFactory = DAOFactory.getInstance();
         MovieDAO dao = daoFactory.getMovieDAO();
         RatingDAO ratingDAO = daoFactory.getRatingDAO();
@@ -167,6 +189,9 @@ public class MovieServiceImpl implements MovieService {
 
     @Override
     public List<Movie> showMoviesOfYear(String year) throws ServiceException {
+        if (!Validator.validateYear(year)) {
+            throw new ServiceException("Illegal data input");
+        }
         DAOFactory daoFactory = DAOFactory.getInstance();
         MovieDAO dao = daoFactory.getMovieDAO();
         RatingDAO ratingDAO = daoFactory.getRatingDAO();
@@ -191,6 +216,10 @@ public class MovieServiceImpl implements MovieService {
 
     @Override
     public void addReview(String movieID, String userNickname, String review, String lang) throws ServiceException {
+        if (!Validator.validate(movieID, userNickname, review, lang)
+                || !Validator.validateNumber(movieID)) {
+            throw new ServiceException("Illegal data input");
+        }
         DAOFactory daoFactory = DAOFactory.getInstance();
         ReviewDAO dao = daoFactory.getReviewDAO();
         int intMovieID;
@@ -208,6 +237,10 @@ public class MovieServiceImpl implements MovieService {
 
     @Override
     public void likeReview(String movieID, String reviewerNickname, String score, String userNickname) throws ServiceException {
+        if (!Validator.validate(movieID, reviewerNickname, score, userNickname)
+                || !Validator.validateNumber(movieID)) {
+            throw new ServiceException("Illegal data input");
+        }
         DAOFactory daoFactory = DAOFactory.getInstance();
         ReviewScoreDAO dao = daoFactory.getReviewScoreDAO();
         int intMovieID;
@@ -217,7 +250,7 @@ public class MovieServiceImpl implements MovieService {
         } catch (NumberFormatException e) {
             throw new ServiceException("Wrong data input, while adding like");
         }
-        if (reviewerNickname.equals(userNickname)){
+        if (reviewerNickname.equals(userNickname)) {
             throw new ServiceException("You cannot vote for your own review");
         }
         try {
@@ -229,6 +262,11 @@ public class MovieServiceImpl implements MovieService {
 
     @Override
     public void addRating(String movieID, String userNickname, String rating) throws ServiceException {
+        if (!Validator.validate(movieID, userNickname, rating)
+                || !Validator.validateNumber(movieID)
+                || !Validator.validateNumber(rating)) {
+            throw new ServiceException("Illegal data input");
+        }
         DAOFactory daoFactory = DAOFactory.getInstance();
         RatingDAO dao = daoFactory.getRatingDAO();
 
@@ -237,7 +275,7 @@ public class MovieServiceImpl implements MovieService {
         try {
             intMovieID = Integer.parseInt(movieID);
             intRating = Integer.parseInt(rating);
-            if (intRating<1 && intRating>10 ){
+            if (intRating < 1 && intRating > 10) {
                 throw new ServiceException("Wrong rating input, while adding rating");
             }
         } catch (NumberFormatException e) {
@@ -245,7 +283,7 @@ public class MovieServiceImpl implements MovieService {
         }
         try {
             Rating rate = dao.checkRating(intMovieID, userNickname);
-            if (rate!=null){
+            if (rate != null) {
                 dao.updateRating(intMovieID, userNickname, intRating);
             } else {
                 dao.addRating(intMovieID, userNickname, intRating);
@@ -255,4 +293,109 @@ public class MovieServiceImpl implements MovieService {
             throw new ServiceException("Error in source!", e);
         }
     }
+
+    @Override
+    public List<Movie> showLatestReviews(String lang) throws ServiceException {
+        if (!Validator.validate(lang)) {
+            throw new ServiceException("Illegal data input");
+        }
+        DAOFactory daoFactory = DAOFactory.getInstance();
+        MovieDAO dao = daoFactory.getMovieDAO();
+        List<Movie> movies;
+        try {
+            movies = dao.getMoviesWithLatestReviews(lang);
+            if (movies == null || movies.size() == 0) {
+                throw new ServiceException("No movies matching your query");
+            }
+        } catch (DAOException e) {
+            throw new ServiceException("Error in source!", e);
+        }
+        return movies;
+    }
+
+    @Override
+    public List<Movie> showLatestMovies() throws ServiceException {
+        DAOFactory daoFactory = DAOFactory.getInstance();
+        MovieDAO dao = daoFactory.getMovieDAO();
+        RatingDAO ratingDAO = daoFactory.getRatingDAO();
+        List<Movie> movies;
+        try {
+            movies = dao.getLatestMovies();
+            if (movies == null || movies.size() == 0) {
+                throw new ServiceException("No movies matching your query");
+            }
+            UtilService.fillRatingsForMovie(ratingDAO, movies);
+        } catch (DAOException e) {
+            throw new ServiceException("Error in source!", e);
+        }
+        return movies;
+    }
+
+    @Override
+    public int countAllMoviesAmount() throws ServiceException {
+        DAOFactory daoFactory = DAOFactory.getInstance();
+        MovieDAO dao = daoFactory.getMovieDAO();
+        int amount;
+        try {
+            amount = dao.countAllMoviesAmount();
+            if (amount == 0) {
+                throw new ServiceException("No movies matching your query");
+            }
+        } catch (DAOException e) {
+            throw new ServiceException("Error in source!", e);
+        }
+        return amount;
+    }
+
+    @Override
+    public int countMoviesByCountry(String country) throws ServiceException {
+        DAOFactory daoFactory = DAOFactory.getInstance();
+        MovieDAO dao = daoFactory.getMovieDAO();
+        int amount;
+        try {
+            amount = dao.countMoviesByCountry(country);
+            if (amount == 0) {
+                throw new ServiceException("No movies matching your query");
+            }
+        } catch (DAOException e) {
+            throw new ServiceException("Error in source!", e);
+        }
+        return amount;
+    }
+
+    @Override
+    public int countMoviesByGenre(String genre) throws ServiceException {
+        DAOFactory daoFactory = DAOFactory.getInstance();
+        MovieDAO dao = daoFactory.getMovieDAO();
+        int amount;
+        try {
+            amount = dao.countMoviesByGenre(genre);
+            if (amount == 0) {
+                throw new ServiceException("No movies matching your query");
+            }
+        } catch (DAOException e) {
+            throw new ServiceException("Error in source!", e);
+        }
+        return amount;
+    }
+
+    @Override
+    public int countReviewsForMovie(String id, String lang) throws ServiceException {
+        DAOFactory daoFactory = DAOFactory.getInstance();
+        ReviewDAO dao = daoFactory.getReviewDAO();
+        int amount;
+        int normId;
+        try {
+            normId = Integer.parseInt(id);
+        } catch (NumberFormatException e) {
+            throw new ServiceException("No film with such ID");
+        }
+        try {
+            amount = dao.countReviewsForMovie(normId, lang);
+        } catch (DAOException e) {
+            throw new ServiceException("Error in source!", e);
+        }
+        return amount;
+    }
+
 }

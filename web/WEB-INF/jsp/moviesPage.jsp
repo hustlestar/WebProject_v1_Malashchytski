@@ -1,5 +1,8 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<fmt:setLocale value="${sessionScope.language}"/>
+<fmt:setBundle basename="locale" var="locale"/>
 <!DOCTYPE html>
 <html>
 <head>
@@ -135,7 +138,15 @@
                 });
             </script>
             <br>
-            <table border="1">
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th>Movie</th>
+                    <th>You rated</th>
+                    <th>Rating(votes)</th>
+                </tr>
+                </thead>
+                <tbody>
                 <c:forEach var="movie" items="${requestScope.all_movies}">
                     <tr>
                         <c:if test="${sessionScope.get('language') eq 'ru' || sessionScope.get('language')==null}">
@@ -153,13 +164,48 @@
                                 </c:if>
                             </c:forEach>
                         </td>
-                        <td><c:out value="${movie.avgRating}"/>
+                        <td><fmt:formatNumber type="number" maxFractionDigits="2" minFractionDigits="2" value="${movie.avgRating}" />
                             <small>(<c:out value="${movie.ratingVotes}"/>)</small>
                         </td>
                     </tr>
                 </c:forEach>
-
+                </tbody>
             </table>
+            <br>
+
+
+            <%--For displaying Previous link except for the 1st page --%>
+            <ul class="pagination">
+                <c:if test="${requestScope.currentPage > 1}">
+                    <li>
+                        <a href="Controller?command=${param.command}&page=${requestScope.currentPage - 1}&country=${param.country}&genre=${param.genre}">Previous</a>
+                    </li>
+                </c:if>
+
+                <%--For displaying Page numbers.
+                The when condition does not display a link for the current page--%>
+                <c:if test="${requestScope.noOfPages>1}">
+                    <c:forEach begin="1" end="${requestScope.noOfPages}" var="i">
+                        <c:choose>
+                            <c:when test="${requestScope.currentPage eq i}">
+                                <li class="active"><a href="#">${i}</a></li>
+                            </c:when>
+                            <c:otherwise>
+                                <li>
+                                    <a href="Controller?command=${param.command}&page=${i}&country=${param.country}&genre=${param.genre}">${i}</a>
+                                </li>
+                            </c:otherwise>
+                        </c:choose>
+                    </c:forEach>
+                </c:if>
+
+                <%--For displaying Next link --%>
+                <c:if test="${requestScope.currentPage lt requestScope.noOfPages}">
+                    <li>
+                        <a href="Controller?command=${param.command}&page=${requestScope.currentPage + 1}&country=${param.country}&genre=${param.genre}">Next</a>
+                    </li>
+                </c:if>
+            </ul>
         </div>
 
         <c:import url="template/sideright.jsp"/>

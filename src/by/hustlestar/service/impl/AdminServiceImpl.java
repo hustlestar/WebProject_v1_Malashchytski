@@ -1,11 +1,13 @@
 package by.hustlestar.service.impl;
 
+import by.hustlestar.bean.entity.Actor;
 import by.hustlestar.bean.entity.User;
 import by.hustlestar.dao.DAOFactory;
 import by.hustlestar.dao.exception.DAOException;
 import by.hustlestar.dao.iface.*;
 import by.hustlestar.service.iface.AdminService;
 import by.hustlestar.service.exception.ServiceException;
+import by.hustlestar.service.validation.Validator;
 
 import java.util.List;
 
@@ -18,6 +20,9 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public void banUser(String userNickname) throws ServiceException {
+        if (!Validator.validate(userNickname)) {
+            throw new ServiceException("Illegal data input");
+        }
         DAOFactory daoFactory = DAOFactory.getInstance();
         UserDAO userDAO = daoFactory.getUserDAO();
 
@@ -33,6 +38,9 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public void unbanUser(String userNickname) throws ServiceException {
+        if (!Validator.validate(userNickname)) {
+            throw new ServiceException("Illegal data input");
+        }
         DAOFactory daoFactory = DAOFactory.getInstance();
         UserDAO userDAO = daoFactory.getUserDAO();
 
@@ -80,6 +88,10 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public void addMovie(String titleRu, String titleEn, String year, String budget, String gross) throws ServiceException {
+        if (!Validator.validate(titleRu, titleEn, year, budget, gross)
+                || !Validator.validateYear(year)) {
+            throw new ServiceException("Illegal data input");
+        }
         DAOFactory daoFactory = DAOFactory.getInstance();
         MovieDAO dao = daoFactory.getMovieDAO();
         int intYear;
@@ -104,6 +116,11 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public void updateMovie(String id, String titleRu, String titleEn, String year, String budget, String gross) throws ServiceException {
+        if (!Validator.validate(titleRu, titleEn, year, budget, gross)
+                || !Validator.validateYear(year)
+                || !Validator.validateNumber(id)) {
+            throw new ServiceException("Illegal data input");
+        }
         DAOFactory daoFactory = DAOFactory.getInstance();
         MovieDAO dao = daoFactory.getMovieDAO();
         int intID;
@@ -128,6 +145,10 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public void deleteReview(String movieID, String userNickname) throws ServiceException {
+        if (!Validator.validate(movieID, userNickname)
+                || !Validator.validateNumber(movieID)) {
+            throw new ServiceException("Illegal data input");
+        }
         DAOFactory daoFactory = DAOFactory.getInstance();
         ReviewDAO dao = daoFactory.getReviewDAO();
         int intMovieID;
@@ -146,6 +167,10 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public void addCountryForMovie(String movieID, String nameRu, String nameEn) throws ServiceException {
+        if (!Validator.validate(movieID, nameRu, nameEn)
+                || !Validator.validateNumber(movieID)) {
+            throw new ServiceException("Illegal data input");
+        }
         DAOFactory daoFactory = DAOFactory.getInstance();
         CountryDAO dao = daoFactory.getCountryDAO();
         int intMovieID;
@@ -164,6 +189,10 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public void deleteCountryForMovie(String movieID, String nameEn) throws ServiceException {
+        if (!Validator.validate(movieID, nameEn)
+                || !Validator.validateNumber(movieID)) {
+            throw new ServiceException("Illegal data input");
+        }
         DAOFactory daoFactory = DAOFactory.getInstance();
         CountryDAO dao = daoFactory.getCountryDAO();
         int intMovieID;
@@ -182,6 +211,10 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public void addGenreForMovie(String movieID, String nameRu, String nameEn) throws ServiceException {
+        if (!Validator.validate(movieID, nameRu, nameEn)
+                || !Validator.validateNumber(movieID)) {
+            throw new ServiceException("Illegal data input");
+        }
         DAOFactory daoFactory = DAOFactory.getInstance();
         GenreDAO dao = daoFactory.getGenreDAO();
         int intMovieID;
@@ -200,6 +233,10 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public void deleteGenreForMovie(String movieID, String nameEn) throws ServiceException {
+        if (!Validator.validate(movieID, nameEn)
+                || !Validator.validateNumber(movieID)) {
+            throw new ServiceException("Illegal data input");
+        }
         DAOFactory daoFactory = DAOFactory.getInstance();
         GenreDAO dao = daoFactory.getGenreDAO();
         int intMovieID;
@@ -218,6 +255,9 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public void addActor(String nameRu, String nameEn) throws ServiceException {
+        if (!Validator.validate(nameRu, nameEn)) {
+            throw new ServiceException("Illegal data input");
+        }
         DAOFactory daoFactory = DAOFactory.getInstance();
         ActorDAO dao = daoFactory.getActorDAO();
         try {
@@ -229,6 +269,10 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public void updateActor(String actorID, String nameRu, String nameEn) throws ServiceException {
+        if (!Validator.validate(actorID, nameRu, nameEn)
+                || !Validator.validateNumber(actorID)) {
+            throw new ServiceException("Illegal data input");
+        }
         DAOFactory daoFactory = DAOFactory.getInstance();
         ActorDAO dao = daoFactory.getActorDAO();
         int intActorID;
@@ -246,6 +290,11 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public void addActorForMovie(String actorID, String movieID) throws ServiceException {
+        if (!Validator.validate(actorID, movieID)
+                || !Validator.validateNumber(actorID)
+                || !Validator.validateNumber(movieID)) {
+            throw new ServiceException("Illegal data input");
+        }
         DAOFactory daoFactory = DAOFactory.getInstance();
         ActorDAO dao = daoFactory.getActorDAO();
         int intMovieID;
@@ -265,6 +314,11 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public void addDirectorForMovie(String actorID, String movieID) throws ServiceException {
+        if (!Validator.validate(actorID, movieID)
+                || !Validator.validateNumber(actorID)
+                || !Validator.validateNumber(movieID)) {
+            throw new ServiceException("Illegal data input");
+        }
         DAOFactory daoFactory = DAOFactory.getInstance();
         ActorDAO dao = daoFactory.getActorDAO();
         int intMovieID;
@@ -284,6 +338,11 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public void deleteActorForMovie(String actorID, String movieID) throws ServiceException {
+        if (!Validator.validate(actorID, movieID)
+                || !Validator.validateNumber(actorID)
+                || !Validator.validateNumber(movieID)) {
+            throw new ServiceException("Illegal data input");
+        }
         DAOFactory daoFactory = DAOFactory.getInstance();
         ActorDAO dao = daoFactory.getActorDAO();
         int intMovieID;
@@ -303,6 +362,11 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public void deleteDirectorForMovie(String actorID, String movieID) throws ServiceException {
+        if (!Validator.validate(actorID, movieID)
+                || !Validator.validateNumber(actorID)
+                || !Validator.validateNumber(movieID)) {
+            throw new ServiceException("Illegal data input");
+        }
         DAOFactory daoFactory = DAOFactory.getInstance();
         ActorDAO dao = daoFactory.getActorDAO();
         int intMovieID;
@@ -322,6 +386,9 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public void addNews(String newsTitleRu, String newsTitleEn, String newsTextRu, String newsTextEn) throws ServiceException {
+        if (!Validator.validate(newsTitleRu, newsTitleEn, newsTextRu, newsTextEn)) {
+            throw new ServiceException("Illegal data input");
+        }
         DAOFactory daoFactory = DAOFactory.getInstance();
         NewsDAO dao = daoFactory.getNewsDAO();
         try {
@@ -333,6 +400,10 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public void updateNews(String newsTitleRu, String newsTitleEn, String newsTextRu, String newsTextEn, String newsID) throws ServiceException {
+        if (!Validator.validate(newsTitleRu, newsTitleEn, newsTextRu, newsTextEn, newsID)
+                || !Validator.validateNumber(newsID)) {
+            throw new ServiceException("Illegal data input");
+        }
         DAOFactory daoFactory = DAOFactory.getInstance();
         NewsDAO dao = daoFactory.getNewsDAO();
         int intNewsID;
@@ -350,6 +421,11 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public void addActorForNews(String actorID, String newsID) throws ServiceException {
+        if (!Validator.validate(actorID, newsID)
+                || !Validator.validateNumber(actorID)
+                || !Validator.validateNumber(newsID)) {
+            throw new ServiceException("Illegal data input");
+        }
         DAOFactory daoFactory = DAOFactory.getInstance();
         NewsDAO dao = daoFactory.getNewsDAO();
         int intNewsID;
@@ -369,6 +445,11 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public void deleteActorForNews(String actorID, String newsID) throws ServiceException {
+        if (!Validator.validate(actorID, newsID)
+                || !Validator.validateNumber(actorID)
+                || !Validator.validateNumber(newsID)) {
+            throw new ServiceException("Illegal data input");
+        }
         DAOFactory daoFactory = DAOFactory.getInstance();
         NewsDAO dao = daoFactory.getNewsDAO();
         int intNewsID;
@@ -388,6 +469,11 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public void addMovieForNews(String newsID, String movieID) throws ServiceException {
+        if (!Validator.validate(newsID, movieID)
+                || !Validator.validateNumber(movieID)
+                || !Validator.validateNumber(newsID)) {
+            throw new ServiceException("Illegal data input");
+        }
         DAOFactory daoFactory = DAOFactory.getInstance();
         NewsDAO dao = daoFactory.getNewsDAO();
         int intNewsID;
@@ -407,6 +493,11 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public void deleteMovieForNews(String newsID, String movieID) throws ServiceException {
+        if (!Validator.validate(newsID, movieID)
+                || !Validator.validateNumber(movieID)
+                || !Validator.validateNumber(newsID)) {
+            throw new ServiceException("Illegal data input");
+        }
         DAOFactory daoFactory = DAOFactory.getInstance();
         NewsDAO dao = daoFactory.getNewsDAO();
         int intNewsID;
@@ -422,6 +513,22 @@ public class AdminServiceImpl implements AdminService {
         } catch (DAOException e) {
             throw new ServiceException("Error in source!", e);
         }
+    }
+
+    @Override
+    public List<Actor> showAllActors() throws ServiceException {
+        DAOFactory daoFactory = DAOFactory.getInstance();
+        ActorDAO dao = daoFactory.getActorDAO();
+        List<Actor> actors;
+        try {
+            actors = dao.getAllActors();
+            if (actors == null || actors.size() == 0) {
+                throw new ServiceException("No users matching your query");
+            }
+        } catch (DAOException e) {
+            throw new ServiceException("Error in source!", e);
+        }
+        return actors;
     }
 
 }

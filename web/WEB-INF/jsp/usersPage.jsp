@@ -13,6 +13,7 @@
             <td><c:out value="${user.type}"/></td>
             <td><c:out value="${user.sex}"/></td>
             <td><c:out value="${user.registred}"/></td>
+            <td><c:out value="${user.reputation}"/></td>
             <td><a href="Controller?command=ban-user&userNickname=${user.nickname}">Ban</a></td>
             <td><a href="Controller?command=unban-user&userNickname=${user.nickname}">Unban</a></td>
         </tr>

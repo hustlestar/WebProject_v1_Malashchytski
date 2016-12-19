@@ -4,11 +4,15 @@
 <c:set scope="session" var="previousQuery" value="index.jsp"/>
 <fmt:setLocale value="${sessionScope.language}"/>
 <fmt:setBundle basename="locale" var="locale"/>
-
+<fmt:message bundle="${locale}" key="locale.indexTitle" var="indexTitle"/>
+<fmt:message bundle="${locale}" key="locale.searchTitle" var="searchTitle"/>
+<fmt:message bundle="${locale}" key="locale.searchLabel" var="searchLabel"/>
+<fmt:message bundle="${locale}" key="locale.search" var="search"/>
+<fmt:message bundle="${locale}" key="locale.movie" var="movie"/>
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Bootstrap Example</title>
+    <title>${indexTitle}</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv='Content-Type' content='text/html; charset=UTF-8'/>
@@ -32,10 +36,22 @@
         <c:import url="WEB-INF/jsp/template/sideleft.jsp"/>
 
         <div class="col-sm-8 text-left">
-            <form method="get" action="Controller">
+            <br>
+            <form method="get" action="Controller" class="form-horizontal">
                 <input type="hidden" name="command" value="find-movie-by-title"/>
-                All about:<input type="text" placeholder="Movie" name="movieTitle"/><br/>
-                <input type="submit" value="Search"/>
+                <div class="form-group">
+                    <label for="search" class="col-sm-2 control-label">${searchLabel}</label>
+                    <div class="col-sm-8">
+                        <input id="search" title="${searchTitle}" type="text" class="form-control"
+                               placeholder="${movie}"
+                               name="movieTitle"/>
+                        <br/>
+                    </div>
+                    <div class="col-sm-2">
+                        <button type="submit" class="btn btn-success">${search}</button>
+                    </div>
+                </div>
+
             </form>
             <h4>
                 <small>RECENT POSTS</small>

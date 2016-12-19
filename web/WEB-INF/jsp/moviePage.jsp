@@ -191,7 +191,7 @@
                 ${gross} <c:out value="${movie.gross}"/><br/>
                 <hr>
                 <c:if test="${movie.ratingVotes>0}">
-                    ${rating} <c:out value="${movie.avgRating}"/><br/>
+                    ${rating} <fmt:formatNumber type="number" maxFractionDigits="2" minFractionDigits="2" value="${movie.avgRating}" /><br/>
                     ${votes} <c:out value="${movie.ratingVotes}"/><br/>
                 </c:if>
                 <c:if test="${movie.ratingVotes==0}">
@@ -348,6 +348,31 @@
 
                         </c:forEach>
                     </c:if>
+                    <ul class="pagination">
+                        <c:if test="${requestScope.currentPage > 1}">
+                            <li><a href="Controller?command=${param.command}&page=${requestScope.currentPage - 1}&id=${param.id}">Previous</a></li>
+                        </c:if>
+
+                        <%--For displaying Page numbers.
+                        The when condition does not display a link for the current page--%>
+                        <c:if test="${requestScope.noOfPages>1}">
+                        <c:forEach begin="1" end="${requestScope.noOfPages}" var="i">
+                            <c:choose>
+                                <c:when test="${requestScope.currentPage eq i}">
+                                    <li class="active"><a href="#">${i}</a></li>
+                                </c:when>
+                                <c:otherwise>
+                                    <li><a href="Controller?command=${param.command}&page=${i}&id=${param.id}">${i}</a></li>
+                                </c:otherwise>
+                            </c:choose>
+                        </c:forEach>
+                        </c:if>
+
+                        <%--For displaying Next link --%>
+                        <c:if test="${requestScope.currentPage lt requestScope.noOfPages}">
+                            <li><a href="Controller?command=${param.command}&page=${requestScope.currentPage + 1}&id=${param.id}">Next</a></li>
+                        </c:if>
+                    </ul>
                 </div>
             </div>
 

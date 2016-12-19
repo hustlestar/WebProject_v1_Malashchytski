@@ -28,6 +28,11 @@ public class ShowMoviesByGenre implements Command {
 
     private static final String GENRE = "genre";
 
+    private static final String PAGE = "page";
+    private static final String AMOUNT_OF_PAGES = "noOfPages";
+    private static final String CURRENT_PAGE = "currentPage";
+    private static final int RECORDS_PER_PAGE = 10;
+
     private static final String REQUEST_ATTRIBUTE = "all_movies";
 
     private static final String ERROR = "errorMessage";
@@ -46,9 +51,17 @@ public class ShowMoviesByGenre implements Command {
         List<Movie> movies;
         MovieService movieService = ServiceFactory.getInstance().getMovieService();
         try {
-            movies = movieService.showMoviesByGenre(genre);
+            int page = 1;
+            if (request.getParameter(PAGE) != null) {
+                page = Integer.parseInt(request.getParameter(PAGE));
+            }
+            movies = movieService.showMoviesByGenre((page-1)*RECORDS_PER_PAGE, RECORDS_PER_PAGE, genre);
 
             request.setAttribute(REQUEST_ATTRIBUTE, movies);
+            int numberOfMovies = movieService.countMoviesByGenre(genre);
+            int noOfPages = (int) Math.ceil(numberOfMovies * 1.0 / RECORDS_PER_PAGE);
+            request.setAttribute(AMOUNT_OF_PAGES, noOfPages);
+            request.setAttribute(CURRENT_PAGE, page);
 
             request.getRequestDispatcher(JSP_PAGE_PATH).forward(request, response);
         } catch (ServiceException e) {

@@ -7,6 +7,8 @@ import by.hustlestar.dao.impl.pool.ConnectionPoolException;
 import by.hustlestar.dao.impl.pool.ConnectionPoolSQLDAO;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by dell on 06.12.2016.
@@ -33,7 +35,10 @@ public class NewsSQLDAO implements NewsDAO {
     private static final String DELETE_MOVIE_FOR_NEWS =
             "DELETE FROM news_about_movies\n" +
                     "WHERE news_n_id=? AND movies_m_id=?;";
+    private static final java.lang.String SHOW_LATEST_NEWS =
+            "SELECT n_id, n_title_ru, n_title_en, n_date FROM news ORDER BY n_id DESC LIMIT 10";
 
+    private static final String NEWS_ID= "n_id";
     private static final String NEWS_TITLE_RU = "n_title_ru";
     private static final String NEWS_TITLE_EN = "n_title_en";
     private static final String NEWS_TEXT_RU = "n_text_ru";
@@ -297,6 +302,59 @@ public class NewsSQLDAO implements NewsDAO {
         } catch (ConnectionPoolException e) {
             throw new DAOException("Movie pool connection error", e);
         } finally {
+            if (st != null) {
+                try {
+                    st.close();
+                } catch (SQLException e) {
+                    throw new DAOException("Exception while closing statement", e);
+                }
+            }
+            try {
+                ConnectionPoolSQLDAO.getInstance().returnConnection(con);
+            } catch (ConnectionPoolException e) {
+                throw new DAOException("Exception while returning connection", e);
+            }
+        }
+    }
+
+    @Override
+    public List<News> getLatestNews() throws DAOException {
+        Connection con = null;
+        PreparedStatement st = null;
+        ResultSet rs = null;
+        try {
+            con = ConnectionPoolSQLDAO.getInstance().takeConnection();
+
+            st = con.prepareStatement(SHOW_LATEST_NEWS);
+
+            rs = st.executeQuery();
+
+            List<News> newsList = new ArrayList<>();
+            News news;
+            while (rs.next()) {
+                news = new News();
+                news.setId(rs.getInt(NEWS_ID));
+                news.setTitleRu(rs.getString(NEWS_TITLE_RU));
+                news.setTitleEn(rs.getString(NEWS_TITLE_EN));
+                //news.setTextRu(rs.getString(NEWS_TEXT_RU));
+                //news.setTextEn(rs.getString(NEWS_TEXT_EN));
+                news.setNewsDate(rs.getTimestamp(NEWS_DATE));
+                newsList.add(news);
+            }
+            return newsList;
+
+        } catch (SQLException e) {
+            throw new DAOException("Movie sql error", e);
+        } catch (ConnectionPoolException e) {
+            throw new DAOException("Movie pool connection error", e);
+        } finally {
+            if (rs != null) {
+                try {
+                    rs.close();
+                } catch (SQLException e) {
+                    throw new DAOException("Exception while closing result set", e);
+                }
+            }
             if (st != null) {
                 try {
                     st.close();
