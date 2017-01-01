@@ -3,8 +3,9 @@ package by.hustlestar.dao.impl;
 import by.hustlestar.bean.entity.Review;
 import by.hustlestar.dao.exception.DAOException;
 import by.hustlestar.dao.iface.ReviewDAO;
-import by.hustlestar.dao.impl.pool.ConnectionPoolSQLDAO;
-import by.hustlestar.dao.impl.pool.ConnectionPoolException;
+import by.hustlestar.dao.pool.ConnectionPoolSQLDAO;
+import by.hustlestar.dao.pool.ConnectionPoolException;
+import by.hustlestar.dao.util.DAOHelper;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -71,25 +72,7 @@ public class ReviewSQLDAO implements ReviewDAO {
         } catch (ConnectionPoolException e) {
             throw new DAOException("Review pool connection error", e);
         } finally {
-            if (rs != null) {
-                try {
-                    rs.close();
-                } catch (SQLException e) {
-                    throw new DAOException("Exception while closing result set", e);
-                }
-            }
-            if (st != null) {
-                try {
-                    st.close();
-                } catch (SQLException e) {
-                    throw new DAOException("Exception while closing statement", e);
-                }
-            }
-            try {
-                ConnectionPoolSQLDAO.getInstance().returnConnection(con);
-            } catch (ConnectionPoolException e) {
-                throw new DAOException("Exception while returning connection", e);
-            }
+            DAOHelper.closeResource(con, st, rs);
         }
     }
 
@@ -122,25 +105,7 @@ public class ReviewSQLDAO implements ReviewDAO {
         } catch (ConnectionPoolException e) {
             throw new DAOException("Review pool connection error", e);
         } finally {
-            if (rs != null) {
-                try {
-                    rs.close();
-                } catch (SQLException e) {
-                    throw new DAOException("Exception while closing result set", e);
-                }
-            }
-            if (st != null) {
-                try {
-                    st.close();
-                } catch (SQLException e) {
-                    throw new DAOException("Exception while closing statement", e);
-                }
-            }
-            try {
-                ConnectionPoolSQLDAO.getInstance().returnConnection(con);
-            } catch (ConnectionPoolException e) {
-                throw new DAOException("Exception while returning connection", e);
-            }
+            DAOHelper.closeResource(con, st, rs);
         }
     }
 
@@ -167,18 +132,7 @@ public class ReviewSQLDAO implements ReviewDAO {
         } catch (ConnectionPoolException e) {
             throw new DAOException("Review pool connection error", e);
         } finally {
-            if (st != null) {
-                try {
-                    st.close();
-                } catch (SQLException e) {
-                    throw new DAOException("Exception while closing statement", e);
-                }
-            }
-            try {
-                ConnectionPoolSQLDAO.getInstance().returnConnection(con);
-            } catch (ConnectionPoolException e) {
-                throw new DAOException("Exception while returning connection", e);
-            }
+            DAOHelper.closeResource(con, st);
         }
     }
 
@@ -202,18 +156,7 @@ public class ReviewSQLDAO implements ReviewDAO {
         } catch (ConnectionPoolException e) {
             throw new DAOException("Movie pool connection error", e);
         } finally {
-            if (st != null) {
-                try {
-                    st.close();
-                } catch (SQLException e) {
-                    throw new DAOException("Exception while closing statement", e);
-                }
-            }
-            try {
-                ConnectionPoolSQLDAO.getInstance().returnConnection(con);
-            } catch (ConnectionPoolException e) {
-                throw new DAOException("Exception while returning connection", e);
-            }
+            DAOHelper.closeResource(con, st);
         }
     }
 
@@ -240,25 +183,7 @@ public class ReviewSQLDAO implements ReviewDAO {
         } catch (ConnectionPoolException e) {
             throw new DAOException("Review pool connection error", e);
         } finally {
-            if (rs != null) {
-                try {
-                    rs.close();
-                } catch (SQLException e) {
-                    throw new DAOException("Exception while closing result set", e);
-                }
-            }
-            if (st != null) {
-                try {
-                    st.close();
-                } catch (SQLException e) {
-                    throw new DAOException("Exception while closing statement", e);
-                }
-            }
-            try {
-                ConnectionPoolSQLDAO.getInstance().returnConnection(con);
-            } catch (ConnectionPoolException e) {
-                throw new DAOException("Exception while returning connection", e);
-            }
+            DAOHelper.closeResource(con, st, rs);
         }
     }
 }

@@ -31,4 +31,8 @@ public interface ActorDAO {
     List<Actor> getActorsForNews(int id) throws DAOException;
 
     List<Actor> getAllActors() throws DAOException;
+
+    Actor getLastInsertedActor() throws DAOException;
+
+    void deleteActor(int id) throws DAOException;
 }

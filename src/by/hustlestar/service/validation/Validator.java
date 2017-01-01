@@ -40,12 +40,12 @@ public class Validator {
         }
         return true;
     }
-
+    /*
     public static boolean validate(String data) {
         Matcher matcher;
         matcher = PATTERN_TITLE.matcher(data);
         return matcher.matches();
-    }
+    }*/
 
     public static boolean validateNumber(String data) {
         Matcher matcher;

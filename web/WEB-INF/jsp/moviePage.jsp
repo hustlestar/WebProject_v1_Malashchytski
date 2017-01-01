@@ -304,7 +304,7 @@
                         <button class="btn btn-info" type="submit">Add review</button>
                     </form>
                 </c:if>
-                <h3><span class="badge">${movie.reviews.size()}</span> ${reviews}</h3><br>
+                <h3><span class="badge">${requestScope.noOfReviews}</span> ${reviews}</h3><br>
 
                 <div class="row">
                     <c:if test="${requestScope.get('errorLikeReview')!=null}">

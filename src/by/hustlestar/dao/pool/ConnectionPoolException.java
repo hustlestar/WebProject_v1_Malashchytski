@@ -1,4 +1,4 @@
-package by.hustlestar.dao.impl.pool;
+package by.hustlestar.dao.pool;
 
 
 /**

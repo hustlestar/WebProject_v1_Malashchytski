@@ -3,8 +3,9 @@ package by.hustlestar.dao.impl;
 import by.hustlestar.bean.entity.User;
 import by.hustlestar.dao.iface.UserDAO;
 import by.hustlestar.dao.exception.DAOException;
-import by.hustlestar.dao.impl.pool.ConnectionPoolSQLDAO;
-import by.hustlestar.dao.impl.pool.ConnectionPoolException;
+import by.hustlestar.dao.pool.ConnectionPoolSQLDAO;
+import by.hustlestar.dao.pool.ConnectionPoolException;
+import by.hustlestar.dao.util.DAOHelper;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -43,6 +44,8 @@ public class UserSQLDAO implements UserDAO {
                     "GROUP BY review_u_nick\n" +
                     "HAVING COUNT(review_u_nick) > 0\n" +
                     "ORDER BY reputation DESC LIMIT 10;";
+    private static final String DELETE_BY_NICKNAME =
+            "DELETE FROM `jackdb`.`user` WHERE u_nick=?;";
 
     private static final String U_NICK = "u_nick";
     private static final String U_MAIL = "u_mail";
@@ -84,26 +87,7 @@ public class UserSQLDAO implements UserDAO {
         } catch (ConnectionPoolException e) {
             throw new DAOException("Login pool connection error", e);
         } finally {
-            if (rs != null) {
-                try {
-                    rs.close();
-                } catch (SQLException e) {
-                    throw new DAOException("Exception while closing result set", e);
-                }
-            }
-            if (st != null) {
-                try {
-                    st.close();
-                } catch (SQLException e) {
-                    throw new DAOException("Exception while closing statement", e);
-                }
-            }
-            try {
-                ConnectionPoolSQLDAO.getInstance().returnConnection(con);
-            } catch (ConnectionPoolException e) {
-                throw new DAOException("Exception while returning connection", e);
-            }
-
+            DAOHelper.closeResource(con, st, rs);
         }
     }
 
@@ -122,7 +106,6 @@ public class UserSQLDAO implements UserDAO {
             java.text.SimpleDateFormat sdf =
                     new java.text.SimpleDateFormat(DATE_FORMAT);
             String currentTime = sdf.format(dt);
-            System.out.println(currentTime);
             st.setDate(4, Date.valueOf(currentTime));
             st.setString(5, sex);
             int i = st.executeUpdate();
@@ -136,18 +119,7 @@ public class UserSQLDAO implements UserDAO {
         } catch (ConnectionPoolException e) {
             throw new DAOException("Login pool connection error", e);
         } finally {
-            if (st != null) {
-                try {
-                    st.close();
-                } catch (SQLException e) {
-                    throw new DAOException("Exception while closing result set", e);
-                }
-            }
-            try {
-                ConnectionPoolSQLDAO.getInstance().returnConnection(con);
-            } catch (ConnectionPoolException e) {
-                throw new DAOException("Exception while returning connection", e);
-            }
+            DAOHelper.closeResource(con, st);
         }
         return null;
     }
@@ -182,25 +154,7 @@ public class UserSQLDAO implements UserDAO {
         } catch (ConnectionPoolException e) {
             throw new DAOException("Movie pool connection error", e);
         } finally {
-            if (rs != null) {
-                try {
-                    rs.close();
-                } catch (SQLException e) {
-                    throw new DAOException("Exception while closing result set", e);
-                }
-            }
-            if (st != null) {
-                try {
-                    st.close();
-                } catch (SQLException e) {
-                    throw new DAOException("Exception while closing statement", e);
-                }
-            }
-            try {
-                ConnectionPoolSQLDAO.getInstance().returnConnection(con);
-            } catch (ConnectionPoolException e) {
-                throw new DAOException("Exception while returning connection", e);
-            }
+            DAOHelper.closeResource(con, st, rs);
         }
     }
 
@@ -234,25 +188,7 @@ public class UserSQLDAO implements UserDAO {
         } catch (ConnectionPoolException e) {
             throw new DAOException("Movie pool connection error", e);
         } finally {
-            if (rs != null) {
-                try {
-                    rs.close();
-                } catch (SQLException e) {
-                    throw new DAOException("Exception while closing result set", e);
-                }
-            }
-            if (st != null) {
-                try {
-                    st.close();
-                } catch (SQLException e) {
-                    throw new DAOException("Exception while closing statement", e);
-                }
-            }
-            try {
-                ConnectionPoolSQLDAO.getInstance().returnConnection(con);
-            } catch (ConnectionPoolException e) {
-                throw new DAOException("Exception while returning connection", e);
-            }
+            DAOHelper.closeResource(con, st, rs);
         }
     }
 
@@ -284,25 +220,7 @@ public class UserSQLDAO implements UserDAO {
         } catch (ConnectionPoolException e) {
             throw new DAOException("User pool connection error", e);
         } finally {
-            if (rs != null) {
-                try {
-                    rs.close();
-                } catch (SQLException e) {
-                    throw new DAOException("Exception while closing result set", e);
-                }
-            }
-            if (st != null) {
-                try {
-                    st.close();
-                } catch (SQLException e) {
-                    throw new DAOException("Exception while closing statement", e);
-                }
-            }
-            try {
-                ConnectionPoolSQLDAO.getInstance().returnConnection(con);
-            } catch (ConnectionPoolException e) {
-                throw new DAOException("Exception while returning connection", e);
-            }
+            DAOHelper.closeResource(con, st, rs);
         }
     }
 
@@ -325,18 +243,7 @@ public class UserSQLDAO implements UserDAO {
         } catch (ConnectionPoolException e) {
             throw new DAOException("User pool connection error", e);
         } finally {
-            if (st != null) {
-                try {
-                    st.close();
-                } catch (SQLException e) {
-                    throw new DAOException("Exception while closing statement", e);
-                }
-            }
-            try {
-                ConnectionPoolSQLDAO.getInstance().returnConnection(con);
-            } catch (ConnectionPoolException e) {
-                throw new DAOException("Exception while returning connection", e);
-            }
+            DAOHelper.closeResource(con, st);
         }
     }
 
@@ -359,18 +266,7 @@ public class UserSQLDAO implements UserDAO {
         } catch (ConnectionPoolException e) {
             throw new DAOException("User pool connection error", e);
         } finally {
-            if (st != null) {
-                try {
-                    st.close();
-                } catch (SQLException e) {
-                    throw new DAOException("Exception while closing statement", e);
-                }
-            }
-            try {
-                ConnectionPoolSQLDAO.getInstance().returnConnection(con);
-            } catch (ConnectionPoolException e) {
-                throw new DAOException("Exception while returning connection", e);
-            }
+            DAOHelper.closeResource(con, st);
         }
     }
 
@@ -402,25 +298,30 @@ public class UserSQLDAO implements UserDAO {
         } catch (ConnectionPoolException e) {
             throw new DAOException("Movie pool connection error", e);
         } finally {
-            if (rs != null) {
-                try {
-                    rs.close();
-                } catch (SQLException e) {
-                    throw new DAOException("Exception while closing result set", e);
-                }
+            DAOHelper.closeResource(con, st, rs);
+        }
+    }
+
+    @Override
+    public void deleteUser(String userNickname) throws DAOException {
+        Connection con = null;
+        PreparedStatement st = null;
+        try {
+            con = ConnectionPoolSQLDAO.getInstance().takeConnection();
+            st = con.prepareStatement(DELETE_BY_NICKNAME);
+            st.setString(1, userNickname);
+            int update = st.executeUpdate();
+            if (update > 0) {
+                System.out.println("User udalen vse ok " + userNickname);
+                return;
             }
-            if (st != null) {
-                try {
-                    st.close();
-                } catch (SQLException e) {
-                    throw new DAOException("Exception while closing statement", e);
-                }
-            }
-            try {
-                ConnectionPoolSQLDAO.getInstance().returnConnection(con);
-            } catch (ConnectionPoolException e) {
-                throw new DAOException("Exception while returning connection", e);
-            }
+            throw new DAOException("Wrong movie data");
+        } catch (SQLException e) {
+            throw new DAOException("Movie sql error", e);
+        } catch (ConnectionPoolException e) {
+            throw new DAOException("Movie pool connection error", e);
+        } finally {
+            DAOHelper.closeResource(con, st);
         }
     }
 }

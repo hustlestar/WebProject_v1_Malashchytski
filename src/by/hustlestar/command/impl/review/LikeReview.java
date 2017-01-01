@@ -55,11 +55,12 @@ public class LikeReview implements Command {
         if (movieID != null && userNickname != null && score != null && reviewerNickname!=null) {
             try {
                 movieService.likeReview(movieID, reviewerNickname, score, userNickname);
-                request.getRequestDispatcher(previousQuery).forward(request, response);
+                response.sendRedirect(previousQuery);
             } catch (ServiceException e) {
                 LOGGER.error(e.getMessage(), e);
                 request.setAttribute(ERROR_LIKE_REVIEW, MESSAGE_OF_ERROR);
-                request.getRequestDispatcher(previousQuery).forward(request, response);
+                response.sendRedirect(previousQuery);
+                //request.getRequestDispatcher(previousQuery).forward(request, response);
             }
         } else {
             request.setAttribute(ERROR_LIKE_REVIEW, MESSAGE_OF_ERROR_2);

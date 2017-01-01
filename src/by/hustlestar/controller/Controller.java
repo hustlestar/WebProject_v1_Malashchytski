@@ -62,14 +62,16 @@ public class Controller extends HttpServlet {
                     type = GUEST;
                 }
                 Command command = CommandProvider.getInstance().getCommandForUser(type, commandString);
-                command.execute(request, response);
+                if (command==null){
+                    logger.error("Access without permission from client");
+                    request.setAttribute(ERROR, MESSAGE_OF_ERROR);
+                    response.sendRedirect(ERROR_PAGE);
+                } else {
+                    command.execute(request, response);
+                }
             } catch (IllegalArgumentException ex) {
                 logger.error("404 error, client requests a nonexistent command", ex);
                 response.sendError(404);
-            } catch (NullPointerException e){
-                logger.error("Access without permission from client", e);
-                request.setAttribute(ERROR, MESSAGE_OF_ERROR);
-                response.sendRedirect(ERROR_PAGE);
             }
         } else {
             response.sendRedirect(ERROR_PAGE);

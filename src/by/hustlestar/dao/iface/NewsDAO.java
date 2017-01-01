@@ -26,4 +26,9 @@ public interface NewsDAO {
     void deleteMovieForNews(int intNewsID, int intMovieID) throws DAOException;
 
     List<News> getLatestNews() throws DAOException;
+
+    News getLastInsertedNews() throws DAOException;
+
+    void deleteNews(int id) throws DAOException;
+
 }

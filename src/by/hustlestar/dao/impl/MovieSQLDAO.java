@@ -4,8 +4,11 @@ import by.hustlestar.bean.entity.Movie;
 import by.hustlestar.bean.entity.Review;
 import by.hustlestar.dao.iface.MovieDAO;
 import by.hustlestar.dao.exception.DAOException;
-import by.hustlestar.dao.impl.pool.ConnectionPoolSQLDAO;
-import by.hustlestar.dao.impl.pool.ConnectionPoolException;
+import by.hustlestar.dao.pool.ConnectionPoolSQLDAO;
+import by.hustlestar.dao.pool.ConnectionPoolException;
+import by.hustlestar.dao.util.DAOHelper;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -100,6 +103,10 @@ public class MovieSQLDAO implements MovieDAO {
             "SELECT COUNT(movies_m_id) AS amount FROM country WHERE country_en = ?;";
     private static final String COUNT_ALL_MOVIES_BY_GENRE =
             "SELECT COUNT(movies_m_id) AS amount FROM genres WHERE genres_genre_en = ?;";
+    private static final String DELETE_BY_ID =
+            "DELETE FROM `jackdb`.`movies` WHERE m_id=?;";
+    private static final String LAST_INSERTED_MOVIE =
+            "SELECT * FROM jackdb.movies ORDER BY m_id DESC LIMIT 1;";
 
     private static final String M_ID = "m_id";
     private static final String M_TITLE_RU = "m_title_ru";
@@ -149,25 +156,7 @@ public class MovieSQLDAO implements MovieDAO {
         } catch (ConnectionPoolException e) {
             throw new DAOException("Movie pool connection error", e);
         } finally {
-            if (rs != null) {
-                try {
-                    rs.close();
-                } catch (SQLException e) {
-                    throw new DAOException("Exception while closing result set", e);
-                }
-            }
-            if (st != null) {
-                try {
-                    st.close();
-                } catch (SQLException e) {
-                    throw new DAOException("Exception while closing statement", e);
-                }
-            }
-            try {
-                ConnectionPoolSQLDAO.getInstance().returnConnection(con);
-            } catch (ConnectionPoolException e) {
-                throw new DAOException("Exception while returning connection", e);
-            }
+            DAOHelper.closeResource(con, st, rs);
         }
     }
 
@@ -204,25 +193,7 @@ public class MovieSQLDAO implements MovieDAO {
         } catch (ConnectionPoolException e) {
             throw new DAOException("Movie pool connection error", e);
         } finally {
-            if (rs != null) {
-                try {
-                    rs.close();
-                } catch (SQLException e) {
-                    throw new DAOException("Exception while closing result set", e);
-                }
-            }
-            if (st != null) {
-                try {
-                    st.close();
-                } catch (SQLException e) {
-                    throw new DAOException("Exception while closing statement", e);
-                }
-            }
-            try {
-                ConnectionPoolSQLDAO.getInstance().returnConnection(con);
-            } catch (ConnectionPoolException e) {
-                throw new DAOException("Exception while returning connection", e);
-            }
+            DAOHelper.closeResource(con, st, rs);
         }
     }
 
@@ -258,25 +229,7 @@ public class MovieSQLDAO implements MovieDAO {
         } catch (ConnectionPoolException e) {
             throw new DAOException("Movie pool connection error", e);
         } finally {
-            if (rs != null) {
-                try {
-                    rs.close();
-                } catch (SQLException e) {
-                    throw new DAOException("Exception while closing result set", e);
-                }
-            }
-            if (st != null) {
-                try {
-                    st.close();
-                } catch (SQLException e) {
-                    throw new DAOException("Exception while closing statement", e);
-                }
-            }
-            try {
-                ConnectionPoolSQLDAO.getInstance().returnConnection(con);
-            } catch (ConnectionPoolException e) {
-                throw new DAOException("Exception while returning connection", e);
-            }
+            DAOHelper.closeResource(con, st, rs);
         }
     }
 
@@ -312,25 +265,7 @@ public class MovieSQLDAO implements MovieDAO {
         } catch (ConnectionPoolException e) {
             throw new DAOException("Movie pool connection error", e);
         } finally {
-            if (rs != null) {
-                try {
-                    rs.close();
-                } catch (SQLException e) {
-                    throw new DAOException("Exception while closing result set", e);
-                }
-            }
-            if (st != null) {
-                try {
-                    st.close();
-                } catch (SQLException e) {
-                    throw new DAOException("Exception while closing statement", e);
-                }
-            }
-            try {
-                ConnectionPoolSQLDAO.getInstance().returnConnection(con);
-            } catch (ConnectionPoolException e) {
-                throw new DAOException("Exception while returning connection", e);
-            }
+            DAOHelper.closeResource(con, st, rs);
         }
     }
 
@@ -365,25 +300,7 @@ public class MovieSQLDAO implements MovieDAO {
         } catch (ConnectionPoolException e) {
             throw new DAOException("Movie pool connection error", e);
         } finally {
-            if (rs != null) {
-                try {
-                    rs.close();
-                } catch (SQLException e) {
-                    throw new DAOException("Exception while closing result set", e);
-                }
-            }
-            if (st != null) {
-                try {
-                    st.close();
-                } catch (SQLException e) {
-                    throw new DAOException("Exception while closing statement", e);
-                }
-            }
-            try {
-                ConnectionPoolSQLDAO.getInstance().returnConnection(con);
-            } catch (ConnectionPoolException e) {
-                throw new DAOException("Exception while returning connection", e);
-            }
+            DAOHelper.closeResource(con, st, rs);
         }
     }
 
@@ -417,25 +334,7 @@ public class MovieSQLDAO implements MovieDAO {
         } catch (ConnectionPoolException e) {
             throw new DAOException("Movie pool connection error", e);
         } finally {
-            if (rs != null) {
-                try {
-                    rs.close();
-                } catch (SQLException e) {
-                    throw new DAOException("Exception while closing result set", e);
-                }
-            }
-            if (st != null) {
-                try {
-                    st.close();
-                } catch (SQLException e) {
-                    throw new DAOException("Exception while closing statement", e);
-                }
-            }
-            try {
-                ConnectionPoolSQLDAO.getInstance().returnConnection(con);
-            } catch (ConnectionPoolException e) {
-                throw new DAOException("Exception while returning connection", e);
-            }
+            DAOHelper.closeResource(con, st, rs);
         }
     }
 
@@ -470,25 +369,7 @@ public class MovieSQLDAO implements MovieDAO {
         } catch (ConnectionPoolException e) {
             throw new DAOException("Movie pool connection error", e);
         } finally {
-            if (rs != null) {
-                try {
-                    rs.close();
-                } catch (SQLException e) {
-                    throw new DAOException("Exception while closing result set", e);
-                }
-            }
-            if (st != null) {
-                try {
-                    st.close();
-                } catch (SQLException e) {
-                    throw new DAOException("Exception while closing statement", e);
-                }
-            }
-            try {
-                ConnectionPoolSQLDAO.getInstance().returnConnection(con);
-            } catch (ConnectionPoolException e) {
-                throw new DAOException("Exception while returning connection", e);
-            }
+            DAOHelper.closeResource(con, st, rs);
         }
     }
 
@@ -515,18 +396,7 @@ public class MovieSQLDAO implements MovieDAO {
         } catch (ConnectionPoolException e) {
             throw new DAOException("Movie pool connection error", e);
         } finally {
-            if (st != null) {
-                try {
-                    st.close();
-                } catch (SQLException e) {
-                    throw new DAOException("Exception while closing statement", e);
-                }
-            }
-            try {
-                ConnectionPoolSQLDAO.getInstance().returnConnection(con);
-            } catch (ConnectionPoolException e) {
-                throw new DAOException("Exception while returning connection", e);
-            }
+            DAOHelper.closeResource(con, st);
         }
     }
 
@@ -554,18 +424,7 @@ public class MovieSQLDAO implements MovieDAO {
         } catch (ConnectionPoolException e) {
             throw new DAOException("Movie pool connection error", e);
         } finally {
-            if (st != null) {
-                try {
-                    st.close();
-                } catch (SQLException e) {
-                    throw new DAOException("Exception while closing statement", e);
-                }
-            }
-            try {
-                ConnectionPoolSQLDAO.getInstance().returnConnection(con);
-            } catch (ConnectionPoolException e) {
-                throw new DAOException("Exception while returning connection", e);
-            }
+            DAOHelper.closeResource(con, st);
         }
     }
 
@@ -600,25 +459,7 @@ public class MovieSQLDAO implements MovieDAO {
         } catch (ConnectionPoolException e) {
             throw new DAOException("Movie pool connection error", e);
         } finally {
-            if (rs != null) {
-                try {
-                    rs.close();
-                } catch (SQLException e) {
-                    throw new DAOException("Exception while closing result set", e);
-                }
-            }
-            if (st != null) {
-                try {
-                    st.close();
-                } catch (SQLException e) {
-                    throw new DAOException("Exception while closing statement", e);
-                }
-            }
-            try {
-                ConnectionPoolSQLDAO.getInstance().returnConnection(con);
-            } catch (ConnectionPoolException e) {
-                throw new DAOException("Exception while returning connection", e);
-            }
+            DAOHelper.closeResource(con, st, rs);
         }
     }
 
@@ -650,25 +491,7 @@ public class MovieSQLDAO implements MovieDAO {
         } catch (ConnectionPoolException e) {
             throw new DAOException("Movie pool connection error", e);
         } finally {
-            if (rs != null) {
-                try {
-                    rs.close();
-                } catch (SQLException e) {
-                    throw new DAOException("Exception while closing result set", e);
-                }
-            }
-            if (st != null) {
-                try {
-                    st.close();
-                } catch (SQLException e) {
-                    throw new DAOException("Exception while closing statement", e);
-                }
-            }
-            try {
-                ConnectionPoolSQLDAO.getInstance().returnConnection(con);
-            } catch (ConnectionPoolException e) {
-                throw new DAOException("Exception while returning connection", e);
-            }
+            DAOHelper.closeResource(con, st, rs);
         }
     }
 
@@ -709,25 +532,7 @@ public class MovieSQLDAO implements MovieDAO {
         } catch (ConnectionPoolException e) {
             throw new DAOException("Movie pool connection error", e);
         } finally {
-            if (rs != null) {
-                try {
-                    rs.close();
-                } catch (SQLException e) {
-                    throw new DAOException("Exception while closing result set", e);
-                }
-            }
-            if (st != null) {
-                try {
-                    st.close();
-                } catch (SQLException e) {
-                    throw new DAOException("Exception while closing statement", e);
-                }
-            }
-            try {
-                ConnectionPoolSQLDAO.getInstance().returnConnection(con);
-            } catch (ConnectionPoolException e) {
-                throw new DAOException("Exception while returning connection", e);
-            }
+            DAOHelper.closeResource(con, st, rs);
         }
     }
 
@@ -760,25 +565,7 @@ public class MovieSQLDAO implements MovieDAO {
         } catch (ConnectionPoolException e) {
             throw new DAOException("Movie pool connection error", e);
         } finally {
-            if (rs != null) {
-                try {
-                    rs.close();
-                } catch (SQLException e) {
-                    throw new DAOException("Exception while closing result set", e);
-                }
-            }
-            if (st != null) {
-                try {
-                    st.close();
-                } catch (SQLException e) {
-                    throw new DAOException("Exception while closing statement", e);
-                }
-            }
-            try {
-                ConnectionPoolSQLDAO.getInstance().returnConnection(con);
-            } catch (ConnectionPoolException e) {
-                throw new DAOException("Exception while returning connection", e);
-            }
+            DAOHelper.closeResource(con, st, rs);
         }
     }
 
@@ -803,25 +590,7 @@ public class MovieSQLDAO implements MovieDAO {
         } catch (ConnectionPoolException e) {
             throw new DAOException("Movie pool connection error", e);
         } finally {
-            if (rs != null) {
-                try {
-                    rs.close();
-                } catch (SQLException e) {
-                    throw new DAOException("Exception while closing result set", e);
-                }
-            }
-            if (st != null) {
-                try {
-                    st.close();
-                } catch (SQLException e) {
-                    throw new DAOException("Exception while closing statement", e);
-                }
-            }
-            try {
-                ConnectionPoolSQLDAO.getInstance().returnConnection(con);
-            } catch (ConnectionPoolException e) {
-                throw new DAOException("Exception while returning connection", e);
-            }
+            DAOHelper.closeResource(con, st, rs);
         }
     }
 
@@ -847,25 +616,7 @@ public class MovieSQLDAO implements MovieDAO {
         } catch (ConnectionPoolException e) {
             throw new DAOException("Movie pool connection error", e);
         } finally {
-            if (rs != null) {
-                try {
-                    rs.close();
-                } catch (SQLException e) {
-                    throw new DAOException("Exception while closing result set", e);
-                }
-            }
-            if (st != null) {
-                try {
-                    st.close();
-                } catch (SQLException e) {
-                    throw new DAOException("Exception while closing statement", e);
-                }
-            }
-            try {
-                ConnectionPoolSQLDAO.getInstance().returnConnection(con);
-            } catch (ConnectionPoolException e) {
-                throw new DAOException("Exception while returning connection", e);
-            }
+            DAOHelper.closeResource(con, st, rs);
         }
     }
 
@@ -891,25 +642,62 @@ public class MovieSQLDAO implements MovieDAO {
         } catch (ConnectionPoolException e) {
             throw new DAOException("Movie pool connection error", e);
         } finally {
-            if (rs != null) {
-                try {
-                    rs.close();
-                } catch (SQLException e) {
-                    throw new DAOException("Exception while closing result set", e);
-                }
+            DAOHelper.closeResource(con, st, rs);
+        }
+    }
+
+    @Override
+    public void deleteMovie(int id) throws DAOException {
+        Connection con = null;
+        PreparedStatement st = null;
+        try {
+            con = ConnectionPoolSQLDAO.getInstance().takeConnection();
+            st = con.prepareStatement(DELETE_BY_ID);
+            st.setInt(1, id);
+            int update = st.executeUpdate();
+            if (update > 0) {
+                System.out.println("Filmec udalen vse ok " + id);
+                return;
             }
-            if (st != null) {
-                try {
-                    st.close();
-                } catch (SQLException e) {
-                    throw new DAOException("Exception while closing statement", e);
-                }
+            throw new DAOException("Wrong movie data");
+        } catch (SQLException e) {
+            throw new DAOException("Movie sql error", e);
+        } catch (ConnectionPoolException e) {
+            throw new DAOException("Movie pool connection error", e);
+        } finally {
+            DAOHelper.closeResource(con, st);
+        }
+    }
+
+    @Override
+    public Movie getLastInsertedMovie() throws DAOException {
+        Connection con = null;
+        PreparedStatement st = null;
+        ResultSet rs = null;
+        try {
+            con = ConnectionPoolSQLDAO.getInstance().takeConnection();
+
+            st = con.prepareStatement(LAST_INSERTED_MOVIE);
+            rs = st.executeQuery();
+
+            Movie movie = null;
+            if (rs.next()) {
+                movie = new Movie();
+                movie.setId(rs.getInt(M_ID));
+                movie.setTitleRu(rs.getString(M_TITLE_RU));
+                movie.setTitleEn(rs.getString(M_TITLE_EN));
+                movie.setYear(rs.getInt(M_YEAR));
+                movie.setBudget(rs.getLong(M_BUDGET));
+                movie.setGross(rs.getLong(M_GROSS));
             }
-            try {
-                ConnectionPoolSQLDAO.getInstance().returnConnection(con);
-            } catch (ConnectionPoolException e) {
-                throw new DAOException("Exception while returning connection", e);
-            }
+            return movie;
+
+        } catch (SQLException e) {
+            throw new DAOException("Movie sql error", e);
+        } catch (ConnectionPoolException e) {
+            throw new DAOException("Movie pool connection error", e);
+        } finally {
+            DAOHelper.closeResource(con, st, rs);
         }
     }
 

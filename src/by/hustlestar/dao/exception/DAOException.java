@@ -1,6 +1,6 @@
 package by.hustlestar.dao.exception;
 
-import by.hustlestar.dao.impl.pool.ConnectionPoolException;
+import by.hustlestar.dao.pool.ConnectionPoolException;
 
 import java.sql.SQLException;
 

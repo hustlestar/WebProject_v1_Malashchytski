@@ -1,6 +1,6 @@
 package by.hustlestar.dao.iface;
 
-import by.hustlestar.dao.impl.pool.ConnectionPoolException;
+import by.hustlestar.dao.pool.ConnectionPoolException;
 
 /**
  * Created by dell on 27.11.2016.

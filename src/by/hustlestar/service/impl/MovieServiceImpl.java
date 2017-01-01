@@ -8,6 +8,8 @@ import by.hustlestar.service.iface.MovieService;
 import by.hustlestar.service.exception.ServiceException;
 import by.hustlestar.service.util.UtilService;
 import by.hustlestar.service.validation.Validator;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.List;
 
@@ -15,8 +17,10 @@ import java.util.List;
  * Created by Hustler on 01.11.2016.
  */
 public class MovieServiceImpl implements MovieService {
+    private static final Logger logger = LogManager.getLogger(MovieServiceImpl.class.getName());
     @Override
     public List<Movie> showFullList(int offset, int recordsPerPage) throws ServiceException {
+        logger.debug(" showFullList() : start");
         if (!Validator.validate(offset, recordsPerPage)) {
             throw new ServiceException("Illegal data input");
         }

@@ -19,4 +19,6 @@ public interface RatingDAO {
     void addRating(int intMovieID, String userNickname, int rating) throws DAOException;
 
     void updateRating(int intMovieID, String userNickname, int intRating) throws DAOException;
+
+    void deleteRating(int movieID, String userNickname) throws DAOException;
 }

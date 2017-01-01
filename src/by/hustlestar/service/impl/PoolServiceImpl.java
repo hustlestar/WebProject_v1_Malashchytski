@@ -2,7 +2,7 @@ package by.hustlestar.service.impl;
 
 import by.hustlestar.dao.DAOFactory;
 import by.hustlestar.dao.iface.ConnectionPoolDAO;
-import by.hustlestar.dao.impl.pool.ConnectionPoolException;
+import by.hustlestar.dao.pool.ConnectionPoolException;
 import by.hustlestar.service.exception.ServiceException;
 import by.hustlestar.service.iface.PoolService;
 

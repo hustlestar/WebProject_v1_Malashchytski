@@ -40,4 +40,8 @@ public interface MovieDAO {
     int countMoviesByCountry(String country) throws DAOException;
 
     int countMoviesByGenre(String genre) throws DAOException;
+
+    void deleteMovie(int id) throws DAOException;
+
+    Movie getLastInsertedMovie() throws DAOException;
 }

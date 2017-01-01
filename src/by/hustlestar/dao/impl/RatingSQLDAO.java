@@ -3,8 +3,9 @@ package by.hustlestar.dao.impl;
 import by.hustlestar.bean.entity.Rating;
 import by.hustlestar.dao.exception.DAOException;
 import by.hustlestar.dao.iface.RatingDAO;
-import by.hustlestar.dao.impl.pool.ConnectionPoolSQLDAO;
-import by.hustlestar.dao.impl.pool.ConnectionPoolException;
+import by.hustlestar.dao.pool.ConnectionPoolSQLDAO;
+import by.hustlestar.dao.pool.ConnectionPoolException;
+import by.hustlestar.dao.util.DAOHelper;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -28,7 +29,8 @@ public class RatingSQLDAO implements RatingDAO {
             "INSERT INTO rating (movies_m_id, user_u_nick, rating_score) VALUES (?, ?, ?)";
     private final static String UPDATE_RATING =
             "UPDATE rating SET rating_score=? WHERE movies_m_id=? AND user_u_nick=?;";
-
+    private final static String DELETE_RATING =
+            "DELETE FROM rating WHERE movies_m_id=? AND user_u_nick=?;";
     private static final String USER_U_NICK = "user_u_nick";
     private static final String MOVIES_M_ID = "movies_m_id";
     private static final String RATING_SCORE = "rating_score";
@@ -62,25 +64,7 @@ public class RatingSQLDAO implements RatingDAO {
         } catch (ConnectionPoolException e) {
             throw new DAOException("Rating pool connection error", e);
         } finally {
-            if (rs != null) {
-                try {
-                    rs.close();
-                } catch (SQLException e) {
-                    throw new DAOException("Exception while closing result set", e);
-                }
-            }
-            if (st != null) {
-                try {
-                    st.close();
-                } catch (SQLException e) {
-                    throw new DAOException("Exception while closing statement", e);
-                }
-            }
-            try {
-                ConnectionPoolSQLDAO.getInstance().returnConnection(con);
-            } catch (ConnectionPoolException e) {
-                throw new DAOException("Exception while returning connection", e);
-            }
+            DAOHelper.closeResource(con, st, rs);
         }
     }
 
@@ -112,25 +96,7 @@ public class RatingSQLDAO implements RatingDAO {
         } catch (ConnectionPoolException e) {
             throw new DAOException("Review pool connection error", e);
         } finally {
-            if (rs != null) {
-                try {
-                    rs.close();
-                } catch (SQLException e) {
-                    throw new DAOException("Exception while closing result set", e);
-                }
-            }
-            if (st != null) {
-                try {
-                    st.close();
-                } catch (SQLException e) {
-                    throw new DAOException("Exception while closing statement", e);
-                }
-            }
-            try {
-                ConnectionPoolSQLDAO.getInstance().returnConnection(con);
-            } catch (ConnectionPoolException e) {
-                throw new DAOException("Exception while returning connection", e);
-            }
+            DAOHelper.closeResource(con, st, rs);
         }
     }
 
@@ -150,6 +116,9 @@ public class RatingSQLDAO implements RatingDAO {
             Rating rating = null;
             if (rs.next()) {
                 rating = new Rating();
+                rating.setMovieID(intMovieID);
+                rating.setUserNickname(userNickname);
+                rating.setRatingScore(rs.getInt(RATING_SCORE));
             }
             return rating;
 
@@ -158,25 +127,7 @@ public class RatingSQLDAO implements RatingDAO {
         } catch (ConnectionPoolException e) {
             throw new DAOException("Movie pool connection error", e);
         } finally {
-            if (rs != null) {
-                try {
-                    rs.close();
-                } catch (SQLException e) {
-                    throw new DAOException("Exception while closing result set", e);
-                }
-            }
-            if (st != null) {
-                try {
-                    st.close();
-                } catch (SQLException e) {
-                    throw new DAOException("Exception while closing statement", e);
-                }
-            }
-            try {
-                ConnectionPoolSQLDAO.getInstance().returnConnection(con);
-            } catch (ConnectionPoolException e) {
-                throw new DAOException("Exception while returning connection", e);
-            }
+            DAOHelper.closeResource(con, st, rs);
         }
     }
 
@@ -200,18 +151,7 @@ public class RatingSQLDAO implements RatingDAO {
         } catch (ConnectionPoolException e) {
             throw new DAOException("Movie pool connection error", e);
         } finally {
-            if (st != null) {
-                try {
-                    st.close();
-                } catch (SQLException e) {
-                    throw new DAOException("Exception while closing statement", e);
-                }
-            }
-            try {
-                ConnectionPoolSQLDAO.getInstance().returnConnection(con);
-            } catch (ConnectionPoolException e) {
-                throw new DAOException("Exception while returning connection", e);
-            }
+            DAOHelper.closeResource(con, st);
         }
     }
 
@@ -235,18 +175,31 @@ public class RatingSQLDAO implements RatingDAO {
         } catch (ConnectionPoolException e) {
             throw new DAOException("Rating pool connection error", e);
         } finally {
-            if (st != null) {
-                try {
-                    st.close();
-                } catch (SQLException e) {
-                    throw new DAOException("Exception while closing statement", e);
-                }
+            DAOHelper.closeResource(con, st);
+        }
+    }
+
+    @Override
+    public void deleteRating(int movieID, String userNickname) throws DAOException {
+        Connection con = null;
+        PreparedStatement st = null;
+        try {
+            con = ConnectionPoolSQLDAO.getInstance().takeConnection();
+            st = con.prepareStatement(DELETE_RATING);
+            st.setInt(1, movieID);
+            st.setString(2, userNickname);
+            int update = st.executeUpdate();
+            if (update > 0) {
+                System.out.println("Rating udalen vse ok");
+                return;
             }
-            try {
-                ConnectionPoolSQLDAO.getInstance().returnConnection(con);
-            } catch (ConnectionPoolException e) {
-                throw new DAOException("Exception while returning connection", e);
-            }
+            throw new DAOException("Wrong rating data");
+        } catch (SQLException e) {
+            throw new DAOException("Rating sql error", e);
+        } catch (ConnectionPoolException e) {
+            throw new DAOException("Rating pool connection error", e);
+        } finally {
+            DAOHelper.closeResource(con, st);
         }
     }
 }

@@ -2,7 +2,7 @@ package by.hustlestar.dao;
 
 import by.hustlestar.dao.iface.*;
 import by.hustlestar.dao.impl.*;
-import by.hustlestar.dao.impl.pool.ConnectionPoolSQLDAO;
+import by.hustlestar.dao.pool.ConnectionPoolSQLDAO;
 
 /**
  * Created by Hustler on 28.10.2016.

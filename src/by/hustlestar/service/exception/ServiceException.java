@@ -1,7 +1,7 @@
 package by.hustlestar.service.exception;
 
 import by.hustlestar.dao.exception.DAOException;
-import by.hustlestar.dao.impl.pool.ConnectionPoolException;
+import by.hustlestar.dao.pool.ConnectionPoolException;
 
 /**
  * Created by Hustler on 28.10.2016.

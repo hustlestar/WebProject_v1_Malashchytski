@@ -3,8 +3,9 @@ package by.hustlestar.dao.impl;
 import by.hustlestar.bean.entity.News;
 import by.hustlestar.dao.exception.DAOException;
 import by.hustlestar.dao.iface.NewsDAO;
-import by.hustlestar.dao.impl.pool.ConnectionPoolException;
-import by.hustlestar.dao.impl.pool.ConnectionPoolSQLDAO;
+import by.hustlestar.dao.pool.ConnectionPoolException;
+import by.hustlestar.dao.pool.ConnectionPoolSQLDAO;
+import by.hustlestar.dao.util.DAOHelper;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -18,7 +19,7 @@ public class NewsSQLDAO implements NewsDAO {
             "INSERT INTO news" +
                     " (n_title_ru, n_title_en, n_text_ru, n_text_en, n_date)" +
                     " VALUES (?, ?, ?, ?, ?)";
-    private static final String UPDATE_REVIEW =
+    private static final String UPDATE_NEWS =
             "UPDATE news SET\n" +
                     " n_title_ru = ?, n_title_en= ?, n_text_ru= ?, n_text_en= ?, n_date= ?\n" +
                     " WHERE n_id= ?;";
@@ -37,6 +38,10 @@ public class NewsSQLDAO implements NewsDAO {
                     "WHERE news_n_id=? AND movies_m_id=?;";
     private static final java.lang.String SHOW_LATEST_NEWS =
             "SELECT n_id, n_title_ru, n_title_en, n_date FROM news ORDER BY n_id DESC LIMIT 10";
+    private static final String DELETE_NEWS_BY_ID =
+            "DELETE FROM `jackdb`.`news` WHERE n_id=?;";
+    private static final String LAST_INSERTED_NEWS =
+            "SELECT * FROM jackdb.news ORDER BY n_id DESC LIMIT 1;";
 
     private static final String NEWS_ID= "n_id";
     private static final String NEWS_TITLE_RU = "n_title_ru";
@@ -69,18 +74,7 @@ public class NewsSQLDAO implements NewsDAO {
         } catch (ConnectionPoolException e) {
             throw new DAOException("Review pool connection error", e);
         } finally {
-            if (st != null) {
-                try {
-                    st.close();
-                } catch (SQLException e) {
-                    throw new DAOException("Exception while closing statement", e);
-                }
-            }
-            try {
-                ConnectionPoolSQLDAO.getInstance().returnConnection(con);
-            } catch (ConnectionPoolException e) {
-                throw new DAOException("Exception while returning connection", e);
-            }
+            DAOHelper.closeResource(con, st);
         }
     }
 
@@ -90,7 +84,7 @@ public class NewsSQLDAO implements NewsDAO {
         PreparedStatement st = null;
         try {
             con = ConnectionPoolSQLDAO.getInstance().takeConnection();
-            st = con.prepareStatement(UPDATE_REVIEW);
+            st = con.prepareStatement(UPDATE_NEWS);
             st.setString(1, newsTitleRu);
             st.setString(2, newsTitleEn);
             st.setString(3, newsTextRu);
@@ -99,27 +93,16 @@ public class NewsSQLDAO implements NewsDAO {
             st.setInt(6, newsID);
             int update = st.executeUpdate();
             if (update > 0) {
-                System.out.println("News dobavlen vse ok " + newsTitleEn);
+                System.out.println("News obnovlen vse ok " + newsTitleEn);
                 return;
             }
             throw new DAOException("Wrong review data");
         } catch (SQLException e) {
-            throw new DAOException("Review sql error", e);
+            throw new DAOException("News sql error", e);
         } catch (ConnectionPoolException e) {
             throw new DAOException("Review pool connection error", e);
         } finally {
-            if (st != null) {
-                try {
-                    st.close();
-                } catch (SQLException e) {
-                    throw new DAOException("Exception while closing statement", e);
-                }
-            }
-            try {
-                ConnectionPoolSQLDAO.getInstance().returnConnection(con);
-            } catch (ConnectionPoolException e) {
-                throw new DAOException("Exception while returning connection", e);
-            }
+            DAOHelper.closeResource(con, st);
         }
     }
 
@@ -152,25 +135,7 @@ public class NewsSQLDAO implements NewsDAO {
         } catch (ConnectionPoolException e) {
             throw new DAOException("Actor pool connection error", e);
         } finally {
-            if (rs != null) {
-                try {
-                    rs.close();
-                } catch (SQLException e) {
-                    throw new DAOException("Exception while closing result set", e);
-                }
-            }
-            if (st != null) {
-                try {
-                    st.close();
-                } catch (SQLException e) {
-                    throw new DAOException("Exception while closing statement", e);
-                }
-            }
-            try {
-                ConnectionPoolSQLDAO.getInstance().returnConnection(con);
-            } catch (ConnectionPoolException e) {
-                throw new DAOException("Exception while returning connection", e);
-            }
+            DAOHelper.closeResource(con, st, rs);
         }
     }
 
@@ -195,18 +160,7 @@ public class NewsSQLDAO implements NewsDAO {
         } catch (ConnectionPoolException e) {
             throw new DAOException("Movie pool connection error", e);
         } finally {
-            if (st != null) {
-                try {
-                    st.close();
-                } catch (SQLException e) {
-                    throw new DAOException("Exception while closing statement", e);
-                }
-            }
-            try {
-                ConnectionPoolSQLDAO.getInstance().returnConnection(con);
-            } catch (ConnectionPoolException e) {
-                throw new DAOException("Exception while returning connection", e);
-            }
+            DAOHelper.closeResource(con, st);
         }
     }
 
@@ -230,18 +184,7 @@ public class NewsSQLDAO implements NewsDAO {
         } catch (ConnectionPoolException e) {
             throw new DAOException("Movie pool connection error", e);
         } finally {
-            if (st != null) {
-                try {
-                    st.close();
-                } catch (SQLException e) {
-                    throw new DAOException("Exception while closing statement", e);
-                }
-            }
-            try {
-                ConnectionPoolSQLDAO.getInstance().returnConnection(con);
-            } catch (ConnectionPoolException e) {
-                throw new DAOException("Exception while returning connection", e);
-            }
+            DAOHelper.closeResource(con, st);
         }
     }
 
@@ -265,18 +208,7 @@ public class NewsSQLDAO implements NewsDAO {
         } catch (ConnectionPoolException e) {
             throw new DAOException("Movie pool connection error", e);
         } finally {
-            if (st != null) {
-                try {
-                    st.close();
-                } catch (SQLException e) {
-                    throw new DAOException("Exception while closing statement", e);
-                }
-            }
-            try {
-                ConnectionPoolSQLDAO.getInstance().returnConnection(con);
-            } catch (ConnectionPoolException e) {
-                throw new DAOException("Exception while returning connection", e);
-            }
+            DAOHelper.closeResource(con, st);
         }
     }
 
@@ -302,18 +234,7 @@ public class NewsSQLDAO implements NewsDAO {
         } catch (ConnectionPoolException e) {
             throw new DAOException("Movie pool connection error", e);
         } finally {
-            if (st != null) {
-                try {
-                    st.close();
-                } catch (SQLException e) {
-                    throw new DAOException("Exception while closing statement", e);
-                }
-            }
-            try {
-                ConnectionPoolSQLDAO.getInstance().returnConnection(con);
-            } catch (ConnectionPoolException e) {
-                throw new DAOException("Exception while returning connection", e);
-            }
+            DAOHelper.closeResource(con, st);
         }
     }
 
@@ -348,25 +269,61 @@ public class NewsSQLDAO implements NewsDAO {
         } catch (ConnectionPoolException e) {
             throw new DAOException("Movie pool connection error", e);
         } finally {
-            if (rs != null) {
-                try {
-                    rs.close();
-                } catch (SQLException e) {
-                    throw new DAOException("Exception while closing result set", e);
-                }
+            DAOHelper.closeResource(con, st, rs);
+        }
+    }
+
+    @Override
+    public News getLastInsertedNews() throws DAOException {
+        Connection con = null;
+        PreparedStatement st = null;
+        ResultSet rs = null;
+        try {
+            con = ConnectionPoolSQLDAO.getInstance().takeConnection();
+
+            st = con.prepareStatement(LAST_INSERTED_NEWS);
+            rs = st.executeQuery();
+
+            News news = null;
+            if (rs.next()) {
+                news = new News();
+                news.setId(rs.getInt(NEWS_ID));
+                news.setTitleRu(rs.getString(NEWS_TITLE_RU));
+                news.setTitleEn(rs.getString(NEWS_TITLE_EN));
+                news.setTextRu(rs.getString(NEWS_TEXT_RU));
+                news.setTextEn(rs.getString(NEWS_TEXT_EN));
             }
-            if (st != null) {
-                try {
-                    st.close();
-                } catch (SQLException e) {
-                    throw new DAOException("Exception while closing statement", e);
-                }
+            return news;
+
+        } catch (SQLException e) {
+            throw new DAOException("News sql error", e);
+        } catch (ConnectionPoolException e) {
+            throw new DAOException("News pool connection error", e);
+        } finally {
+            DAOHelper.closeResource(con, st, rs);
+        }
+    }
+
+    @Override
+    public void deleteNews(int id) throws DAOException {
+        Connection con = null;
+        PreparedStatement st = null;
+        try {
+            con = ConnectionPoolSQLDAO.getInstance().takeConnection();
+            st = con.prepareStatement(DELETE_NEWS_BY_ID);
+            st.setInt(1, id);
+            int update = st.executeUpdate();
+            if (update > 0) {
+                System.out.println("News udalen vse ok" + id);
+                return;
             }
-            try {
-                ConnectionPoolSQLDAO.getInstance().returnConnection(con);
-            } catch (ConnectionPoolException e) {
-                throw new DAOException("Exception while returning connection", e);
-            }
+            throw new DAOException("Wrong movie data");
+        } catch (SQLException e) {
+            throw new DAOException("News sql error", e);
+        } catch (ConnectionPoolException e) {
+            throw new DAOException("News pool connection error", e);
+        } finally {
+            DAOHelper.closeResource(con, st);
         }
     }
 

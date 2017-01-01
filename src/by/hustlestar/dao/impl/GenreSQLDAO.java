@@ -3,8 +3,9 @@ package by.hustlestar.dao.impl;
 import by.hustlestar.bean.entity.Genre;
 import by.hustlestar.dao.exception.DAOException;
 import by.hustlestar.dao.iface.GenreDAO;
-import by.hustlestar.dao.impl.pool.ConnectionPoolSQLDAO;
-import by.hustlestar.dao.impl.pool.ConnectionPoolException;
+import by.hustlestar.dao.pool.ConnectionPoolSQLDAO;
+import by.hustlestar.dao.pool.ConnectionPoolException;
+import by.hustlestar.dao.util.DAOHelper;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -53,25 +54,7 @@ public class GenreSQLDAO implements GenreDAO {
         } catch (ConnectionPoolException e) {
             throw new DAOException("Genre pool connection error", e);
         } finally {
-            if (rs != null) {
-                try {
-                    rs.close();
-                } catch (SQLException e) {
-                    throw new DAOException("Exception while closing result set", e);
-                }
-            }
-            if (st != null) {
-                try {
-                    st.close();
-                } catch (SQLException e) {
-                    throw new DAOException("Exception while closing statement", e);
-                }
-            }
-            try {
-                ConnectionPoolSQLDAO.getInstance().returnConnection(con);
-            } catch (ConnectionPoolException e) {
-                throw new DAOException("Exception while returning connection", e);
-            }
+            DAOHelper.closeResource(con, st, rs);
         }
     }
 
@@ -87,7 +70,7 @@ public class GenreSQLDAO implements GenreDAO {
             st.setString(3, nameEn);
             int update = st.executeUpdate();
             if (update > 0) {
-                System.out.println("Country dobavlen vse ok "+nameEn+" "+nameRu);
+                System.out.println("Genre dobavlen vse ok "+nameEn+" "+nameRu);
                 return;
             }
             throw new DAOException("Wrong review data");
@@ -96,18 +79,7 @@ public class GenreSQLDAO implements GenreDAO {
         } catch (ConnectionPoolException e) {
             throw new DAOException("Review pool connection error", e);
         } finally {
-            if (st != null) {
-                try {
-                    st.close();
-                } catch (SQLException e) {
-                    throw new DAOException("Exception while closing statement", e);
-                }
-            }
-            try {
-                ConnectionPoolSQLDAO.getInstance().returnConnection(con);
-            } catch (ConnectionPoolException e) {
-                throw new DAOException("Exception while returning connection", e);
-            }
+            DAOHelper.closeResource(con, st);
         }
     }
 
@@ -122,7 +94,7 @@ public class GenreSQLDAO implements GenreDAO {
             st.setString(2, nameEn);
             int update = st.executeUpdate();
             if (update > 0) {
-                System.out.println("Review udalen vse ok  "+intMovieID);
+                System.out.println("Genre udalen vse ok  "+intMovieID);
                 return;
             }
             throw new DAOException("Wrong review data");
@@ -131,18 +103,7 @@ public class GenreSQLDAO implements GenreDAO {
         } catch (ConnectionPoolException e) {
             throw new DAOException("Movie pool connection error", e);
         } finally {
-            if (st != null) {
-                try {
-                    st.close();
-                } catch (SQLException e) {
-                    throw new DAOException("Exception while closing statement", e);
-                }
-            }
-            try {
-                ConnectionPoolSQLDAO.getInstance().returnConnection(con);
-            } catch (ConnectionPoolException e) {
-                throw new DAOException("Exception while returning connection", e);
-            }
+            DAOHelper.closeResource(con, st);
         }
     }
 }

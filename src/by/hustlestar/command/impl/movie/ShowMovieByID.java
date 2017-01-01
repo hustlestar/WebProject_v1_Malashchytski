@@ -31,6 +31,7 @@ public class ShowMovieByID implements Command {
     private static final String AMOUNT_OF_PAGES = "noOfPages";
     private static final String CURRENT_PAGE = "currentPage";
     private static final int RECORDS_PER_PAGE = 5;
+    private static final String AMOUNT_OF_REVIEWS = "noOfReviews";
 
     private static final String ID = "id";
 
@@ -60,6 +61,7 @@ public class ShowMovieByID implements Command {
 
             int numberOfReviews = movieService.countReviewsForMovie(id, lang);
             int noOfPages = (int) Math.ceil(numberOfReviews * 1.0 / RECORDS_PER_PAGE);
+            request.setAttribute(AMOUNT_OF_REVIEWS, numberOfReviews);
             request.setAttribute(AMOUNT_OF_PAGES, noOfPages);
             request.setAttribute(CURRENT_PAGE, page);
 
