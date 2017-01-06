@@ -28,7 +28,7 @@ class AdminUtil {
         String userType;
         AdminService adminService=null;
         Object object = request.getSession(false).getAttribute(USER);
-        if (object instanceof User){
+        if (object.getClass().equals(User.class)){
             User user = (User) object;
             userType = user.getType();
             if (userType.equals(ADMIN) || userType.equals(MODER))

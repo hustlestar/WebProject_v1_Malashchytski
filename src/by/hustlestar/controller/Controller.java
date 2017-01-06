@@ -2,6 +2,7 @@ package by.hustlestar.controller;
 
 import by.hustlestar.bean.entity.User;
 import by.hustlestar.command.Command;
+import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -17,7 +18,7 @@ import java.io.IOException;
 public class Controller extends HttpServlet {
 
     private static final long serialVersionUID = 1L;
-    private static final Logger logger = LogManager.getRootLogger();
+    private static final Logger logger = LogManager.getLogger(Controller.class);
 
     private static final String ERROR_PAGE = "WEB-INF/jsp/error.jsp";
 
@@ -33,44 +34,36 @@ public class Controller extends HttpServlet {
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
-        /*String commandName = request.getParameter(COMMAND);
-        Command command  = CommandProvider.getInstance().getCommand(commandName);
-        command.execute(request, response);*/
         processRequest(request, response);
     }
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        /*String commandName = request.getParameter(COMMAND);
-        Command command  = CommandProvider.getInstance().getCommand(commandName);
-        command.execute(request, response);*/
         processRequest(request, response);
     }
 
     private void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String commandString = request.getParameter(COMMAND);
-        logger.info("Controller processRequest() - commandName = {}", commandString);
-
+        logger.log(Level.INFO, "Controller processRequest() - commandName = {}", commandString);
         if (commandString != null && !commandString.isEmpty()) {
             try {
                 User user = (User) request.getSession(false).getAttribute(USER);
                 String type;
                 if (user != null) {
                     type = user.getType();
-                } else{
+                } else {
                     type = GUEST;
                 }
                 Command command = CommandProvider.getInstance().getCommandForUser(type, commandString);
-                if (command==null){
-                    logger.error("Access without permission from client");
+                if (command == null) {
+                    logger.log(Level.ERROR, "Access without permission from client");
                     request.setAttribute(ERROR, MESSAGE_OF_ERROR);
-                    response.sendRedirect(ERROR_PAGE);
+                    request.getRequestDispatcher(ERROR_PAGE).forward(request, response);
                 } else {
                     command.execute(request, response);
                 }
             } catch (IllegalArgumentException ex) {
-                logger.error("404 error, client requests a nonexistent command", ex);
+                logger.log(Level.ERROR, "404 error, client requests a nonexistent command", ex);
                 response.sendError(404);
             }
         } else {

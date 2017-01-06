@@ -3,6 +3,7 @@ package by.hustlestar.command.impl.admin;
 import by.hustlestar.command.util.CommandsUtil;
 import by.hustlestar.service.exception.ServiceException;
 import by.hustlestar.service.iface.AdminService;
+import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -15,12 +16,8 @@ import java.io.IOException;
  * Created by Hustler on 21.11.2016.
  */
 public class DeleteReview implements by.hustlestar.command.Command {
-    private static final Logger LOGGER = LogManager.getLogger();
+    private static final Logger logger = LogManager.getLogger(DeleteReview.class);
     private static final String ERROR_PAGE = "WEB-INF/jsp/error.jsp";
-
-    private static final String CONTENT_TYPE = "text/html; charset=UTF-8";
-    private static final String CHARACTER_ENCODING = "UTF-8";
-
 
     private static final String MOVIE_ID = "movieID";
     private static final String USER_NICKNAME = "userNickname";
@@ -31,15 +28,11 @@ public class DeleteReview implements by.hustlestar.command.Command {
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-        response.setContentType(CONTENT_TYPE);
-        request.setCharacterEncoding(CHARACTER_ENCODING);
-
 
         String previousQuery = CommandsUtil.getPreviousQuery(request);
 
         String movieID = request.getParameter(MOVIE_ID);
         String userNickname = request.getParameter(USER_NICKNAME);
-
 
         AdminService adminService = AdminUtil.getAdminService(request, response);
 
@@ -48,7 +41,7 @@ public class DeleteReview implements by.hustlestar.command.Command {
                 adminService.deleteReview(movieID, userNickname);
                 response.sendRedirect(previousQuery);
             } catch (ServiceException e) {
-                LOGGER.error(e.getMessage(), e);
+                logger.log(Level.ERROR, e.getMessage(), e);
                 request.setAttribute(ERROR, MESSAGE_OF_ERROR);
                 //redirect on same page should be and print error
                 request.getRequestDispatcher(ERROR_PAGE).forward(request, response);

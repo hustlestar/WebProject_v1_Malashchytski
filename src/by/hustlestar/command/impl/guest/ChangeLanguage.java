@@ -1,4 +1,4 @@
-package by.hustlestar.command.impl.common;
+package by.hustlestar.command.impl.guest;
 
 import by.hustlestar.command.Command;
 import by.hustlestar.command.util.CommandsUtil;

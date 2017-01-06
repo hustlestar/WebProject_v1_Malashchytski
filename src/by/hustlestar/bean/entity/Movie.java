@@ -138,23 +138,45 @@ public class Movie {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Movie)) return false;
+        if (o == null || getClass() != o.getClass()) return false;
 
         Movie movie = (Movie) o;
 
-        if (getYear() != movie.getYear()) return false;
-        if (getBudget() != movie.getBudget()) return false;
-        if (getGross() != movie.getGross()) return false;
-        return getTitleRu() != null ? getTitleRu().equals(movie.getTitleRu()) : movie.getTitleRu() == null;
-
+        if (id != movie.id) return false;
+        if (year != movie.year) return false;
+        if (budget != movie.budget) return false;
+        if (gross != movie.gross) return false;
+        if (Double.compare(movie.avgRating, avgRating) != 0) return false;
+        if (ratingVotes != movie.ratingVotes) return false;
+        if (titleRu != null ? !titleRu.equals(movie.titleRu) : movie.titleRu != null) return false;
+        if (titleEn != null ? !titleEn.equals(movie.titleEn) : movie.titleEn != null) return false;
+        if (director != null ? !director.equals(movie.director) : movie.director != null) return false;
+        if (countries != null ? !countries.equals(movie.countries) : movie.countries != null) return false;
+        if (reviews != null ? !reviews.equals(movie.reviews) : movie.reviews != null) return false;
+        if (ratings != null ? !ratings.equals(movie.ratings) : movie.ratings != null) return false;
+        if (genres != null ? !genres.equals(movie.genres) : movie.genres != null) return false;
+        return actors != null ? actors.equals(movie.actors) : movie.actors == null;
     }
 
     @Override
     public int hashCode() {
-        int result = getTitleRu() != null ? getTitleRu().hashCode() : 0;
-        result = 31 * result + getYear();
-        result = 31 * result + (int) (getBudget() ^ (getBudget() >>> 32));
-        result = 31 * result + (int) (getGross() ^ (getGross() >>> 32));
+        int result;
+        long temp;
+        result = id;
+        result = 31 * result + (titleRu != null ? titleRu.hashCode() : 0);
+        result = 31 * result + (titleEn != null ? titleEn.hashCode() : 0);
+        result = 31 * result + year;
+        result = 31 * result + (int) (budget ^ (budget >>> 32));
+        result = 31 * result + (int) (gross ^ (gross >>> 32));
+        result = 31 * result + (director != null ? director.hashCode() : 0);
+        result = 31 * result + (countries != null ? countries.hashCode() : 0);
+        result = 31 * result + (reviews != null ? reviews.hashCode() : 0);
+        result = 31 * result + (ratings != null ? ratings.hashCode() : 0);
+        result = 31 * result + (genres != null ? genres.hashCode() : 0);
+        result = 31 * result + (actors != null ? actors.hashCode() : 0);
+        temp = Double.doubleToLongBits(avgRating);
+        result = 31 * result + (int) (temp ^ (temp >>> 32));
+        result = 31 * result + ratingVotes;
         return result;
     }
 }

@@ -3,6 +3,7 @@ package by.hustlestar.command.impl.admin;
 import by.hustlestar.command.util.QueryUtil;
 import by.hustlestar.service.exception.ServiceException;
 import by.hustlestar.service.iface.AdminService;
+import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -18,10 +19,7 @@ public class AddNews implements by.hustlestar.command.Command {
     private static final String JSP_PAGE_PATH = "WEB-INF/jsp/addNewsPage.jsp";
     private static final String REDIRECT = "Controller?command=add-news";
 
-    private static final Logger LOGGER = LogManager.getLogger();
-
-    private static final String CONTENT_TYPE = "text/html; charset=UTF-8";
-    private static final String CHARACTER_ENCODING = "UTF-8";
+    private static final Logger logger = LogManager.getLogger(AddNews.class);
 
     private static final String NEWS_TITLE_RU = "newsTitleRu";
     private static final String NEWS_TITLE_EN = "newsTitleEn";
@@ -36,8 +34,6 @@ public class AddNews implements by.hustlestar.command.Command {
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         QueryUtil.saveCurrentQueryToSession(request);
-        response.setContentType(CONTENT_TYPE);
-        request.setCharacterEncoding(CHARACTER_ENCODING);
 
         String newsTitleRu = request.getParameter(NEWS_TITLE_RU);
         String newsTitleEn = request.getParameter(NEWS_TITLE_EN);
@@ -56,7 +52,7 @@ public class AddNews implements by.hustlestar.command.Command {
                 response.sendRedirect(REDIRECT);
                 //request.getRequestDispatcher(JSP_PAGE_PATH).forward(request, response);
             } catch (ServiceException e) {
-                LOGGER.error(e.getMessage(), e);
+                logger.log(Level.ERROR, e.getMessage(), e);
                 request.setAttribute(ERROR, MESSAGE_OF_ERROR);
                 request.getRequestDispatcher(JSP_PAGE_PATH).forward(request, response);
             }

@@ -1,12 +1,11 @@
-package by.hustlestar.command.impl.review;
+package by.hustlestar.command.impl.guest;
 
-import by.hustlestar.bean.entity.Movie;
-import by.hustlestar.bean.entity.Review;
-import by.hustlestar.command.util.CommandsUtil;
+import by.hustlestar.bean.entity.News;
 import by.hustlestar.command.util.QueryUtil;
 import by.hustlestar.service.ServiceFactory;
 import by.hustlestar.service.exception.ServiceException;
-import by.hustlestar.service.iface.MovieService;
+import by.hustlestar.service.iface.NewsService;
+import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -19,16 +18,13 @@ import java.util.List;
 /**
  * Created by dell on 08.12.2016.
  */
-public class ViewLatestReviews implements by.hustlestar.command.Command {
-    private static final String JSP_PAGE_PATH = "WEB-INF/jsp/latestReviewsPage.jsp";
+public class ViewLatestNews implements by.hustlestar.command.Command {
+    private static final String JSP_PAGE_PATH = "WEB-INF/jsp/latestNewsPage.jsp";
     private static final String ERROR_PAGE = "WEB-INF/jsp/error.jsp";
-    private static final Logger LOGGER = LogManager.getLogger();
 
+    private static final Logger logger = LogManager.getLogger(ViewLatestNews.class);
 
-    private static final String CONTENT_TYPE = "text/html; charset=UTF-8";
-    private static final String CHARACTER_ENCODING = "UTF-8";
-
-    private static final String REQUEST_ATTRIBUTE = "latest_movies_reviews";
+    private static final String REQUEST_ATTRIBUTE = "latest_news";
 
     private static final String ERROR = "errorMessage";
     private static final String MESSAGE_OF_ERROR = "No news matching your query";
@@ -36,19 +32,16 @@ public class ViewLatestReviews implements by.hustlestar.command.Command {
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         QueryUtil.saveCurrentQueryToSession(request);
-        response.setContentType(CONTENT_TYPE);
-        request.setCharacterEncoding(CHARACTER_ENCODING);
 
-        List<Movie> movies;
-        MovieService movieService = ServiceFactory.getInstance().getMovieService();
-        String lang = (String) CommandsUtil.getLanguage(request);
+        List<News> news;
+        NewsService newsService = ServiceFactory.getInstance().getNewsService();
 
         try {
-            movies = movieService.showLatestReviews(lang);
-            request.setAttribute(REQUEST_ATTRIBUTE, movies);
+            news = newsService.showLatestNews();
+            request.setAttribute(REQUEST_ATTRIBUTE, news);
             request.getRequestDispatcher(JSP_PAGE_PATH).forward(request, response);
         } catch (ServiceException e) {
-            LOGGER.error(e.getMessage(), e);
+            logger.log(Level.ERROR, e.getMessage(), e);
             request.setAttribute(ERROR, MESSAGE_OF_ERROR);
             request.getRequestDispatcher(ERROR_PAGE).forward(request, response);
         }

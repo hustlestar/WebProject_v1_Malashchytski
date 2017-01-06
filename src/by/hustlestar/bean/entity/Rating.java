@@ -1,9 +1,11 @@
 package by.hustlestar.bean.entity;
 
+import java.io.Serializable;
+
 /**
  * Created by Hustler on 07.11.2016.
  */
-public class Rating {
+public class Rating implements Serializable {
     private int movieID;
     private String userNickname;
     private int ratingScore;
@@ -30,5 +32,25 @@ public class Rating {
 
     public void setRatingScore(int ratingScore) {
         this.ratingScore = ratingScore;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Rating rating = (Rating) o;
+
+        if (movieID != rating.movieID) return false;
+        if (ratingScore != rating.ratingScore) return false;
+        return userNickname != null ? userNickname.equals(rating.userNickname) : rating.userNickname == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = movieID;
+        result = 31 * result + (userNickname != null ? userNickname.hashCode() : 0);
+        result = 31 * result + ratingScore;
+        return result;
     }
 }

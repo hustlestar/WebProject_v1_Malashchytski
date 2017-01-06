@@ -79,4 +79,35 @@ public class Review {
     public void setReviewDate(Timestamp reviewDate) {
         this.reviewDate = reviewDate;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Review review1 = (Review) o;
+
+        if (movieID != review1.movieID) return false;
+        if (thumbsUp != review1.thumbsUp) return false;
+        if (thumbsDown != review1.thumbsDown) return false;
+        if (userNickname != null ? !userNickname.equals(review1.userNickname) : review1.userNickname != null)
+            return false;
+        if (review != null ? !review.equals(review1.review) : review1.review != null) return false;
+        if (reviewLang != null ? !reviewLang.equals(review1.reviewLang) : review1.reviewLang != null) return false;
+        if (reviewDate != null ? !reviewDate.equals(review1.reviewDate) : review1.reviewDate != null) return false;
+        return reviewScores != null ? reviewScores.equals(review1.reviewScores) : review1.reviewScores == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = movieID;
+        result = 31 * result + (userNickname != null ? userNickname.hashCode() : 0);
+        result = 31 * result + (review != null ? review.hashCode() : 0);
+        result = 31 * result + (reviewLang != null ? reviewLang.hashCode() : 0);
+        result = 31 * result + (reviewDate != null ? reviewDate.hashCode() : 0);
+        result = 31 * result + (reviewScores != null ? reviewScores.hashCode() : 0);
+        result = 31 * result + thumbsUp;
+        result = 31 * result + thumbsDown;
+        return result;
+    }
 }

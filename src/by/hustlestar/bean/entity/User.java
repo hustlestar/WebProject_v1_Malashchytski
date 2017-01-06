@@ -86,20 +86,30 @@ public class User {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof User)) return false;
+        if (o == null || getClass() != o.getClass()) return false;
 
         User user = (User) o;
 
-        if (getNickname() != null ? !getNickname().equals(user.getNickname()) : user.getNickname() != null)
-            return false;
-        return getEmail() != null ? getEmail().equals(user.getEmail()) : user.getEmail() == null;
-
+        if (reputation != user.reputation) return false;
+        if (nickname != null ? !nickname.equals(user.nickname) : user.nickname != null) return false;
+        if (email != null ? !email.equals(user.email) : user.email != null) return false;
+        if (type != null ? !type.equals(user.type) : user.type != null) return false;
+        if (sex != null ? !sex.equals(user.sex) : user.sex != null) return false;
+        if (registred != null ? !registred.equals(user.registred) : user.registred != null) return false;
+        if (reviews != null ? !reviews.equals(user.reviews) : user.reviews != null) return false;
+        return ratings != null ? ratings.equals(user.ratings) : user.ratings == null;
     }
 
     @Override
     public int hashCode() {
-        int result = getNickname() != null ? getNickname().hashCode() : 0;
-        result = 31 * result + (getEmail() != null ? getEmail().hashCode() : 0);
+        int result = nickname != null ? nickname.hashCode() : 0;
+        result = 31 * result + (email != null ? email.hashCode() : 0);
+        result = 31 * result + (type != null ? type.hashCode() : 0);
+        result = 31 * result + (sex != null ? sex.hashCode() : 0);
+        result = 31 * result + (registred != null ? registred.hashCode() : 0);
+        result = 31 * result + (reviews != null ? reviews.hashCode() : 0);
+        result = 31 * result + (ratings != null ? ratings.hashCode() : 0);
+        result = 31 * result + reputation;
         return result;
     }
 }

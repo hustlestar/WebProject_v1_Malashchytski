@@ -41,4 +41,26 @@ public class ReviewScore {
         this.userNicknameWheScoredReview = userNicknameWheScoredReview;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        ReviewScore that = (ReviewScore) o;
+
+        if (movieID != that.movieID) return false;
+        if (score != that.score) return false;
+        if (userNicknameWhoReviewed != null ? !userNicknameWhoReviewed.equals(that.userNicknameWhoReviewed) : that.userNicknameWhoReviewed != null)
+            return false;
+        return userNicknameWheScoredReview != null ? userNicknameWheScoredReview.equals(that.userNicknameWheScoredReview) : that.userNicknameWheScoredReview == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = movieID;
+        result = 31 * result + (userNicknameWhoReviewed != null ? userNicknameWhoReviewed.hashCode() : 0);
+        result = 31 * result + score;
+        result = 31 * result + (userNicknameWheScoredReview != null ? userNicknameWheScoredReview.hashCode() : 0);
+        return result;
+    }
 }

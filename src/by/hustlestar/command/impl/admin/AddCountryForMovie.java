@@ -2,9 +2,9 @@ package by.hustlestar.command.impl.admin;
 
 import by.hustlestar.command.Command;
 import by.hustlestar.command.util.CommandsUtil;
-import by.hustlestar.command.util.QueryUtil;
 import by.hustlestar.service.exception.ServiceException;
 import by.hustlestar.service.iface.AdminService;
+import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -18,10 +18,7 @@ import java.io.IOException;
  */
 public class AddCountryForMovie implements Command {
 
-    private static final Logger LOGGER = LogManager.getLogger();
-
-    private static final String CONTENT_TYPE = "text/html; charset=UTF-8";
-    private static final String CHARACTER_ENCODING = "UTF-8";
+    private static final Logger logger = LogManager.getLogger(AddCountryForMovie.class);
 
     private static final String ID = "id";
     private static final String NAME_RU = "nameRu";
@@ -33,8 +30,6 @@ public class AddCountryForMovie implements Command {
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-        response.setContentType(CONTENT_TYPE);
-        request.setCharacterEncoding(CHARACTER_ENCODING);
 
         String movieID = request.getParameter(ID);
         String nameRu = request.getParameter(NAME_RU);
@@ -49,7 +44,7 @@ public class AddCountryForMovie implements Command {
 
                 response.sendRedirect(previousQuery);
             }  catch (ServiceException e) {
-                LOGGER.error(e.getMessage(), e);
+                logger.log(Level.ERROR, e.getMessage(), e);
                 request.setAttribute(ERROR, MESSAGE_OF_ERROR);
                 request.getRequestDispatcher(previousQuery).forward(request, response);
             }

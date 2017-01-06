@@ -20,7 +20,7 @@ public class MyProfile implements Command {
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         Object obj = request.getSession(true).getAttribute(USER);
-        if (obj != null && obj instanceof User) {
+        if (obj != null && obj.getClass().equals(User.class)) {
             request.getRequestDispatcher(PROFILE_PAGE_PATH).forward(request, response);
         } else {
             response.sendRedirect(LOGIN_PAGE);

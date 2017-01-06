@@ -22,11 +22,9 @@ public class QueryUtil {
 
         if(queryString == null){
             session.setAttribute(SESSION_PREV_QUERY, requestURI);
-            System.out.println(requestURI);
         }
         else {
             session.setAttribute(SESSION_PREV_QUERY, requestURI + QUERY_SEPARATOR + queryString);
-            System.out.println(requestURI + QUERY_SEPARATOR + queryString);
         }
     }
 }
