@@ -7,8 +7,6 @@ import by.hustlestar.dao.exception.DAOException;
 import by.hustlestar.dao.pool.ConnectionPoolSQLDAO;
 import by.hustlestar.dao.pool.ConnectionPoolException;
 import by.hustlestar.dao.util.DAOHelper;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -18,7 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by Hustler on 01.11.2016.
+ * MovieSQLDAO is an implementation of MovieDAO for MySQL.
  */
 public class MovieSQLDAO implements MovieDAO {
     private final static String SHOW_ALL =
@@ -27,7 +25,8 @@ public class MovieSQLDAO implements MovieDAO {
                     "GROUP BY m_id ORDER BY m_rating DESC LIMIT ?, ?;";
 
     private final static String SHOW_BY_ID =
-            "SELECT m_id, m_title_ru, m_title_en, m_year, m_budget, m_gross, AVG(rating.rating_score) AS m_rating, COUNT(rating.rating_score) AS m_votes FROM movies\n" +
+            "SELECT m_id, m_title_ru, m_title_en, m_year, m_budget, m_gross, m_image," +
+                    "AVG(rating.rating_score) AS m_rating, COUNT(rating.rating_score) AS m_votes FROM movies\n" +
                     "LEFT JOIN rating\n" +
                     "ON movies.m_id=rating.movies_m_id\n" +
                     "WHERE m_id=?;";
@@ -71,7 +70,8 @@ public class MovieSQLDAO implements MovieDAO {
             "UPDATE `jackdb`.`movies`\n" +
                     "SET m_title_ru = ?, m_title_en = ?, `m_year` = ?, `m_budget` = ?,`m_gross` = ?\n" +
                     "WHERE `m_id` = ?;\n";
-
+    private static final String UPDATE_IMAGE =
+            "UPDATE movies SET m_image= ? WHERE m_id= ?;";
     private static final String MOVIES_FOR_ACTOR =
             "SELECT DISTINCT m_id, m_title_ru, m_title_en, IFNULL(rating.m_rating, 0) AS m_rating, IFNULL(rating.m_votes, 0) AS m_votes\n" +
                     "FROM movies\n" +
@@ -88,9 +88,10 @@ public class MovieSQLDAO implements MovieDAO {
                     "WHERE news_about_movies.news_n_id = ?;";
     private static final String MOVIES_WITH_LATEST_REVIEWS =
             "SELECT m_id, m_title_ru, m_title_en,\n" +
-                    "user_u_nick, review, review_date\n" +
+                    "user_u_nick, review, review_date, u_image\n" +
                     "FROM movies\n" +
                     "LEFT JOIN reviews ON m_id= reviews.movies_m_id \n" +
+                    "LEFT JOIN user ON user_u_nick= u_nick \n" +
                     "WHERE reviews.review_lang = ?\n" +
                     "ORDER BY reviews.review_date DESC LIMIT 10;";
     private static final String SHOW_LATEST_MOVIES =
@@ -114,6 +115,7 @@ public class MovieSQLDAO implements MovieDAO {
     private static final String M_YEAR = "m_year";
     private static final String M_BUDGET = "m_budget";
     private static final String M_GROSS = "m_gross";
+    private static final String M_IMAGE = "m_image";
 
     private static final String R_USER_NICK = "user_u_nick";
     private static final String R_REVIEW = "review";
@@ -122,8 +124,18 @@ public class MovieSQLDAO implements MovieDAO {
     private static final String M_RATING = "m_rating";
     private static final String M_VOTES = "m_votes";
 
+    private static final String U_IMAGE = "u_image";
+
     private static final String AMOUNT = "amount";
 
+    /**
+     * This method is used to get list of movies from data source.
+     *
+     * @param offset      number to begin with
+     * @param noOfRecords number of records to return
+     * @return list of filled movie beans
+     * @throws DAOException if some error occurred while processing data.
+     */
     @Override
     public List<Movie> getFullMovieList(int offset, int noOfRecords) throws DAOException {
         Connection con = null;
@@ -160,6 +172,15 @@ public class MovieSQLDAO implements MovieDAO {
         }
     }
 
+    /**
+     * This method is used to get movie list belonging to a particular country from data source.
+     *
+     * @param country        of movie
+     * @param offset         first entry offset
+     * @param recordsPerPage number of records to return
+     * @return list of filled movie beans
+     * @throws DAOException if some error occurred while processing data.
+     */
     @Override
     public List<Movie> getMoviesByCountry(String country, int offset, int recordsPerPage) throws DAOException {
         Connection con = null;
@@ -197,6 +218,15 @@ public class MovieSQLDAO implements MovieDAO {
         }
     }
 
+    /**
+     * This method is used to get movies of a particular genre from data source.
+     *
+     * @param genre          of movie
+     * @param offset         first entry offset
+     * @param recordsPerPage number of records to return
+     * @return list of filled movie beans
+     * @throws DAOException if some error occurred while processing data.
+     */
     @Override
     public List<Movie> getMoviesByGenre(String genre, int offset, int recordsPerPage) throws DAOException {
         Connection con = null;
@@ -233,6 +263,13 @@ public class MovieSQLDAO implements MovieDAO {
         }
     }
 
+    /**
+     * This method is used to search movies into data source.
+     *
+     * @param title of movie
+     * @return list of filled movie beans
+     * @throws DAOException if some error occurred while processing data.
+     */
     @Override
     public List<Movie> findMovieByTitle(String title) throws DAOException {
         Connection con = null;
@@ -269,6 +306,13 @@ public class MovieSQLDAO implements MovieDAO {
         }
     }
 
+    /**
+     * This method is used to get movies by a particular decade.
+     *
+     * @param years of decade
+     * @return list of filled movie beans
+     * @throws DAOException if some error occurred while processing data.
+     */
     @Override
     public List<Movie> getMoviesOfTenYearsPeriod(int years) throws DAOException {
         Connection con = null;
@@ -304,6 +348,13 @@ public class MovieSQLDAO implements MovieDAO {
         }
     }
 
+    /**
+     * This method is used to get movies of a particular year.
+     *
+     * @param year of movie
+     * @return list of filled movie beans
+     * @throws DAOException if some error occurred while processing data.
+     */
     @Override
     public List<Movie> getMoviesOfYear(int year) throws DAOException {
         Connection con = null;
@@ -338,6 +389,14 @@ public class MovieSQLDAO implements MovieDAO {
         }
     }
 
+    /**
+     * This method is used to get detailed information about a particular
+     * movie from data source.
+     *
+     * @param id of movie
+     * @return filled movie bean
+     * @throws DAOException if some error occurred while processing data.
+     */
     @Override
     public Movie getMovieByID(int id) throws DAOException {
         Connection con = null;
@@ -361,6 +420,7 @@ public class MovieSQLDAO implements MovieDAO {
                 movie.setGross(rs.getLong(M_GROSS));
                 movie.setAvgRating(rs.getDouble(M_RATING));
                 movie.setRatingVotes(rs.getInt(M_VOTES));
+                movie.setImage(rs.getString(M_IMAGE));
             }
             return movie;
 
@@ -373,6 +433,16 @@ public class MovieSQLDAO implements MovieDAO {
         }
     }
 
+    /**
+     * This method is used to insert new entry into data source about some movie
+     *
+     * @param titleRu russian title
+     * @param titleEn english title
+     * @param year    of movie
+     * @param budget  of movie
+     * @param gross   of movie
+     * @throws DAOException if some error occurred while processing data.
+     */
     @Override
     public void addMovie(String titleRu, String titleEn, int year, long budget, long gross) throws DAOException {
         Connection con = null;
@@ -400,6 +470,17 @@ public class MovieSQLDAO implements MovieDAO {
         }
     }
 
+    /**
+     * This method is used to updated information about some movie in data source.
+     *
+     * @param id      of movie
+     * @param titleRu russian title
+     * @param titleEn english title
+     * @param year    of movie
+     * @param budget  of movie
+     * @param gross   of movie
+     * @throws DAOException if some error occurred while processing data.
+     */
     @Override
     public void updateMovie(int id, String titleRu, String titleEn, int year, long budget, long gross) throws DAOException {
         Connection con = null;
@@ -428,6 +509,13 @@ public class MovieSQLDAO implements MovieDAO {
         }
     }
 
+    /**
+     * This method is used to get movies for a particular actor from data source
+     *
+     * @param actorID actor id
+     * @return list of filled movie beans
+     * @throws DAOException if some error occurred while processing data.
+     */
     @Override
     public List<Movie> getMoviesForActor(int actorID) throws DAOException {
         Connection con = null;
@@ -463,6 +551,13 @@ public class MovieSQLDAO implements MovieDAO {
         }
     }
 
+    /**
+     * This method is to get movies for a particular news from data source.
+     *
+     * @param id of movie
+     * @return list of filled movie beans
+     * @throws DAOException if some error occurred while processing data.
+     */
     @Override
     public List<Movie> getMoviesForNews(int id) throws DAOException {
         Connection con = null;
@@ -495,6 +590,13 @@ public class MovieSQLDAO implements MovieDAO {
         }
     }
 
+    /**
+     * This method is used to get movies with the latest reviews from data source.
+     *
+     * @param lang of reviews
+     * @return list of filled movie beans
+     * @throws DAOException if some error occurred while processing data.
+     */
     @Override
     public List<Movie> getMoviesWithLatestReviews(String lang) throws DAOException {
         Connection con = null;
@@ -521,6 +623,7 @@ public class MovieSQLDAO implements MovieDAO {
                 review.setUserNickname(rs.getString(R_USER_NICK));
                 review.setReview(rs.getString(R_REVIEW));
                 review.setReviewDate(rs.getTimestamp(R_REVIEW_DATE));
+                review.setImage(rs.getString(U_IMAGE));
                 reviewList.add(review);
                 movie.setReviews(reviewList);
                 movies.add(movie);
@@ -536,6 +639,12 @@ public class MovieSQLDAO implements MovieDAO {
         }
     }
 
+    /**
+     * This method is used to get the newest movies from data source.
+     *
+     * @return list of filled movie beans
+     * @throws DAOException if some error occurred while processing data.
+     */
     @Override
     public List<Movie> getLatestMovies() throws DAOException {
         Connection con = null;
@@ -569,6 +678,12 @@ public class MovieSQLDAO implements MovieDAO {
         }
     }
 
+    /**
+     * This method is used to count number of movies  available from data source.
+     *
+     * @return number of movies
+     * @throws DAOException if some error occurred while processing data.
+     */
     @Override
     public int countAllMoviesAmount() throws DAOException {
         Connection con = null;
@@ -594,6 +709,13 @@ public class MovieSQLDAO implements MovieDAO {
         }
     }
 
+    /**
+     * This method counts number of movie for a particular country available from data source.
+     *
+     * @param country of movie
+     * @return number of movies
+     * @throws DAOException if some error occurred while processing data.
+     */
     @Override
     public int countMoviesByCountry(String country) throws DAOException {
         Connection con = null;
@@ -620,6 +742,13 @@ public class MovieSQLDAO implements MovieDAO {
         }
     }
 
+    /**
+     * This method is used to count movies of a particular genre available from data source.
+     *
+     * @param genre of movie
+     * @return number of movies
+     * @throws DAOException if some error occurred while processing data.
+     */
     @Override
     public int countMoviesByGenre(String genre) throws DAOException {
         Connection con = null;
@@ -646,6 +775,12 @@ public class MovieSQLDAO implements MovieDAO {
         }
     }
 
+    /**
+     * This method is used to remove movie entry from data source and used only for tests!
+     *
+     * @param id of movie
+     * @throws DAOException if some error occurred while processing data.
+     */
     @Override
     public void deleteMovie(int id) throws DAOException {
         Connection con = null;
@@ -669,6 +804,12 @@ public class MovieSQLDAO implements MovieDAO {
         }
     }
 
+    /**
+     * This method is used to get a last inserted movie from data source.
+     *
+     * @return filled movie bean
+     * @throws DAOException if some error occurred while processing data.
+     */
     @Override
     public Movie getLastInsertedMovie() throws DAOException {
         Connection con = null;
@@ -698,6 +839,37 @@ public class MovieSQLDAO implements MovieDAO {
             throw new DAOException("Movie pool connection error", e);
         } finally {
             DAOHelper.closeResource(con, st, rs);
+        }
+    }
+
+    /**
+     * This method is used to update image path for a particular movie in data source.
+     *
+     * @param id   of movie
+     * @param path to image
+     * @throws DAOException if some error occurred while processing data.
+     */
+    @Override
+    public void updateImage(int id, String path) throws DAOException {
+        Connection con = null;
+        PreparedStatement st = null;
+        try {
+            con = ConnectionPoolSQLDAO.getInstance().takeConnection();
+            st = con.prepareStatement(UPDATE_IMAGE);
+            st.setString(1, path);
+            st.setInt(2, id);
+            int update = st.executeUpdate();
+            if (update > 0) {
+                System.out.println("Movie obnovlen vse ok " + path);
+                return;
+            }
+            throw new DAOException("Wrong review data");
+        } catch (SQLException e) {
+            throw new DAOException("Movie sql error", e);
+        } catch (ConnectionPoolException e) {
+            throw new DAOException("Movie pool connection error", e);
+        } finally {
+            DAOHelper.closeResource(con, st);
         }
     }
 

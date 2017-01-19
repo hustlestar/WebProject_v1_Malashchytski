@@ -14,7 +14,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
- * Created by dell on 06.12.2016.
+ * DeleteMovieForNews class is used to handle client request to
+ * remove any movie from a particular news.
  */
 public class DeleteMovieForNews implements Command {
     private static final Logger logger = LogManager.getLogger(DeleteMovieForNews.class);

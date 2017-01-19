@@ -4,13 +4,13 @@ import by.hustlestar.service.iface.*;
 import by.hustlestar.service.impl.*;
 
 /**
- * Created by Hustler on 31.10.2016.
+ * ServiceFactory represents the factory for obtaining Service objects.
  */
 public class ServiceFactory {
-    private static final ServiceFactory instance = new ServiceFactory();
+    private static final ServiceFactory INSTANCE = new ServiceFactory();
 
     public static ServiceFactory getInstance() {
-        return instance;
+        return INSTANCE;
     }
 
     private MovieService movieService = new MovieServiceImpl();

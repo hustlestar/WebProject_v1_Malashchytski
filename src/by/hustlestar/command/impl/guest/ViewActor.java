@@ -1,7 +1,7 @@
 package by.hustlestar.command.impl.guest;
 
 import by.hustlestar.bean.entity.Actor;
-import by.hustlestar.command.util.QueryUtil;
+import by.hustlestar.command.util.CommandsUtil;
 import by.hustlestar.service.ServiceFactory;
 import by.hustlestar.service.exception.ServiceException;
 import by.hustlestar.service.iface.ActorService;
@@ -15,7 +15,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
- * Created by dell on 05.12.2016.
+ * ViewActor class is used to handle client request to
+ * show page of the particular actor.
  */
 public class ViewActor implements by.hustlestar.command.Command {
     private static final String JSP_PAGE_PATH = "WEB-INF/jsp/actorPage.jsp";
@@ -31,14 +32,14 @@ public class ViewActor implements by.hustlestar.command.Command {
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-        QueryUtil.saveCurrentQueryToSession(request);
+        CommandsUtil.saveCurrentQueryToSession(request);
 
         String id = request.getParameter(ACTOR_ID);
         Actor actor;
 
         ActorService actorService = ServiceFactory.getInstance().getActorService();
         try {
-            actor = actorService.viewActor(id);
+            actor = actorService.getActor(id);
 
             request.setAttribute(REQUEST_ATTRIBUTE, actor);
 

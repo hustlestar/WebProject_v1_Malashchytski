@@ -3,10 +3,16 @@ package by.hustlestar.bean.entity;
 import java.io.Serializable;
 
 /**
- * Created by Hustler on 07.11.2016.
+ * Entity represents country.
  */
 public class Country implements Serializable {
+    /**
+     * country name in russian
+     */
     private String nameRu;
+    /**
+     * country name in english
+     */
     private String nameEn;
 
     public String getNameRu() {

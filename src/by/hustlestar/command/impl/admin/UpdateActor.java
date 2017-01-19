@@ -1,7 +1,7 @@
 package by.hustlestar.command.impl.admin;
 
 import by.hustlestar.command.Command;
-import by.hustlestar.command.util.QueryUtil;
+import by.hustlestar.command.util.CommandsUtil;
 import by.hustlestar.service.exception.ServiceException;
 import by.hustlestar.service.iface.AdminService;
 import org.apache.logging.log4j.Level;
@@ -14,7 +14,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
- * Created by dell on 06.12.2016.
+ * UpdateActor class is used to handle client request to
+ * update any actor information.
  */
 public class UpdateActor implements Command {
     private static final String JSP_PAGE_PATH = "WEB-INF/jsp/addActorPage.jsp";
@@ -33,7 +34,7 @@ public class UpdateActor implements Command {
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-        QueryUtil.saveCurrentQueryToSession(request);
+        CommandsUtil.saveCurrentQueryToSession(request);
 
         String actorID = request.getParameter(ACTOR_ID);
         String nameRu = request.getParameter(NAME_RU);

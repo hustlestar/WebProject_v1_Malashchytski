@@ -2,7 +2,7 @@ package by.hustlestar.command.impl.guest;
 
 import by.hustlestar.bean.entity.Movie;
 import by.hustlestar.command.Command;
-import by.hustlestar.command.util.QueryUtil;
+import by.hustlestar.command.util.CommandsUtil;
 import by.hustlestar.service.ServiceFactory;
 import by.hustlestar.service.exception.ServiceException;
 import by.hustlestar.service.iface.MovieService;
@@ -17,7 +17,8 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * Created by Hustler on 18.11.2016.
+ * ShowMoviesOfTenYearPeriod class is used to handle client request to show
+ * movies by decades.
  */
 public class ShowMoviesOfTenYearPeriod implements Command {
     private static final String JSP_PAGE_PATH = "WEB-INF/jsp/moviesPage.jsp";
@@ -33,7 +34,7 @@ public class ShowMoviesOfTenYearPeriod implements Command {
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-        QueryUtil.saveCurrentQueryToSession(request);
+        CommandsUtil.saveCurrentQueryToSession(request);
 
         String years = request.getParameter(YEARS);
 
@@ -41,7 +42,7 @@ public class ShowMoviesOfTenYearPeriod implements Command {
 
         MovieService movieService = ServiceFactory.getInstance().getMovieService();
         try {
-            movieList = movieService.showMoviesOfTenYearsPeriod(years);
+            movieList = movieService.getMoviesOfTenYearsPeriod(years);
 
             request.setAttribute(REQUEST_ATTRIBUTE, movieList);
 

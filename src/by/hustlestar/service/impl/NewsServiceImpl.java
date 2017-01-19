@@ -15,11 +15,19 @@ import by.hustlestar.service.validation.Validator;
 import java.util.List;
 
 /**
- * Created by dell on 06.12.2016.
+ * This NewsServiceImpl class is an implementation of NewsService interface.
  */
 public class NewsServiceImpl implements NewsService {
+
+    /**
+     * This method is used to show any used by its id.
+     *
+     * @param id id of news
+     * @return News bean entity with filled in fields.
+     * @throws ServiceException if any error occurred while processing method.
+     */
     @Override
-    public News viewNews(String id) throws ServiceException {
+    public News getNews(String id) throws ServiceException {
         if (!Validator.validateNumber(id)) {
             throw new ServiceException("Illegal data input");
         }
@@ -53,8 +61,14 @@ public class NewsServiceImpl implements NewsService {
         return news;
     }
 
+    /**
+     * This method is used show several the most latest news.
+     *
+     * @return list of News bean entities with filled in fields.
+     * @throws ServiceException if any error occurred while processing method.
+     */
     @Override
-    public List<News> showLatestNews() throws ServiceException {
+    public List<News> getLatestNews() throws ServiceException {
         DAOFactory daoFactory = DAOFactory.getInstance();
         NewsDAO dao = daoFactory.getNewsDAO();
         List<News> news;

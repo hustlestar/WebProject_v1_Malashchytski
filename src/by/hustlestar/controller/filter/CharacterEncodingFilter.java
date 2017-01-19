@@ -7,6 +7,10 @@ import org.apache.logging.log4j.Logger;
 import java.io.IOException;
 import javax.servlet.*;
 
+/**
+ * CharacterEncodingFilter class is used to set encoding for body of the
+ * ServletRequest and ServletResponse.
+ */
 public class CharacterEncodingFilter implements Filter {
     private final static Logger logger = LogManager.getLogger(CharacterEncodingFilter.class);
     private static final String CONTENT_TYPE = "text/html; charset=UTF-8";

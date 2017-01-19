@@ -13,7 +13,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
- * Created by Hustler on 21.11.2016.
+ * DeleteReview class is used to handle client request to
+ * remove any review from the system.
  */
 public class DeleteReview implements by.hustlestar.command.Command {
     private static final Logger logger = LogManager.getLogger(DeleteReview.class);

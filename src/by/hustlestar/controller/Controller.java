@@ -2,6 +2,7 @@ package by.hustlestar.controller;
 
 import by.hustlestar.bean.entity.User;
 import by.hustlestar.command.Command;
+import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -13,7 +14,9 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
- * Created by Hustler on 27.10.2016.
+ * FrontController of web-application, which receives HTTP GET and POST requests
+ * from client, processes this request. Then dispatching it to particular
+ * Command for further handling.
  */
 public class Controller extends HttpServlet {
 
@@ -26,7 +29,8 @@ public class Controller extends HttpServlet {
     private static final String USER = "user";
     private static final String GUEST = "guest";
     private static final String ERROR = "errorMessage";
-    private static final String MESSAGE_OF_ERROR = "Cannot update movie";
+    private static final String MESSAGE_OF_ERROR = "You don't have permission to do that.";
+    private static final String MESSAGE_OF_ERROR_2 = "Ooops something went wrong";
 
     public Controller() {
         super();
@@ -43,7 +47,13 @@ public class Controller extends HttpServlet {
     }
 
     private void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String commandString = request.getParameter(COMMAND);
+
+        String commandString;
+        if (ServletFileUpload.isMultipartContent(request)) {
+            commandString = String.valueOf(CommandName.UPLOAD_PHOTO);
+        } else {
+            commandString = request.getParameter(COMMAND);
+        }
         logger.log(Level.INFO, "Controller processRequest() - commandName = {}", commandString);
         if (commandString != null && !commandString.isEmpty()) {
             try {
@@ -64,10 +74,13 @@ public class Controller extends HttpServlet {
                 }
             } catch (IllegalArgumentException ex) {
                 logger.log(Level.ERROR, "404 error, client requests a nonexistent command", ex);
-                response.sendError(404);
+                request.setAttribute(ERROR, MESSAGE_OF_ERROR_2);
+                request.getRequestDispatcher(ERROR_PAGE).forward(request, response);
             }
         } else {
-            response.sendRedirect(ERROR_PAGE);
+            logger.log(Level.ERROR, "No such command");
+            request.setAttribute(ERROR, MESSAGE_OF_ERROR_2);
+            request.getRequestDispatcher(ERROR_PAGE).forward(request, response);
         }
     }
 }

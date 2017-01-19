@@ -14,12 +14,11 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
- * Created by dell on 01.12.2016.
+ * DeleteCountryForMovie class is used to handle client request to
+ * remove any country from a particular movie.
  */
 public class DeleteCountryForMovie implements Command {
     private static final Logger logger = LogManager.getLogger(DeleteCountryForMovie.class);
-
-    private static final String ERROR_PAGE = "WEB-INF/jsp/error.jsp";
 
     private static final String MOVIE_ID = "id";
     private static final String COUNTRY_EN = "country";

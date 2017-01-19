@@ -19,25 +19,26 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Bootstrap Example</title>
+    <title>${addMovie}</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <link rel="stylesheet" href="./src/first.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link rel="shortcut icon" href="images/main/favicon_16x16.png">
 
 </head>
 <body>
 
 <c:import url="template/navbar.jsp"/>
 
-<div class="container-fluid text-center">
+<div class="container-fluid text-center wrapper">
     <div class="row content">
 
         <c:import url="template/sideleft.jsp"/>
 
-        <div class="col-sm-8 text-left">
+        <div class="col-sm-8 text-left mainContent">
             <c:if test="${requestScope.get('errorMessage')!=null}">
                 <h3 class="red"><c:out value="${requestScope.get('errorMessage')}"/></h3>
                 <c:remove var="errorMessage" scope="request"/>

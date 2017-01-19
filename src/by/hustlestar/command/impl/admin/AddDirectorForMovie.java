@@ -14,7 +14,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
- * Created by dell on 06.12.2016.
+ * AddDirectorForMovie class is used to handle client request to
+ * add a director for a particular movie.
  */
 public class AddDirectorForMovie implements Command {
     private static final Logger logger = LogManager.getLogger(AddDirectorForMovie.class);

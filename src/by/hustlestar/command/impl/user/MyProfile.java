@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
- * Created by Hustler on 06.11.2016.
+ * Unused to delete
  */
 public class MyProfile implements Command {
     private static final String PROFILE_PAGE_PATH = "WEB-INF/jsp/profilePage.jsp";

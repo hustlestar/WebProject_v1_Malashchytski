@@ -3,10 +3,16 @@ package by.hustlestar.bean.entity;
 import java.io.Serializable;
 
 /**
- * Created by Hustler on 08.11.2016.
+ * Entity represents genre.
  */
 public class Genre implements Serializable {
+    /**
+     * genre name in russian
+     */
     private String nameRu;
+    /**
+     * genre name in english
+     */
     private String nameEn;
 
     public String getNameRu() {

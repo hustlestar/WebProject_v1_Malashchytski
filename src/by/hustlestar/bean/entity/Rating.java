@@ -3,11 +3,20 @@ package by.hustlestar.bean.entity;
 import java.io.Serializable;
 
 /**
- * Created by Hustler on 07.11.2016.
+ * Entity represents rating.
  */
 public class Rating implements Serializable {
+    /**
+     * id of movie
+     */
     private int movieID;
+    /**
+     * nickname of user
+     */
     private String userNickname;
+    /**
+     * 1-10 score
+     */
     private int ratingScore;
 
     public int getMovieID() {

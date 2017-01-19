@@ -11,7 +11,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 /**
- * Created by Hustler on 16.11.2016.
+ * ChangeLanguage class is used to handle request to change language of
+ * application.
  */
 public class ChangeLanguage implements Command {
 

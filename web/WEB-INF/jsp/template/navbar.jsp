@@ -22,6 +22,8 @@
 <fmt:message bundle="${locale}" key="locale.female" var="female"/>
 <fmt:message bundle="${locale}" key="locale.other" var="other"/>
 <fmt:message bundle="${locale}" key="locale.register" var="register"/>
+<fmt:message bundle="${locale}" key="locale.reviews" var="reviews"/>
+<fmt:message bundle="${locale}" key="locale.news" var="news"/>
 
 <nav class="navbar navbar-inverse">
     <div class="container-fluid">
@@ -37,9 +39,8 @@
             <ul class="nav navbar-nav">
                 <li id="index-page"><a href="../index.jsp">${home}</a></li>
                 <li id="movies-page"><a href="Controller?command=all-movies">${movies}</a></li>
-                <li id="reviews-page"><a href="#">Reviews</a></li>
-                <li id="users-page"><a href="#">Users</a></li>
-                <li id="about-page"><a href="#">FAQ</a></li>
+                <li id="reviews-page"><a href="Controller?command=view-latest-reviews">${reviews}</a></li>
+                <li id="news-page"><a href="Controller?command=view-latest-news">${news}</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 <c:if test="${sessionScope.get('user') == null}">
@@ -89,7 +90,7 @@
                     <div class="form-group">
                         <label for="password3" class="col-sm-3 control-label">${password}</label>
                         <div class="col-sm-7">
-                            <input type="text" class="form-control" id="password3" placeholder="${password}"
+                            <input type="password" class="form-control" id="password3" placeholder="${password}"
                                    name="pass" required>
                         </div>
                     </div>
@@ -135,14 +136,14 @@
                     <div class="form-group">
                         <label for="inputPassword3" class="col-sm-3 control-label">${password}</label>
                         <div class="col-sm-7">
-                            <input type="text" class="form-control" id="inputPassword3" placeholder="${password}"
+                            <input type="password" class="form-control" id="inputPassword3" placeholder="${password}"
                                    name="pass" required>
                         </div>
                     </div>
                     <div class="form-group">
                         <label for="inputPassword4" class="col-sm-3 control-label">${repeatPassword}</label>
                         <div class="col-sm-7">
-                            <input type="text" class="form-control" id="inputPassword4" placeholder="${repeatPassword}"
+                            <input type="password" class="form-control" id="inputPassword4" placeholder="${repeatPassword}"
                                    name="pass2" required>
                         </div>
                     </div>

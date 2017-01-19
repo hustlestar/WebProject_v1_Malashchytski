@@ -13,12 +13,18 @@ import by.hustlestar.service.validation.Validator;
 import java.util.List;
 
 /**
- * Created by dell on 05.12.2016.
+ * ActorServiceImpl is an implementation class of ActorService
  */
 public class ActorServiceImpl implements ActorService {
-
+    /**
+     * This method shows any actor by its id.
+     *
+     * @param id id of actor
+     * @return Actor bean object with filled in fields.
+     * @throws ServiceException if any error occurred while processing method.
+     */
     @Override
-    public Actor viewActor(String id) throws ServiceException {
+    public Actor getActor(String id) throws ServiceException {
         if (!Validator.validateNumber(id)) {
             throw new ServiceException("Illegal data input");
         }

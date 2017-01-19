@@ -13,7 +13,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
- * Created by Hustler on 08.11.2016.
+ * UpdateMovie class is used to handle client request to
+ * update any movie information.
  */
 public class UpdateMovie implements Command {
     private static final String JSP_PAGE_PATH = "WEB-INF/jsp/addMoviePage.jsp";

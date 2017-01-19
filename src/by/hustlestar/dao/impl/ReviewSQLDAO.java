@@ -12,11 +12,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by Hustler on 07.11.2016.
+ * ReviewSQLDAO is an implementation of ReviewDAO for MySQL.
  */
 public class ReviewSQLDAO implements ReviewDAO {
     private final static String SHOW_REVIEWS_BY_ID =
-            "SELECT user_u_nick, review, review_date FROM reviews WHERE movies_m_id=? AND review_lang=?\n" +
+            "SELECT user_u_nick, review, review_date, u_image FROM reviews\n" +
+                    "LEFT JOIN user ON user_u_nick=user.u_nick WHERE movies_m_id=? AND review_lang=?\n" +
                     "LIMIT ?, ?";
 
     private static final String SHOW_REVIEWS_BY_USER =
@@ -28,6 +29,7 @@ public class ReviewSQLDAO implements ReviewDAO {
     private static final String DELETE_REVIEW =
             "DELETE FROM `jackdb`.`reviews`\n" +
                     "WHERE movies_m_id=? AND user_u_nick=?;";
+
     private static final String COUNT_ALL_REVIEWS_FOR_MOVIE =
             "SELECT COUNT(movies_m_id) AS amount FROM reviews WHERE movies_m_id=? AND review_lang=?";
 
@@ -35,10 +37,20 @@ public class ReviewSQLDAO implements ReviewDAO {
     private static final String USER_U_NICK = "user_u_nick";
     private static final String MOVIES_M_ID = "movies_m_id";
     private static final String REVIEW_DATE = "review_date";
+    private static final String U_IMAGE = "u_image";
 
     private static final String AMOUNT = "amount";
 
-
+    /**
+     * This method is used to get reviews for some movie from data source
+     *
+     * @param id             of movie
+     * @param lang           language of review
+     * @param offset         of first entry
+     * @param recordsPerPage records to get
+     * @return list of filled Review beans
+     * @throws DAOException if some error occurred while processing data.
+     */
     @Override
     public List<Review> getReviewsForMovie(int id, String lang, int offset, int recordsPerPage) throws DAOException {
         Connection con = null;
@@ -63,6 +75,7 @@ public class ReviewSQLDAO implements ReviewDAO {
                 review.setUserNickname(rs.getString(USER_U_NICK));
                 review.setReview(rs.getString(REVIEW));
                 review.setReviewDate(rs.getTimestamp(REVIEW_DATE));
+                review.setImage(rs.getString(U_IMAGE));
                 reviewList.add(review);
             }
             return reviewList;
@@ -76,6 +89,13 @@ public class ReviewSQLDAO implements ReviewDAO {
         }
     }
 
+    /**
+     * This method is used to get reviews for some particular user from data source
+     *
+     * @param nickname of user
+     * @return list of filled Review beans
+     * @throws DAOException if some error occurred while processing data.
+     */
     @Override
     public List<Review> getReviewsForUser(String nickname) throws DAOException {
         Connection con = null;
@@ -109,6 +129,15 @@ public class ReviewSQLDAO implements ReviewDAO {
         }
     }
 
+    /**
+     * This method is used to add review of some user to data source.
+     *
+     * @param intMovieID   movie id
+     * @param userNickname nickname of user
+     * @param review       review text
+     * @param lang         language of review
+     * @throws DAOException if some error occurred while processing data.
+     */
     @Override
     public void addReview(int intMovieID, String userNickname, String review, String lang) throws DAOException {
         Connection con = null;
@@ -136,6 +165,13 @@ public class ReviewSQLDAO implements ReviewDAO {
         }
     }
 
+    /**
+     * This method is used to remove review from data source.
+     *
+     * @param intMovieID   movie id
+     * @param userNickname nickname of reviewer
+     * @throws DAOException if some error occurred while processing data.
+     */
     @Override
     public void deleteReview(int intMovieID, String userNickname) throws DAOException {
         Connection con = null;
@@ -160,6 +196,14 @@ public class ReviewSQLDAO implements ReviewDAO {
         }
     }
 
+    /**
+     * This method is used to count number of reviews for a particular movie.
+     *
+     * @param normId id of movie
+     * @param lang   language of reviews
+     * @return number of reviews
+     * @throws DAOException if some error occurred while processing data.
+     */
     @Override
     public int countReviewsForMovie(int normId, String lang) throws DAOException {
         Connection con = null;

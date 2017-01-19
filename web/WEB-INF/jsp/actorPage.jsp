@@ -17,6 +17,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <title><c:out value="${actor.nameEn}"/></title>
+    <link rel="shortcut icon" href="images/main/favicon_16x16.png">
 </head>
 <body onload="active()">
 
@@ -26,12 +27,12 @@
         document.getElementById("movies-page").className = "active";
     }
 </script>
-<div class="container-fluid text-center">
+<div class="container-fluid text-center wrapper">
     <div class="row content">
 
         <c:import url="template/sideleft.jsp"/>
 
-        <div class="col-sm-8 text-left">
+        <div class="col-sm-8 text-left mainContent">
             <c:if test="${sessionScope.get('language') eq 'ru' || sessionScope.get('language')==null}">
                 <h1><c:out value="${actor.nameRu}"/></h1>
                 <h3><c:out value="${actor.nameEn}"/></h3>
@@ -40,7 +41,19 @@
                 <h1><c:out value="${actor.nameEn}"/></h1>
             </c:if>
             <div class="col-sm-3">
-                <img src="images/actors/${actor.id}.jpg" alt="picture for actor" width="100%"/>
+                <img src="${actor.image}" alt="picture for actor" width="100%"/>
+                <c:if test="${sessionScope.get('user').type eq 'admin' || sessionScope.get('user').type eq 'moder'}">
+                    <c:if test="${not empty param.errorMessage}">
+                        <h4 class="red"><c:out value="${param.errorMessage}"/></h4>
+                    </c:if>
+                    <form action="Controller" method="post" enctype="multipart/form-data">
+                        <input type="hidden" name="command" value="upload-photo-for-actor"/>
+                        <input type="hidden" value="${actor.id}" name="filename">
+                        <input name="data" type="file"><br>
+                        <button class="btn-sm btn-info" type="submit">Confirm</button>
+                        <br>
+                    </form>
+                </c:if>
             </div>
             <div class="col-sm-9 text-left">
                 <p>What is Lorem Ipsum?

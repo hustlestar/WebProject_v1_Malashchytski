@@ -13,11 +13,11 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
- * Created by dell on 01.12.2016.
+ * DeleteGenreForMovie class is used to handle client request to
+ * remove any genre from a cast of a particular movie.
  */
 public class DeleteGenreForMovie implements by.hustlestar.command.Command {
     private static final Logger logger = LogManager.getLogger(DeleteGenreForMovie.class);
-    private static final String ERROR_PAGE = "WEB-INF/jsp/error.jsp";
 
     private static final String MOVIE_ID = "id";
     private static final String GENRE = "genre";

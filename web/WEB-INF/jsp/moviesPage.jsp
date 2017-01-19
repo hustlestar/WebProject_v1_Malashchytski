@@ -3,16 +3,42 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <fmt:setLocale value="${sessionScope.language}"/>
 <fmt:setBundle basename="locale" var="locale"/>
+<fmt:message bundle="${locale}" key="locale.topRatedMovies" var="topRatedMovies"/>
+<fmt:message bundle="${locale}" key="locale.bestMoviesForYou" var="bestMoviesForYou"/>
+<fmt:message bundle="${locale}" key="locale.theBestMovies" var="theBestMovies"/>
+<fmt:message bundle="${locale}" key="locale.all" var="all"/>
+<fmt:message bundle="${locale}" key="locale.adventure" var="adventure"/>
+<fmt:message bundle="${locale}" key="locale.crime" var="crime"/>
+<fmt:message bundle="${locale}" key="locale.biography" var="biography"/>
+<fmt:message bundle="${locale}" key="locale.thriller" var="thriller"/>
+<fmt:message bundle="${locale}" key="locale.comedy" var="comedy"/>
+<fmt:message bundle="${locale}" key="locale.melodrama" var="melodrama"/>
+<fmt:message bundle="${locale}" key="locale.drama" var="drama"/>
+<fmt:message bundle="${locale}" key="locale.fantasy" var="fantasy"/>
+<fmt:message bundle="${locale}" key="locale.byDecades" var="byDecades"/>
+<fmt:message bundle="${locale}" key="locale.byYear" var="byYear"/>
+<fmt:message bundle="${locale}" key="locale.eightieth" var="eightieth"/>
+<fmt:message bundle="${locale}" key="locale.ninetieth" var="ninetieth"/>
+<fmt:message bundle="${locale}" key="locale.thousandth" var="thousandth"/>
+<fmt:message bundle="${locale}" key="locale.tenth" var="tenth"/>
+<fmt:message bundle="${locale}" key="locale.movie" var="movie"/>
+<fmt:message bundle="${locale}" key="locale.yourRating" var="yourRating"/>
+<fmt:message bundle="${locale}" key="locale.ratingVotes" var="ratingVotes"/>
+<fmt:message bundle="${locale}" key="locale.next" var="next"/>
+<fmt:message bundle="${locale}" key="locale.previous" var="previous"/>
+
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Bootstrap Example</title>
+    <title>${topRatedMovies}</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <link rel="stylesheet" href="src/first.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link rel="shortcut icon" href="images/main/favicon_16x16.png">
+
 </head>
 <body onload="active()">
 
@@ -22,40 +48,40 @@
         document.getElementById("movies-page").className = "active";
     }
 </script>
-<div class="container-fluid text-center flex">
+<div class="container-fluid text-center wrapper">
     <div class="row content">
 
         <c:import url="template/sideleft.jsp"/>
 
-        <div class="col-sm-8 text-left">
-            <h1>Best movies for you</h1>
+        <div class="col-sm-8 text-left mainContent">
+            <h1>${bestMoviesForYou}</h1>
 
             <div class="selectboxes">
                 <div class="sortAwaits" style="width: 391px; float: left; margin: 0">
-                    <span>Лучшие фильмы:</span>
+                    <span>${theBestMovies}</span>
                     <select onchange="MakeSort(this);">
                         <option value="Controller?command=all-movies">-</option>
-                        <option selected="" value="Controller?command=all-movies">все</option>
-                        <option value="Controller?command=movies-by-genre&genre=crime">криминал</option>
-                        <option value="Controller?command=movies-by-genre&genre=adventure">приключения</option>
-                        <option value="Controller?command=movies-by-genre&genre=biography">биографии</option>
-                        <option value="Controller?command=movies-by-genre&genre=thriller">триллеры</option>
-                        <option value="Controller?command=movies-by-genre&genre=comedy">комедии</option>
-                        <option value="Controller?command=movies-by-genre&genre=drama">драмы</option>
-                        <option value="Controller?command=movies-by-genre&genre=melodrama">мелодрамы</option>
-                        <option value="Controller?command=movies-by-genre&genre=fantasy">фантастика</option>
+                        <option selected="" value="Controller?command=all-movies">${all}</option>
+                        <option value="Controller?command=movies-by-genre&genre=crime">${crime}</option>
+                        <option value="Controller?command=movies-by-genre&genre=adventure">${adventure}</option>
+                        <option value="Controller?command=movies-by-genre&genre=biography">${biography}</option>
+                        <option value="Controller?command=movies-by-genre&genre=thriller">${thriller}</option>
+                        <option value="Controller?command=movies-by-genre&genre=comedy">${comedy}</option>
+                        <option value="Controller?command=movies-by-genre&genre=drama">${drama}</option>
+                        <option value="Controller?command=movies-by-genre&genre=melodrama">${melodrama}</option>
+                        <option value="Controller?command=movies-by-genre&genre=fantasy">${fantasy}</option>
                     </select>
                     <br>
-                    <span>По десятилетиям:</span>
+                    <span>${byDecades}</span>
                     <select class="sortStat" onchange="MakeSort(this);">
                         <option value="Controller?command=all-movies">-</option>
-                        <option value="Controller?command=movies-of-ten-year-period&years=1980">80-е</option>
-                        <option value="Controller?command=movies-of-ten-year-period&years=1990">90-е</option>
-                        <option value="Controller?command=movies-of-ten-year-period&years=2000">2000-е</option>
-                        <option value="Controller?command=movies-of-ten-year-period&years=2010">2010-е</option>
+                        <option value="Controller?command=movies-of-ten-year-period&years=1980">${eightieth}</option>
+                        <option value="Controller?command=movies-of-ten-year-period&years=1990">${ninetieth}</option>
+                        <option value="Controller?command=movies-of-ten-year-period&years=2000">${thousandth}</option>
+                        <option value="Controller?command=movies-of-ten-year-period&years=2010">${tenth}</option>
                     </select>
                     <br>
-                    <span>Фильмы года:</span>
+                    <span>${byYear}</span>
                     <select class="sortStat" name="y" onchange="MakeSort(this);">
                         <option value="Controller?command=all-movies">-</option>
                         <option value="Controller?command=movies-of-year&year=2016">2016</option>
@@ -98,27 +124,6 @@
                     </select>
                     <br>
                 </div>
-                <div class="sortAwaits" style="float: left; margin: 0">
-                    <span>Худшие фильмы:</span>
-                    <select class="badMovie" onchange="MakeSort(this);">
-                        <option value="Controller?command=all-movies">-</option>
-                        <option value="/top/asc/1/">все</option>
-                        <option value="/top/rus/list/asc/1/">Россия + СССР</option>
-                        <option value="/top/serial/list/asc/1/">сериалы</option>
-                        <option value="/top/id_genre/3/asc/1/">боевики</option>
-                        <option value="/top/id_genre/4/asc/1/">триллеры</option>
-                        <option value="/top/id_genre/6/asc/1/">комедии</option>
-                        <option value="/top/id_genre/8/asc/1/">драмы</option>
-                        <option value="/top/id_genre/7/asc/1/">мелодрамы</option>
-                        <option value="/top/id_genre/1/asc/1/">ужасы</option>
-                        <option value="/top/id_genre/2/asc/1/">фантастика</option>
-                        <option value="/top/id_genre/12/asc/1/">документальные</option>
-                        <option value="/top/id_genre/14/asc/1/">мультфильмы</option>
-                        <option value="/top/mult_serial/list/asc/1/">мультсериалы</option>
-                        <option value="/top/sex/male/asc/1/">мужские</option>
-                        <option value="/top/sex/female/asc/1/">женские</option>
-                    </select>
-                </div>
                 <div class="clear"></div>
             </div>
             <script type="text/javascript">
@@ -130,32 +135,27 @@
                     }
                     document.location = href;
                 }
-                $(function () {
-                    var isbadMovie = $('.badMovie option:selected').text() !== '-';
-                    if (isbadMovie) {
-                        $('.sortStat').prop('disabled', true);
-                    }
-                });
             </script>
             <br>
+
             <table class="table table-striped">
                 <thead>
                 <tr>
-                    <th>Movie</th>
-                    <th>You rated</th>
-                    <th>Rating(votes)</th>
+                    <th>${movie}</th>
+                    <th>${yourRating}</th>
+                    <th>${ratingVotes}</th>
                 </tr>
                 </thead>
                 <tbody>
                 <c:forEach var="movie" items="${requestScope.all_movies}">
                     <tr>
                         <c:if test="${sessionScope.get('language') eq 'ru' || sessionScope.get('language')==null}">
-                            <td><a href="Controller?command=movie-by-id&id=${movie.id}"><c:out
-                                    value="${movie.titleRu}"/></a></td>
+                            <td><a href="Controller?command=movie-by-id&id=${movie.id}">
+                                <c:out value="${movie.titleRu}"/></a></td>
                         </c:if>
                         <c:if test="${sessionScope.get('language') eq 'en'}">
-                            <td><a href="Controller?command=movie-by-id&id=${movie.id}"><c:out
-                                    value="${movie.titleEn}"/></a></td>
+                            <td><a href="Controller?command=movie-by-id&id=${movie.id}">
+                                <c:out value="${movie.titleEn}"/></a></td>
                         </c:if>
                         <td>
                             <c:forEach var="rating" items="${movie.ratings}">
@@ -178,7 +178,7 @@
             <ul class="pagination">
                 <c:if test="${requestScope.currentPage > 1}">
                     <li>
-                        <a href="Controller?command=${param.command}&page=${requestScope.currentPage - 1}&country=${param.country}&genre=${param.genre}">Previous</a>
+                        <a href="Controller?command=${param.command}&page=${requestScope.currentPage - 1}&country=${param.country}&genre=${param.genre}">${previous}</a>
                     </li>
                 </c:if>
 
@@ -202,7 +202,7 @@
                 <%--For displaying Next link --%>
                 <c:if test="${requestScope.currentPage lt requestScope.noOfPages}">
                     <li>
-                        <a href="Controller?command=${param.command}&page=${requestScope.currentPage + 1}&country=${param.country}&genre=${param.genre}">Next</a>
+                        <a href="Controller?command=${param.command}&page=${requestScope.currentPage + 1}&country=${param.country}&genre=${param.genre}">${next}</a>
                     </li>
                 </c:if>
             </ul>

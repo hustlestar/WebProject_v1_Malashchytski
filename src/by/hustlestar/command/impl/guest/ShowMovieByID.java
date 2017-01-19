@@ -3,7 +3,6 @@ package by.hustlestar.command.impl.guest;
 import by.hustlestar.bean.entity.Movie;
 import by.hustlestar.command.Command;
 import by.hustlestar.command.util.CommandsUtil;
-import by.hustlestar.command.util.QueryUtil;
 import by.hustlestar.service.iface.MovieService;
 import by.hustlestar.service.ServiceFactory;
 import by.hustlestar.service.exception.ServiceException;
@@ -17,7 +16,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
- * Created by Hustler on 06.11.2016.
+ * ShowMoviesByID class is used to handle client request to show
+ * a particular movie.
  */
 public class ShowMovieByID implements Command {
     private static final String JSP_PAGE_PATH = "WEB-INF/jsp/moviePage.jsp";
@@ -39,7 +39,7 @@ public class ShowMovieByID implements Command {
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-        QueryUtil.saveCurrentQueryToSession(request);
+        CommandsUtil.saveCurrentQueryToSession(request);
 
         String id = request.getParameter(ID);
         String lang = (String) CommandsUtil.getLanguage(request);
@@ -52,7 +52,7 @@ public class ShowMovieByID implements Command {
                 page = Integer.parseInt(request.getParameter(PAGE));
             }
 
-            movie = movieService.showMovieByID((page-1)*RECORDS_PER_PAGE, RECORDS_PER_PAGE, id, lang);
+            movie = movieService.getMovieByID((page-1)*RECORDS_PER_PAGE, RECORDS_PER_PAGE, id, lang);
 
             int numberOfReviews = movieService.countReviewsForMovie(id, lang);
             int noOfPages = (int) Math.ceil(numberOfReviews * 1.0 / RECORDS_PER_PAGE);

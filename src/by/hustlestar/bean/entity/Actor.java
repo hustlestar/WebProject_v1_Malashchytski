@@ -4,13 +4,30 @@ import java.io.Serializable;
 import java.util.List;
 
 /**
- * Created by dell on 05.12.2016.
+ * Entity represents actor.
  */
 public class Actor implements Serializable {
+    /**
+     * unique identifier
+     */
     private int id;
+    /**
+     * actor name in russian
+     */
     private String nameRu;
+    /**
+     * actor name in english
+     */
     private String nameEn;
+    /**
+     * list of movies where actor participated
+     */
     private List<Movie> movies;
+    /**
+     * path to actor photo
+     */
+    private String image;
+
 
     public int getId() {
         return id;
@@ -44,6 +61,14 @@ public class Actor implements Serializable {
         this.movies = movies;
     }
 
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -54,7 +79,8 @@ public class Actor implements Serializable {
         if (id != actor.id) return false;
         if (nameRu != null ? !nameRu.equals(actor.nameRu) : actor.nameRu != null) return false;
         if (nameEn != null ? !nameEn.equals(actor.nameEn) : actor.nameEn != null) return false;
-        return movies != null ? movies.equals(actor.movies) : actor.movies == null;
+        if (movies != null ? !movies.equals(actor.movies) : actor.movies != null) return false;
+        return image != null ? image.equals(actor.image) : actor.image == null;
     }
 
     @Override
@@ -63,6 +89,7 @@ public class Actor implements Serializable {
         result = 31 * result + (nameRu != null ? nameRu.hashCode() : 0);
         result = 31 * result + (nameEn != null ? nameEn.hashCode() : 0);
         result = 31 * result + (movies != null ? movies.hashCode() : 0);
+        result = 31 * result + (image != null ? image.hashCode() : 0);
         return result;
     }
 }

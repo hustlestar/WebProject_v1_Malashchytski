@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by Hustler on 10.11.2016.
+ * ReviewScoreSQLDAO is an implementation of ReviewScoreDAO for MySQL.
  */
 public class ReviewScoreSQLDAO implements ReviewScoreDAO {
 
@@ -24,14 +24,20 @@ public class ReviewScoreSQLDAO implements ReviewScoreDAO {
 
     private static final String LIKE_DISLIKE_REVIEW =
             "INSERT INTO review_score\n" +
-            "(movies_m_id, review_u_nick, value, user_u_nick)\n" +
-            "VALUES (?, ?, ?, ?) ;";
+                    "(movies_m_id, review_u_nick, value, user_u_nick)\n" +
+                    "VALUES (?, ?, ?, ?) ;";
 
-    //private static final String MOVIES_M_ID = "movies_m_id";
-    //private static final String REVIEW_U_NICK = "review_u_nick";
     private static final String SCORE_VALUE = "value";
     private static final String USER_WHO_SCORED_REVIEW = "user_u_nick";
 
+    /**
+     * This method is used to get all ReviewScores for some review.
+     *
+     * @param movieID      id of movie
+     * @param userNickname reviewer nickname
+     * @return list of filled ReviewScore beans
+     * @throws DAOException if some error occurred while processing data.
+     */
     @Override
     public List<ReviewScore> getReviewScoresForReview(int movieID, String userNickname) throws DAOException {
         Connection con = null;
@@ -52,7 +58,7 @@ public class ReviewScoreSQLDAO implements ReviewScoreDAO {
                 reviewScore.setMovieID(movieID);
                 reviewScore.setUserNicknameWhoReviewed(userNickname);
                 reviewScore.setScore(rs.getInt(SCORE_VALUE));
-                reviewScore.setUserNicknameWheScoredReview(rs.getString(USER_WHO_SCORED_REVIEW));
+                reviewScore.setUserNicknameWhoScoredReview(rs.getString(USER_WHO_SCORED_REVIEW));
                 reviewScoreList.add(reviewScore);
             }
             return reviewScoreList;
@@ -66,6 +72,15 @@ public class ReviewScoreSQLDAO implements ReviewScoreDAO {
         }
     }
 
+    /**
+     * This method is used to like or dislike some review.
+     *
+     * @param intMovieID       id of movie
+     * @param reviewerNickname nickname of reviewer
+     * @param value            like/dislike
+     * @param userNickname     nickname of user
+     * @throws DAOException if some error occurred while processing data.
+     */
     @Override
     public void likeReview(int intMovieID, String reviewerNickname, int value, String userNickname) throws DAOException {
         Connection con = null;

@@ -8,19 +8,23 @@ import by.hustlestar.service.iface.MovieService;
 import by.hustlestar.service.exception.ServiceException;
 import by.hustlestar.service.util.UtilService;
 import by.hustlestar.service.validation.Validator;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import java.util.List;
 
 /**
- * Created by Hustler on 01.11.2016.
+ * MovieServiceImpl is an implementation class of MovieService.
  */
 public class MovieServiceImpl implements MovieService {
-    private static final Logger logger = LogManager.getLogger(MovieServiceImpl.class.getName());
+    /**
+     * This method is used to get list of all movies in the system.
+     *
+     * @param offset         starting from
+     * @param recordsPerPage amount of movies
+     * @return list of filled movie beans
+     * @throws ServiceException if any error occurred while processing method.
+     */
     @Override
-    public List<Movie> showFullList(int offset, int recordsPerPage) throws ServiceException {
-        logger.debug(" showFullList() : start");
+    public List<Movie> getFullList(int offset, int recordsPerPage) throws ServiceException {
         if (!Validator.validate(offset, recordsPerPage)) {
             throw new ServiceException("Illegal data input");
         }
@@ -40,8 +44,17 @@ public class MovieServiceImpl implements MovieService {
         return movies;
     }
 
+    /**
+     * This method is used to get list of movies of a particular country.
+     *
+     * @param offset         starting from
+     * @param recordsPerPage amount of movies
+     * @param country        of movies
+     * @return list of filled movie beans
+     * @throws ServiceException if any error occurred while processing method.
+     */
     @Override
-    public List<Movie> showMoviesByCountry(int offset, int recordsPerPage, String country) throws ServiceException {
+    public List<Movie> getMoviesByCountry(int offset, int recordsPerPage, String country) throws ServiceException {
         if (!Validator.validate(offset, recordsPerPage)
                 || !Validator.validate(country)) {
             throw new ServiceException("Illegal data input");
@@ -62,8 +75,17 @@ public class MovieServiceImpl implements MovieService {
         return movies;
     }
 
+    /**
+     * This method is used to get movies of a particular genre.
+     *
+     * @param offset         starting from
+     * @param recordsPerPage amount of movies
+     * @param genre          of movies
+     * @return list of filled movie beans
+     * @throws ServiceException if any error occurred while processing method.
+     */
     @Override
-    public List<Movie> showMoviesByGenre(int offset, int recordsPerPage, String genre) throws ServiceException {
+    public List<Movie> getMoviesByGenre(int offset, int recordsPerPage, String genre) throws ServiceException {
         if (!Validator.validate(offset, recordsPerPage)
                 || !Validator.validate(genre)) {
             throw new ServiceException("Illegal data input");
@@ -84,8 +106,18 @@ public class MovieServiceImpl implements MovieService {
         return movies;
     }
 
+    /**
+     * This method is used to get detailed information about particular movie.
+     *
+     * @param offset         starting from
+     * @param recordsPerPage amount of movies
+     * @param id             of movie
+     * @param lang           language of reviews
+     * @return completely filled movie bean
+     * @throws ServiceException if any error occurred while processing method.
+     */
     @Override
-    public Movie showMovieByID(int offset, int recordsPerPage, String id, String lang) throws ServiceException {
+    public Movie getMovieByID(int offset, int recordsPerPage, String id, String lang) throws ServiceException {
         if (!Validator.validate(offset, recordsPerPage)
                 || !Validator.validate(id, lang)
                 || !Validator.validateNumber(id)) {
@@ -143,6 +175,13 @@ public class MovieServiceImpl implements MovieService {
         return movie;
     }
 
+    /**
+     * This method is used to search for any movie in the system.
+     *
+     * @param title of movie
+     * @return list of filled movie beans
+     * @throws ServiceException if any error occurred while processing method.
+     */
     @Override
     public List<Movie> findMovieByTitle(String title) throws ServiceException {
         if (!Validator.validate(title)) {
@@ -164,8 +203,15 @@ public class MovieServiceImpl implements MovieService {
         return movies;
     }
 
+    /**
+     * This method is used to get movies by a particular decade.
+     *
+     * @param years of decade
+     * @return list of filled movie beans
+     * @throws ServiceException if any error occurred while processing method.
+     */
     @Override
-    public List<Movie> showMoviesOfTenYearsPeriod(String years) throws ServiceException {
+    public List<Movie> getMoviesOfTenYearsPeriod(String years) throws ServiceException {
         if (!Validator.validateYear(years)) {
             throw new ServiceException("Illegal data input");
         }
@@ -191,8 +237,15 @@ public class MovieServiceImpl implements MovieService {
         return movies;
     }
 
+    /**
+     * This method is used to get movies of a particular decade.
+     *
+     * @param year of movies
+     * @return list of filled movie beans
+     * @throws ServiceException if any error occurred while processing method.
+     */
     @Override
-    public List<Movie> showMoviesOfYear(String year) throws ServiceException {
+    public List<Movie> getMoviesOfYear(String year) throws ServiceException {
         if (!Validator.validateYear(year)) {
             throw new ServiceException("Illegal data input");
         }
@@ -218,6 +271,15 @@ public class MovieServiceImpl implements MovieService {
         return movies;
     }
 
+    /**
+     * This method is used to add review for a particular movie.
+     *
+     * @param movieID      id of movie
+     * @param userNickname reviewer nickname
+     * @param review       text of review
+     * @param lang         language of review
+     * @throws ServiceException if any error occurred while processing method.
+     */
     @Override
     public void addReview(String movieID, String userNickname, String review, String lang) throws ServiceException {
         if (!Validator.validate(movieID, userNickname, review, lang)
@@ -239,6 +301,15 @@ public class MovieServiceImpl implements MovieService {
         }
     }
 
+    /**
+     * This method is used to vote for any review.
+     *
+     * @param movieID          id of movie
+     * @param reviewerNickname reviewer nickname
+     * @param score            like or dislike
+     * @param userNickname     nickname of user who votes
+     * @throws ServiceException if any error occurred while processing method.
+     */
     @Override
     public void likeReview(String movieID, String reviewerNickname, String score, String userNickname) throws ServiceException {
         if (!Validator.validate(movieID, reviewerNickname, score, userNickname)
@@ -264,6 +335,14 @@ public class MovieServiceImpl implements MovieService {
         }
     }
 
+    /**
+     * This method is used to add 1-10 rating for a particular movie.
+     *
+     * @param movieID      id of movie
+     * @param userNickname user nickname
+     * @param rating       1-10 rating
+     * @throws ServiceException if any error occurred while processing method.
+     */
     @Override
     public void addRating(String movieID, String userNickname, String rating) throws ServiceException {
         if (!Validator.validate(movieID, userNickname, rating)
@@ -298,8 +377,15 @@ public class MovieServiceImpl implements MovieService {
         }
     }
 
+    /**
+     * This method is used to get movies with the latest reviews.
+     *
+     * @param lang of reviews
+     * @return list of filled movie beans
+     * @throws ServiceException if any error occurred while processing method.
+     */
     @Override
-    public List<Movie> showLatestReviews(String lang) throws ServiceException {
+    public List<Movie> getLatestReviews(String lang) throws ServiceException {
         if (!Validator.validate(lang)) {
             throw new ServiceException("Illegal data input");
         }
@@ -317,8 +403,14 @@ public class MovieServiceImpl implements MovieService {
         return movies;
     }
 
+    /**
+     * This method is used to get new movies in the system.
+     *
+     * @return list of filled movie beans
+     * @throws ServiceException if any error occurred while processing method.
+     */
     @Override
-    public List<Movie> showLatestMovies() throws ServiceException {
+    public List<Movie> getLatestMovies() throws ServiceException {
         DAOFactory daoFactory = DAOFactory.getInstance();
         MovieDAO dao = daoFactory.getMovieDAO();
         RatingDAO ratingDAO = daoFactory.getRatingDAO();
@@ -335,6 +427,12 @@ public class MovieServiceImpl implements MovieService {
         return movies;
     }
 
+    /**
+     * This method is used to count amount of all movies in the system.
+     *
+     * @return number of movies
+     * @throws ServiceException if any error occurred while processing method.
+     */
     @Override
     public int countAllMoviesAmount() throws ServiceException {
         DAOFactory daoFactory = DAOFactory.getInstance();
@@ -351,6 +449,13 @@ public class MovieServiceImpl implements MovieService {
         return amount;
     }
 
+    /**
+     * This method is used to count amount of all movies of a particular country.
+     *
+     * @param country name of country
+     * @return number of movies
+     * @throws ServiceException if any error occurred while processing method.
+     */
     @Override
     public int countMoviesByCountry(String country) throws ServiceException {
         DAOFactory daoFactory = DAOFactory.getInstance();
@@ -367,6 +472,13 @@ public class MovieServiceImpl implements MovieService {
         return amount;
     }
 
+    /**
+     * This method is used to count amount of all movies of a particular genre.
+     *
+     * @param genre of movie
+     * @return number of movies
+     * @throws ServiceException if any error occurred while processing method.
+     */
     @Override
     public int countMoviesByGenre(String genre) throws ServiceException {
         DAOFactory daoFactory = DAOFactory.getInstance();
@@ -383,6 +495,14 @@ public class MovieServiceImpl implements MovieService {
         return amount;
     }
 
+    /**
+     * This method is used to count number of reviews for a particular movie.
+     *
+     * @param id   of movie
+     * @param lang language of reviews
+     * @return number of reviews
+     * @throws ServiceException if any error occurred while processing method.
+     */
     @Override
     public int countReviewsForMovie(String id, String lang) throws ServiceException {
         DAOFactory daoFactory = DAOFactory.getInstance();

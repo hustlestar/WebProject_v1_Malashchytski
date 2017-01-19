@@ -1,7 +1,7 @@
 package by.hustlestar.command.impl.admin;
 
 import by.hustlestar.command.Command;
-import by.hustlestar.command.util.QueryUtil;
+import by.hustlestar.command.util.CommandsUtil;
 import by.hustlestar.service.iface.AdminService;
 import by.hustlestar.service.exception.ServiceException;
 import org.apache.logging.log4j.Level;
@@ -14,7 +14,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
- * Created by Hustler on 06.11.2016.
+ * AddMovie class is used to handle client request to
+ * add new movie.
  */
 public class AddMovie implements Command {
 
@@ -36,7 +37,7 @@ public class AddMovie implements Command {
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-        QueryUtil.saveCurrentQueryToSession(request);
+        CommandsUtil.saveCurrentQueryToSession(request);
 
         String titleRu = request.getParameter(TITLE_RU);
         String titleEn = request.getParameter(TITLE_EN);

@@ -2,7 +2,7 @@ package by.hustlestar.command.impl.guest;
 
 import by.hustlestar.bean.entity.Movie;
 import by.hustlestar.command.Command;
-import by.hustlestar.command.util.QueryUtil;
+import by.hustlestar.command.util.CommandsUtil;
 import by.hustlestar.service.iface.MovieService;
 import by.hustlestar.service.ServiceFactory;
 import by.hustlestar.service.exception.ServiceException;
@@ -16,7 +16,8 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * Created by Hustler on 08.11.2016.
+ * ShowMoviesByGenre class is used to handle client request to show the movies
+ * of the particular genre.
  */
 public class ShowMoviesByGenre implements Command {
     private static final String JSP_PAGE_PATH = "WEB-INF/jsp/moviesPage.jsp";
@@ -38,7 +39,7 @@ public class ShowMoviesByGenre implements Command {
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-        QueryUtil.saveCurrentQueryToSession(request);
+        CommandsUtil.saveCurrentQueryToSession(request);
 
         String genre = request.getParameter(GENRE);
 
@@ -49,7 +50,7 @@ public class ShowMoviesByGenre implements Command {
             if (request.getParameter(PAGE) != null) {
                 page = Integer.parseInt(request.getParameter(PAGE));
             }
-            movies = movieService.showMoviesByGenre((page-1)*RECORDS_PER_PAGE, RECORDS_PER_PAGE, genre);
+            movies = movieService.getMoviesByGenre((page-1)*RECORDS_PER_PAGE, RECORDS_PER_PAGE, genre);
 
             request.setAttribute(REQUEST_ATTRIBUTE, movies);
             int numberOfMovies = movieService.countMoviesByGenre(genre);

@@ -4,7 +4,8 @@ import by.hustlestar.dao.exception.DAOException;
 import by.hustlestar.dao.pool.ConnectionPoolException;
 
 /**
- * Created by Hustler on 28.10.2016.
+ * ServiceException is thrown when some error occurred while
+ * proceeding some Service.
  */
 public class ServiceException extends Exception {
     public ServiceException(String message) {

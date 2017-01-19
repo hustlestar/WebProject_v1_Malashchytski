@@ -1,7 +1,7 @@
 package by.hustlestar.command.impl.admin;
 
 import by.hustlestar.bean.entity.Actor;
-import by.hustlestar.command.util.QueryUtil;
+import by.hustlestar.command.util.CommandsUtil;
 import by.hustlestar.service.exception.ServiceException;
 import by.hustlestar.service.iface.AdminService;
 import org.apache.logging.log4j.Level;
@@ -15,7 +15,8 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * Created by dell on 08.12.2016.
+ * ViewAllActors class is used to handle client request to
+ * show all actors in the system.
  */
 public class ViewAllActors implements by.hustlestar.command.Command {
     private static final String JSP_PAGE_PATH = "WEB-INF/jsp/actorsPage.jsp";
@@ -30,7 +31,7 @@ public class ViewAllActors implements by.hustlestar.command.Command {
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-        QueryUtil.saveCurrentQueryToSession(request);
+        CommandsUtil.saveCurrentQueryToSession(request);
 
         List<Actor> actors;
         AdminService adminService = AdminUtil.getAdminService(request, response);

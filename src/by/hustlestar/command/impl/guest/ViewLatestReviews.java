@@ -2,7 +2,6 @@ package by.hustlestar.command.impl.guest;
 
 import by.hustlestar.bean.entity.Movie;
 import by.hustlestar.command.util.CommandsUtil;
-import by.hustlestar.command.util.QueryUtil;
 import by.hustlestar.service.ServiceFactory;
 import by.hustlestar.service.exception.ServiceException;
 import by.hustlestar.service.iface.MovieService;
@@ -17,7 +16,8 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * Created by dell on 08.12.2016.
+ * ViewLatestReviews class is used to handle client request to
+ * show the latest reviews.
  */
 public class ViewLatestReviews implements by.hustlestar.command.Command {
     private static final String JSP_PAGE_PATH = "WEB-INF/jsp/latestReviewsPage.jsp";
@@ -32,14 +32,14 @@ public class ViewLatestReviews implements by.hustlestar.command.Command {
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-        QueryUtil.saveCurrentQueryToSession(request);
+        CommandsUtil.saveCurrentQueryToSession(request);
 
         List<Movie> movies;
         MovieService movieService = ServiceFactory.getInstance().getMovieService();
         String lang = (String) CommandsUtil.getLanguage(request);
 
         try {
-            movies = movieService.showLatestReviews(lang);
+            movies = movieService.getLatestReviews(lang);
             request.setAttribute(REQUEST_ATTRIBUTE, movies);
             request.getRequestDispatcher(JSP_PAGE_PATH).forward(request, response);
         } catch (ServiceException e) {

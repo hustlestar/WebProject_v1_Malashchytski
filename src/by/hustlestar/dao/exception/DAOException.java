@@ -5,7 +5,7 @@ import by.hustlestar.dao.pool.ConnectionPoolException;
 import java.sql.SQLException;
 
 /**
- * Created by Hustler on 31.10.2016.
+ * DAOException is thrown when error occurred while working with the data source.
  */
 public class DAOException extends Exception {
 

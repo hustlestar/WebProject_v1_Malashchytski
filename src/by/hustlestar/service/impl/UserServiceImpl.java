@@ -4,6 +4,7 @@ import by.hustlestar.bean.entity.*;
 import by.hustlestar.dao.DAOFactory;
 import by.hustlestar.dao.exception.DAOException;
 import by.hustlestar.dao.iface.*;
+import by.hustlestar.service.exception.ServiceBannedException;
 import by.hustlestar.service.iface.UserService;
 import by.hustlestar.service.exception.ServiceAuthException;
 import by.hustlestar.service.exception.ServiceException;
@@ -15,14 +16,22 @@ import org.apache.logging.log4j.Logger;
 import java.util.List;
 
 /**
- * Created by Hustler on 09.11.2016.
+ * This class is an implementation of UserService.
  */
 public class UserServiceImpl implements UserService {
 
     private static final Logger logger = LogManager.getLogger();
+    private static final String BANNED = "banned";
 
+    /**
+     * This method is used to show any user by the nickname.
+     *
+     * @param nickname of user.
+     * @return User bean with filled in fields.
+     * @throws ServiceException if any error occurred while processing method.
+     */
     @Override
-    public User showUserByNickname(String nickname) throws ServiceException {
+    public User getUserByNickname(String nickname) throws ServiceException {
         if (!Validator.validate(nickname)) {
             throw new ServiceAuthException("Wrong username!");
         }
@@ -48,34 +57,33 @@ public class UserServiceImpl implements UserService {
         return user;
     }
 
+    /**
+     * This method is used to let user enter his account in the system.
+     *
+     * @param login    of user
+     * @param password of user
+     * @return User bean with filled in fields.
+     * @throws ServiceException if any error occurred while processing method.
+     */
     @Override
-    public User authorize(String login, String password) throws ServiceException {
+    public User authorize(String login, byte[] password) throws ServiceException {
         logger.debug("authorize begin");
         if (!Validator.validateLogin(login) ||
                 !Validator.validatePassword(password)) {
             throw new ServiceAuthException("Wrong parameters!");
         }
+        String encodedPassword = UtilService.encodePassword(password);
         DAOFactory daoFactory = DAOFactory.getInstance();
         UserDAO dao = daoFactory.getUserDAO();
-        //ReviewDAO reviewDAO = daoFactory.getReviewDAO();
-        //RatingDAO ratingDAO = daoFactory.getRatingDAO();
-        //UtilService utilService = new UtilService();
         User user;
-        //List<Review> reviewList;
-        //List<Rating> ratingList;
         try {
-            user = dao.authorize(login, password);
+            user = dao.authorize(login, encodedPassword);
 
             if (user == null) {
                 throw new ServiceAuthException("Wrong login or password!");
+            } else if (user.getType().equals(BANNED)) {
+                throw new ServiceBannedException("Sorry access for you is temporary unavailable");
             }
-            //reviewList = reviewDAO.getReviewsForUser(login);
-            //ratingList = ratingDAO.getRatingsOfUser(login);
-
-            //utilService.fillReviewWithScore(reviewList);
-
-            //user.setReviews(reviewList);
-            //user.setRatings(ratingList);
         } catch (DAOException e) {
             throw new ServiceException("Error in source", e);
         }
@@ -83,8 +91,14 @@ public class UserServiceImpl implements UserService {
         return user;
     }
 
+    /**
+     * This method is used to show the best users in the system, based on their reputation.
+     *
+     * @return List of User bean with filled in fields.
+     * @throws ServiceException if any error occurred while processing method.
+     */
     @Override
-    public List<User> showTopUsers() throws ServiceException {
+    public List<User> getTopUsers() throws ServiceException {
         DAOFactory daoFactory = DAOFactory.getInstance();
         UserDAO dao = daoFactory.getUserDAO();
         List<User> users;
@@ -99,20 +113,32 @@ public class UserServiceImpl implements UserService {
         return users;
     }
 
+    /**
+     * This method is used to register and give access to the system for
+     * some new visitor.
+     *
+     * @param login       of user
+     * @param email       of user
+     * @param password    of user
+     * @param passwordrep of user
+     * @param sex         of user
+     * @return User bean with filled in fields.
+     * @throws ServiceException if any error occurred while processing method.
+     */
     @Override
-    public User register(String login, String email, String password, String passwordrep, String sex) throws ServiceException {
-        if (!Validator.validate(login, email, password, passwordrep, sex) ||
+    public User register(String login, String email, byte[] password, byte[] passwordrep, String sex) throws ServiceException {
+        if (!Validator.validate(login, email, sex) ||
                 !Validator.validateLogin(login) ||
                 !Validator.validatePassword(password, passwordrep) ||
                 !Validator.validateEmail(email)) {
             throw new ServiceAuthException("Check input parameters");
         }
-
+        String encodedPassword = UtilService.encodePassword(password);
         DAOFactory daoFactory = DAOFactory.getInstance();
         UserDAO dao = daoFactory.getUserDAO();
         User user;
         try {
-            user = dao.register(login, email, password, sex);
+            user = dao.register(login, email, encodedPassword, sex);
 
             if (user == null) {
                 throw new ServiceAuthException("Wrong login or password!");

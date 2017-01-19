@@ -5,7 +5,7 @@ import by.hustlestar.dao.impl.*;
 import by.hustlestar.dao.pool.ConnectionPoolSQLDAO;
 
 /**
- * Created by Hustler on 28.10.2016.
+ * DAOFactory represents the factory for obtaining DAO objects.
  */
 public class DAOFactory {
     private static final DAOFactory INSTANCE = new DAOFactory();

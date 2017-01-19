@@ -8,21 +8,25 @@
         <Console name="Console" target="SYSTEM_OUT">
             <PatternLayout pattern="${pattern}"/>
         </Console>
-        <RollingFile name="RollingFile" fileName="E:\Apache Software Foundation\Tomcat 7.0\webapps\FinalProject\logs\${name}.log"
+        <RollingFile name="RollingFile"
+                     fileName="E:\Apache Software Foundation\Tomcat 7.0\webapps\FinalProject\logs\${name}.log"
                      filePattern="logs/$${date:yyyy-MM}/${name}-%d{yyyy-MM-dd}-%i.log.gz">
             <PatternLayout>
                 <pattern>${pattern}</pattern>
             </PatternLayout>
             <Policies>
-                <TimeBasedTriggeringPolicy />
+                <TimeBasedTriggeringPolicy/>
                 <SizeBasedTriggeringPolicy size="50 KB"/>
             </Policies>
         </RollingFile>
+        <File name="ApplicationLog" fileName="${web:rootDir}/app.log"/>
+
     </appenders>
     <loggers>
         <root level="info">
             <appender-ref ref="Console"/>
             <appender-ref ref="RollingFile"/>
+            <appender-ref ref="ApplicationLog"/>
         </root>
     </loggers>
 </configuration>

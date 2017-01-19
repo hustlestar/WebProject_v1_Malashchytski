@@ -16,9 +16,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.Arrays;
 
 /**
- * Created by Hustler on 28.10.2016.
+ * Register is used to handle register request from client.
  */
 public class Register implements Command {
     private static final String JSP_PAGE_PATH = "WEB-INF/jsp/registerPage.jsp";
@@ -42,16 +43,18 @@ public class Register implements Command {
     public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         String login = request.getParameter(LOGIN);
         String email = request.getParameter(EMAIL);
-        String password = request.getParameter(PASSWORD);
-        String password2 = request.getParameter(PASSWORD_2);
+        byte[] password = request.getParameter(PASSWORD).getBytes();
+        byte[] password2 = request.getParameter(PASSWORD_2).getBytes();
         String sex = request.getParameter(SEX);
         UserService userService = ServiceFactory.getInstance().getUserService();
         String previousQuery = CommandsUtil.getPreviousQuery(request);
         HttpSession session = request.getSession(true);
 
-        if (login != null && email != null && password != null && password2 != null && sex != null) {
+        if (login != null && email != null && password.length>0 && password2.length>0 && sex != null) {
             try {
                 User user = userService.register(login, email, password, password2, sex);
+                Arrays.fill(password, (byte) 0);
+                Arrays.fill(password2, (byte) 0);
 
                 session.setAttribute(USER, user);
 

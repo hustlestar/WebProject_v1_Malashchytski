@@ -27,9 +27,7 @@
     <orderEntry type="library" scope="PROVIDED" name="Tomcat 7.0.70" level="application_server_libraries" />
     <orderEntry type="library" name="jquery" level="application" />
     <orderEntry type="library" name="bootstrap" level="application" />
-    <orderEntry type="library" exported="" name="taglibs-standard-impl-1.2.5" level="project" />
     <orderEntry type="library" name="mysql-connector-java-5.1.39-bin" level="project" />
-    <orderEntry type="library" name="juniversalchardet-1.0.3" level="project" />
     <orderEntry type="library" name="log4j-core-2.7" level="project" />
     <orderEntry type="module-library" scope="TEST">
       <library name="JUnit4">
@@ -43,5 +41,17 @@
         </SOURCES>
       </library>
     </orderEntry>
+    <orderEntry type="library" name="commons-io-2.5" level="project" />
+    <orderEntry type="library" name="jstl-1.2" level="project" />
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://E:/10JAVA/00LIBRARY/commons-codec-1.4.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="library" name="commons-codec-1.10" level="project" />
   </component>
 </module>

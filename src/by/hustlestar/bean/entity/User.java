@@ -4,16 +4,44 @@ import java.sql.Date;
 import java.util.List;
 
 /**
- * Created by Hustler on 31.10.2016.
+ * Entity represents user.
  */
 public class User {
+    /**
+     * nickname of user
+     */
     private String nickname;
+    /**
+     * email of user
+     */
     private String email;
+    /**
+     * type of user(banned>user>moder>admin)
+     */
     private String type;
+    /**
+     * user sex
+     */
     private String sex;
+    /**
+     * registration date
+     */
     private Date registred;
+    /**
+     * list of user reviews
+     */
     private List<Review> reviews;
+    /**
+     * list of ratings user gave
+     */
     private List<Rating> ratings;
+    /**
+     * path to an avatar image
+     */
+    private String image;
+    /**
+     * user reputation
+     */
     private int reputation;
 
     public User() {
@@ -83,6 +111,14 @@ public class User {
         this.email = email;
     }
 
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -97,7 +133,8 @@ public class User {
         if (sex != null ? !sex.equals(user.sex) : user.sex != null) return false;
         if (registred != null ? !registred.equals(user.registred) : user.registred != null) return false;
         if (reviews != null ? !reviews.equals(user.reviews) : user.reviews != null) return false;
-        return ratings != null ? ratings.equals(user.ratings) : user.ratings == null;
+        if (ratings != null ? !ratings.equals(user.ratings) : user.ratings != null) return false;
+        return image != null ? image.equals(user.image) : user.image == null;
     }
 
     @Override
@@ -109,6 +146,7 @@ public class User {
         result = 31 * result + (registred != null ? registred.hashCode() : 0);
         result = 31 * result + (reviews != null ? reviews.hashCode() : 0);
         result = 31 * result + (ratings != null ? ratings.hashCode() : 0);
+        result = 31 * result + (image != null ? image.hashCode() : 0);
         result = 31 * result + reputation;
         return result;
     }

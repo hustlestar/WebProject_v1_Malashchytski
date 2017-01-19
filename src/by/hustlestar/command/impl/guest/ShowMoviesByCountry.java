@@ -2,7 +2,7 @@ package by.hustlestar.command.impl.guest;
 
 import by.hustlestar.bean.entity.Movie;
 import by.hustlestar.command.Command;
-import by.hustlestar.command.util.QueryUtil;
+import by.hustlestar.command.util.CommandsUtil;
 import by.hustlestar.service.iface.MovieService;
 import by.hustlestar.service.ServiceFactory;
 import by.hustlestar.service.exception.ServiceException;
@@ -17,7 +17,8 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * Created by Hustler on 07.11.2016.
+ * ShowMoviesByCountry class is used to handle client request to show movies
+ * of the particular country.
  */
 public class ShowMoviesByCountry implements Command {
     private static final String JSP_PAGE_PATH = "WEB-INF/jsp/moviesPage.jsp";
@@ -40,7 +41,7 @@ public class ShowMoviesByCountry implements Command {
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-        QueryUtil.saveCurrentQueryToSession(request);
+        CommandsUtil.saveCurrentQueryToSession(request);
 
 
         String country = request.getParameter(COUNTRY);
@@ -53,7 +54,7 @@ public class ShowMoviesByCountry implements Command {
                 page = Integer.parseInt(request.getParameter(PAGE));
             }
 
-            movies = movieService.showMoviesByCountry((page-1)*RECORDS_PER_PAGE, RECORDS_PER_PAGE, country);
+            movies = movieService.getMoviesByCountry((page-1)*RECORDS_PER_PAGE, RECORDS_PER_PAGE, country);
 
             int numberOfMovies = movieService.countMoviesByCountry(country);
             int noOfPages = (int) Math.ceil(numberOfMovies * 1.0 / RECORDS_PER_PAGE);

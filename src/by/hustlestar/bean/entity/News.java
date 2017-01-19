@@ -14,6 +14,8 @@ public class News implements Serializable {
     private String textRu;
     private String textEn;
     private Timestamp newsDate;
+    private String image;
+
 
     private List<Movie> newsMovies;
     private List<Actor> newsActors;
@@ -66,6 +68,14 @@ public class News implements Serializable {
         this.newsDate = newsDate;
     }
 
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+
     public List<Movie> getNewsMovies() {
         return newsMovies;
     }
@@ -95,6 +105,7 @@ public class News implements Serializable {
         if (textRu != null ? !textRu.equals(news.textRu) : news.textRu != null) return false;
         if (textEn != null ? !textEn.equals(news.textEn) : news.textEn != null) return false;
         if (newsDate != null ? !newsDate.equals(news.newsDate) : news.newsDate != null) return false;
+        if (image != null ? !image.equals(news.image) : news.image != null) return false;
         if (newsMovies != null ? !newsMovies.equals(news.newsMovies) : news.newsMovies != null) return false;
         return newsActors != null ? newsActors.equals(news.newsActors) : news.newsActors == null;
     }
@@ -107,6 +118,7 @@ public class News implements Serializable {
         result = 31 * result + (textRu != null ? textRu.hashCode() : 0);
         result = 31 * result + (textEn != null ? textEn.hashCode() : 0);
         result = 31 * result + (newsDate != null ? newsDate.hashCode() : 0);
+        result = 31 * result + (image != null ? image.hashCode() : 0);
         result = 31 * result + (newsMovies != null ? newsMovies.hashCode() : 0);
         result = 31 * result + (newsActors != null ? newsActors.hashCode() : 0);
         return result;

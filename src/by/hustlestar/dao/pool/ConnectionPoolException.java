@@ -2,7 +2,7 @@ package by.hustlestar.dao.pool;
 
 
 /**
- * Created by Hustler on 31.10.2016.
+ * ConnectionPoolException is thrown when error with ConnectionPool occurred.
  */
 public class ConnectionPoolException extends Exception {
     public ConnectionPoolException(String s) {

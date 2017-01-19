@@ -14,7 +14,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
- * Created by dell on 06.12.2016.
+ * DeleteActorForMovie class is used to handle client request to
+ * remove any actor from a cast of a particular movie.
  */
 public class DeleteActorForMovie implements Command {
     private static final Logger logger = LogManager.getLogger(DeleteActorForMovie.class);

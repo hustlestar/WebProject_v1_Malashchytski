@@ -1,7 +1,7 @@
 package by.hustlestar.command.impl.guest;
 
 import by.hustlestar.bean.entity.User;
-import by.hustlestar.command.util.QueryUtil;
+import by.hustlestar.command.util.CommandsUtil;
 import by.hustlestar.service.ServiceFactory;
 import by.hustlestar.service.exception.ServiceException;
 import by.hustlestar.service.iface.UserService;
@@ -16,7 +16,8 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * Created by dell on 09.12.2016.
+ * ViewTopUsers class is used to handle client request to
+ * show the best users by their reputation.
  */
 public class ViewTopUsers implements by.hustlestar.command.Command {
     private static final String JSP_PAGE_PATH = "WEB-INF/jsp/usersPage.jsp";
@@ -31,13 +32,13 @@ public class ViewTopUsers implements by.hustlestar.command.Command {
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-        QueryUtil.saveCurrentQueryToSession(request);
+        CommandsUtil.saveCurrentQueryToSession(request);
 
         List<User> users;
 
         UserService userService = ServiceFactory.getInstance().getUserService();
         try {
-            users = userService.showTopUsers();
+            users = userService.getTopUsers();
 
             request.setAttribute(REQUEST_ATTRIBUTE, users);
 

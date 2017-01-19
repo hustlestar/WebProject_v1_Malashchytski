@@ -16,7 +16,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
- * Created by Hustler on 17.11.2016.
+ * AddRating class is used to handle client request to add client's score
+ * for particular movie.
  */
 public class AddRating implements Command {
 

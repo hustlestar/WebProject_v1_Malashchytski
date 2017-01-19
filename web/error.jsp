@@ -3,22 +3,14 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <fmt:setLocale value="${sessionScope.language}"/>
 <fmt:setBundle basename="locale" var="locale"/>
-<fmt:message bundle="${locale}" key="locale.siteName" var="siteName"/>
-<fmt:message bundle="${locale}" key="locale.home" var="home"/>
-<fmt:message bundle="${locale}" key="locale.signUp" var="signUp"/>
-<fmt:message bundle="${locale}" key="locale.logIn" var="logIn"/>
-<fmt:message bundle="${locale}" key="locale.logOut" var="logOut"/>
-<fmt:message bundle="${locale}" key="locale.signIn" var="signIn"/>
-<fmt:message bundle="${locale}" key="locale.movieRateEntrance" var="movieRateEntrance"/>
-<fmt:message bundle="${locale}" key="locale.nickname" var="nickname"/>
-<fmt:message bundle="${locale}" key="locale.password" var="password"/>
-<fmt:message bundle="${locale}" key="locale.cancel" var="cancel"/>
-<fmt:message bundle="${locale}" key="locale.movies" var="movies"/>
+<fmt:message bundle="${locale}" key="locale.erorrPage" var="erorrPage"/>
+
 
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Bootstrap Example</title>
+    <title>${erorrPage}</title>
+    <link rel="shortcut icon" href="images/main/favicon_16x16.png">
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv='Content-Type' content='text/html; charset=UTF-8'/>
@@ -30,127 +22,26 @@
 </head>
 <body>
 
-<nav class="navbar navbar-inverse">
-    <div class="container-fluid">
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-            <a class="navbar-brand" href="#">${siteName}</a>
-        </div>
-        <div class="collapse navbar-collapse" id="myNavbar">
-            <ul class="nav navbar-nav">
-                <li id="index-page"><a href="index.jsp">${home}</a></li>
-                <li id="movies-page"><a href="Controller?command=all-movies">${movies}</a></li>
-                <li id="reviews-page"><a href="#">Reviews</a></li>
-                <li id="users-page"><a href="#">Users</a></li>
-                <li id="about-page"><a href="#">FAQ</a></li>
-            </ul>
-            <ul class="nav navbar-nav navbar-right">
-                <c:if test="${sessionScope.get('user') == null}">
-                    <li class="sign-up">
-                        <a href="Controller?command=register">
-                            <span class="glyphicon glyphicon-user"></span>
-                                ${signUp}</a>
-                    </li>
-                    <li><a data-toggle="modal" data-target="#GSCCModal" href="#">
-                        <span class="glyphicon glyphicon-log-in"></span>
-                            ${logIn}</a>
-                    </li>
-                </c:if>
-                <c:if test="${sessionScope.get('user') != null}">
-                    <li class="sign-up">
-                        <a href="Controller?command=view-user&nickname=${sessionScope.get('user').nickname}">
-                            <span class="glyphicon glyphicon-user"></span> ${sessionScope.get('user').nickname}</a>
-                    </li>
-                    <li><a href="Controller?command=log-out">
-                        <span class="glyphicon glyphicon-log-out"></span> ${logOut}</a>
-                    </li>
-                </c:if>
-                <li><a href="Controller?command=change-language&language=en">English</a></li>
-                <li><a href="Controller?command=change-language&language=ru">русский</a></li>
-            </ul>
-        </div>
-    </div>
-</nav>
+<c:import url="WEB-INF/jsp/template/navbar.jsp"/>
 
-<div id="GSCCModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;  </button>
-                <h4 class="modal-title" id="myModalLabel">${movieRateEntrance}</h4>
-            </div>
-            <div class="modal-body text-center">
-                <form class="form-horizontal" method="post" action="Controller">
-                    <input type="hidden" name="command" value="login"/>
-                    <div class="form-group">
-                        <label for="inputNickname" class="col-sm-3 control-label">${nickname}</label>
-                        <div class="col-sm-7">
-                            <input type="text" class="form-control" id="inputNickname" placeholder="${nickname}"
-                                   name="nickname" required>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="inputPassword3" class="col-sm-3 control-label">${password}</label>
-                        <div class="col-sm-7">
-                            <input type="text" class="form-control" id="inputPassword3" placeholder="${password}"
-                                   name="pass" required>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="col-sm-offset-3 col-sm-7">
-                            <button type="submit" class="btn btn-primary">${signIn}</button>
-                        </div>
-                    </div>
-                </form>
-            </div>
 
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">${cancel}</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="container-fluid text-center flex">
+<div class="container-fluid text-center wrapper">
     <div class="row content">
 
-        <div class="col-sm-2 sidenav">
-            <c:if test='${sessionScope.get("user").type eq "admin" || sessionScope.get("user").type eq "moder"}'>
-                <p><a href="Controller?command=add-movie">Add movie</a></p>
-                <p><a href="Controller?command=view-all-users">View all users</a></p>
-                <p><a href="Controller?command=view-all-banned-users">View all banned users</a></p>
-            </c:if>
-            <p><a href="#">Link</a></p>
-            <p><a href="#">Link</a></p>
-            <p><a href="#">Link</a></p>
-        </div>
+        <c:import url="WEB-INF/jsp/template/sideleft.jsp"/>
 
-        <div class="col-sm-8 text-left">
+        <div class="col-sm-8 text-left mainContent">
             <c:if test="${requestScope.get('errorMessage')!=null}">
                 <h3 class="red"><c:out value="${requestScope.get('errorMessage')}"/></h3>
                 <c:remove var="errorMessage" scope="request"/>
             </c:if>
         </div>
 
-        <div class="col-sm-2 sidenav">
-            <div class="well">
-                <p>ADS</p>
-            </div>
-            <div class="well">
-                <p>ADS</p>
-            </div>
-        </div>
+        <c:import url="WEB-INF/jsp/template/sideright.jsp"/>
 
     </div>
 </div>
 
-<footer class="container-fluid text-center">
-    <p>Footer Text</p>
-</footer>
-
+<c:import url="WEB-INF/jsp/template/footer.jsp"/>
 </body>
 </html>

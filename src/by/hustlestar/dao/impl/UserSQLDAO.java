@@ -13,18 +13,19 @@ import java.util.List;
 
 
 /**
- * Created by Hustler on 31.10.2016.
+ * UserSQLDAO is an implementation of UserDAO for MySQL.
  */
 public class UserSQLDAO implements UserDAO {
     private final static String LOG_IN_STATEMENT =
             "SELECT * FROM user WHERE u_nick=? and u_password=?";
     private final static String REGISTER_STATEMENT =
-            "INSERT INTO user VALUES(?,?,?,'user',?,?)";
+            "INSERT INTO user (`u_nick`, `u_mail`, `u_password`, `u_type`, `u_register`, `u_sex`) VALUES(?,?,?,'user',?,?)";
     private final static String VIEW_ALL_USERS =
             "SELECT * FROM user";
     private static final String VIEW_ALL_BANNED_USERS =
             "SELECT * FROM user WHERE u_type='banned'";
-
+    private static final String UPDATE_IMAGE =
+            "UPDATE user SET u_image= ? WHERE u_nick=?;";
     private static final String VIEW_BY_NICKNAME =
             "SELECT * FROM user WHERE u_nick=?";
     private static final String BAN_USER_BY_NICKNAME =
@@ -51,10 +52,19 @@ public class UserSQLDAO implements UserDAO {
     private static final String U_MAIL = "u_mail";
     private static final String U_TYPE = "u_type";
     private static final String U_SEX = "u_sex";
+    private static final String U_IMAGE = "u_image";
     private static final String REPUTATION = "reputation";
     private static final String U_REGISTER = "u_register";
     private static final String DATE_FORMAT = "yyyy-MM-dd";
 
+    /**
+     * This method is used to authorize user in the system using data source.
+     *
+     * @param login    of user
+     * @param password of user
+     * @return filled User bean or null
+     * @throws DAOException if some error occurred while processing data.
+     */
     @Override
     public User authorize(String login, String password) throws DAOException {
         Connection con = null;
@@ -91,6 +101,16 @@ public class UserSQLDAO implements UserDAO {
         }
     }
 
+    /**
+     * This method is used to add new user to the system and data source.
+     *
+     * @param login    of user
+     * @param email    of user
+     * @param password of user
+     * @param sex      of user
+     * @return filled User bean or null
+     * @throws DAOException if some error occurred while processing data.
+     */
     @Override
     public User register(String login, String email, String password, String sex) throws DAOException {
         Connection con = null;
@@ -124,6 +144,12 @@ public class UserSQLDAO implements UserDAO {
         return null;
     }
 
+    /**
+     * This method is used to get all existing users from data source.
+     *
+     * @return list of filled User beans
+     * @throws DAOException if some error occurred while processing data.
+     */
     @Override
     public List<User> getAllUsers() throws DAOException {
         Connection con = null;
@@ -158,6 +184,12 @@ public class UserSQLDAO implements UserDAO {
         }
     }
 
+    /**
+     * This method is used to get all banned users from data source.
+     *
+     * @return list of filled User beans
+     * @throws DAOException if some error occurred while processing data.
+     */
     @Override
     public List<User> getAllBannedUsers() throws DAOException {
         Connection con = null;
@@ -192,6 +224,13 @@ public class UserSQLDAO implements UserDAO {
         }
     }
 
+    /**
+     * This method is used to get detailed information about some user from data source.
+     *
+     * @param nickname of user
+     * @return filled User bean.
+     * @throws DAOException if some error occurred while processing data.
+     */
     @Override
     public User getUserByNickname(String nickname) throws DAOException {
         Connection con = null;
@@ -212,6 +251,7 @@ public class UserSQLDAO implements UserDAO {
                 user.setType(rs.getString(U_TYPE));
                 user.setSex(rs.getString(U_SEX));
                 user.setRegistred(rs.getDate(U_REGISTER));
+                user.setImage(rs.getString(U_IMAGE));
             }
             return user;
 
@@ -224,6 +264,12 @@ public class UserSQLDAO implements UserDAO {
         }
     }
 
+    /**
+     * This method is used to block some user access to the system and mark him in data source.
+     *
+     * @param userNickname of user
+     * @throws DAOException if some error occurred while processing data.
+     */
     @Override
     public void banUser(String userNickname) throws DAOException {
         Connection con = null;
@@ -247,6 +293,12 @@ public class UserSQLDAO implements UserDAO {
         }
     }
 
+    /**
+     * This method is used to return access to the system for some user.
+     *
+     * @param userNickname of user
+     * @throws DAOException if some error occurred while processing data.
+     */
     @Override
     public void unbanUser(String userNickname) throws DAOException {
         Connection con = null;
@@ -270,6 +322,12 @@ public class UserSQLDAO implements UserDAO {
         }
     }
 
+    /**
+     * This method is used to get users with the highest reputation from data source.
+     *
+     * @return list of filled User beans
+     * @throws DAOException if some error occurred while processing data.
+     */
     @Override
     public List<User> getTopUsers() throws DAOException {
         Connection con = null;
@@ -302,6 +360,12 @@ public class UserSQLDAO implements UserDAO {
         }
     }
 
+    /**
+     * This method is used to delete some user from the system and used only for tests!!!
+     *
+     * @param userNickname of user
+     * @throws DAOException if some error occurred while processing data.
+     */
     @Override
     public void deleteUser(String userNickname) throws DAOException {
         Connection con = null;
@@ -320,6 +384,37 @@ public class UserSQLDAO implements UserDAO {
             throw new DAOException("Movie sql error", e);
         } catch (ConnectionPoolException e) {
             throw new DAOException("Movie pool connection error", e);
+        } finally {
+            DAOHelper.closeResource(con, st);
+        }
+    }
+
+    /**
+     * This method is used to update image path for some user photo.
+     *
+     * @param nickname of user
+     * @param path     to image
+     * @throws DAOException if some error occurred while processing data.
+     */
+    @Override
+    public void updateImage(String nickname, String path) throws DAOException {
+        Connection con = null;
+        PreparedStatement st = null;
+        try {
+            con = ConnectionPoolSQLDAO.getInstance().takeConnection();
+            st = con.prepareStatement(UPDATE_IMAGE);
+            st.setString(1, path);
+            st.setString(2, nickname);
+            int update = st.executeUpdate();
+            if (update > 0) {
+                System.out.println("News image obnovlen vse ok " + path);
+                return;
+            }
+            throw new DAOException("Wrong review data");
+        } catch (SQLException e) {
+            throw new DAOException("News sql error", e);
+        } catch (ConnectionPoolException e) {
+            throw new DAOException("Review pool connection error", e);
         } finally {
             DAOHelper.closeResource(con, st);
         }

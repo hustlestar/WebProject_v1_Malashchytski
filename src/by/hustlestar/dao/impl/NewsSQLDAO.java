@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by dell on 06.12.2016.
+ * NewsSQLDAO is an implementation of NewsDAO for MySQL.
  */
 public class NewsSQLDAO implements NewsDAO {
     private static final String ADD_REVIEW =
@@ -23,8 +23,10 @@ public class NewsSQLDAO implements NewsDAO {
             "UPDATE news SET\n" +
                     " n_title_ru = ?, n_title_en= ?, n_text_ru= ?, n_text_en= ?, n_date= ?\n" +
                     " WHERE n_id= ?;";
-    public static final String NEWS_BY_ID =
-            "SELECT n_title_ru, n_title_en, n_text_ru, n_text_en, n_date\n" +
+    private static final String UPDATE_IMAGE =
+            "UPDATE news SET n_image= ? WHERE n_id= ?;";
+    private static final String NEWS_BY_ID =
+            "SELECT n_title_ru, n_title_en, n_text_ru, n_text_en, n_date, n_image\n" +
                     "FROM news WHERE n_id=?";
     private final static String ADD_ACTOR_FOR_NEWS =
             "INSERT INTO news_about_actors (news_n_id, actors_a_id) VALUES (?, ?)";
@@ -43,14 +45,23 @@ public class NewsSQLDAO implements NewsDAO {
     private static final String LAST_INSERTED_NEWS =
             "SELECT * FROM jackdb.news ORDER BY n_id DESC LIMIT 1;";
 
-    private static final String NEWS_ID= "n_id";
+    private static final String NEWS_ID = "n_id";
     private static final String NEWS_TITLE_RU = "n_title_ru";
     private static final String NEWS_TITLE_EN = "n_title_en";
     private static final String NEWS_TEXT_RU = "n_text_ru";
     private static final String NEWS_TEXT_EN = "n_text_en";
     private static final String NEWS_DATE = "n_date";
+    private static final String NEWS_IMAGE = "n_image";
 
-
+    /**
+     * This method is used to add new news entry to the data source.
+     *
+     * @param newsTitleRu news title in russian
+     * @param newsTitleEn news title in english
+     * @param newsTextRu  news text in russian
+     * @param newsTextEn  news text in english
+     * @throws DAOException if some error occurred while processing data.
+     */
     @Override
     public void addNews(String newsTitleRu, String newsTitleEn, String newsTextRu, String newsTextEn) throws DAOException {
         Connection con = null;
@@ -78,6 +89,16 @@ public class NewsSQLDAO implements NewsDAO {
         }
     }
 
+    /**
+     * This method is used to update any news information in data source.
+     *
+     * @param newsTitleRu title of news in russian
+     * @param newsTitleEn title of news
+     * @param newsTextRu  news text in russian
+     * @param newsTextEn  news text in english
+     * @param newsID      id of news
+     * @throws DAOException if some error occurred while processing data.
+     */
     @Override
     public void updateNews(String newsTitleRu, String newsTitleEn, String newsTextRu, String newsTextEn, int newsID) throws DAOException {
         Connection con = null;
@@ -106,6 +127,13 @@ public class NewsSQLDAO implements NewsDAO {
         }
     }
 
+    /**
+     * This method is used to get detailed information of a particular news.
+     *
+     * @param id of news
+     * @return filled News bean
+     * @throws DAOException if some error occurred while processing data.
+     */
     @Override
     public News getNews(int id) throws DAOException {
         Connection con = null;
@@ -127,6 +155,7 @@ public class NewsSQLDAO implements NewsDAO {
                 news.setTextRu(rs.getString(NEWS_TEXT_RU));
                 news.setTextEn(rs.getString(NEWS_TEXT_EN));
                 news.setNewsDate(rs.getTimestamp(NEWS_DATE));
+                news.setImage(rs.getString(NEWS_IMAGE));
             }
             return news;
 
@@ -139,6 +168,13 @@ public class NewsSQLDAO implements NewsDAO {
         }
     }
 
+    /**
+     * This method is used to add connection between some news and actor into data source.
+     *
+     * @param actorID actor id
+     * @param newsID  news id
+     * @throws DAOException if some error occurred while processing data.
+     */
     @Override
     public void addActorForNews(int actorID, int newsID) throws DAOException {
         Connection con = null;
@@ -164,6 +200,13 @@ public class NewsSQLDAO implements NewsDAO {
         }
     }
 
+    /**
+     * This method is used to remove
+     *
+     * @param actorID actor id
+     * @param newsID  news id
+     * @throws DAOException if some error occurred while processing data.
+     */
     @Override
     public void deleteActorForNews(int actorID, int newsID) throws DAOException {
         Connection con = null;
@@ -188,6 +231,13 @@ public class NewsSQLDAO implements NewsDAO {
         }
     }
 
+    /**
+     * This method is used to add connection between some news and movie into data source.
+     *
+     * @param intNewsID  id of news
+     * @param intMovieID id of news
+     * @throws DAOException if some error occurred while processing data.
+     */
     @Override
     public void addMovieForNews(int intNewsID, int intMovieID) throws DAOException {
         Connection con = null;
@@ -212,6 +262,13 @@ public class NewsSQLDAO implements NewsDAO {
         }
     }
 
+    /**
+     * This method is used to remove connection between
+     *
+     * @param intNewsID  id of news
+     * @param intMovieID id of movie
+     * @throws DAOException if some error occurred while processing data.
+     */
     @Override
     public void deleteMovieForNews(int intNewsID, int intMovieID) throws DAOException {
         Connection con = null;
@@ -219,7 +276,7 @@ public class NewsSQLDAO implements NewsDAO {
         try {
             con = ConnectionPoolSQLDAO.getInstance().takeConnection();
             st = con.prepareStatement(DELETE_MOVIE_FOR_NEWS);
-            System.out.println("id news" + intNewsID + " id movie"+intMovieID);
+            System.out.println("id news" + intNewsID + " id movie" + intMovieID);
             st.setInt(1, intNewsID);
             st.setInt(2, intMovieID);
             System.out.println(st.toString());
@@ -238,6 +295,12 @@ public class NewsSQLDAO implements NewsDAO {
         }
     }
 
+    /**
+     * This method is used to get the latest news from data source.
+     *
+     * @return list of filled news beans
+     * @throws DAOException if some error occurred while processing data.
+     */
     @Override
     public List<News> getLatestNews() throws DAOException {
         Connection con = null;
@@ -273,6 +336,12 @@ public class NewsSQLDAO implements NewsDAO {
         }
     }
 
+    /**
+     * This method is used to retrieve last inserted news from data source.
+     *
+     * @return filled news bean
+     * @throws DAOException
+     */
     @Override
     public News getLastInsertedNews() throws DAOException {
         Connection con = null;
@@ -304,6 +373,12 @@ public class NewsSQLDAO implements NewsDAO {
         }
     }
 
+    /**
+     * This method is used to remove news from data source. Used only for tests.
+     *
+     * @param id of news
+     * @throws DAOException if some error occurred while processing data.
+     */
     @Override
     public void deleteNews(int id) throws DAOException {
         Connection con = null;
@@ -322,6 +397,37 @@ public class NewsSQLDAO implements NewsDAO {
             throw new DAOException("News sql error", e);
         } catch (ConnectionPoolException e) {
             throw new DAOException("News pool connection error", e);
+        } finally {
+            DAOHelper.closeResource(con, st);
+        }
+    }
+
+    /**
+     * This method is used update image path for a particular news in data source.
+     *
+     * @param id   of news
+     * @param path to image
+     * @throws DAOException if some error occurred while processing data.
+     */
+    @Override
+    public void updateImage(int id, String path) throws DAOException {
+        Connection con = null;
+        PreparedStatement st = null;
+        try {
+            con = ConnectionPoolSQLDAO.getInstance().takeConnection();
+            st = con.prepareStatement(UPDATE_IMAGE);
+            st.setString(1, path);
+            st.setInt(2, id);
+            int update = st.executeUpdate();
+            if (update > 0) {
+                System.out.println("News image obnovlen vse ok " + path);
+                return;
+            }
+            throw new DAOException("Wrong review data");
+        } catch (SQLException e) {
+            throw new DAOException("News sql error", e);
+        } catch (ConnectionPoolException e) {
+            throw new DAOException("Review pool connection error", e);
         } finally {
             DAOHelper.closeResource(con, st);
         }

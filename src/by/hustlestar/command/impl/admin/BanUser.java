@@ -14,7 +14,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
- * Created by Hustler on 21.11.2016.
+ * BanUser class is used to handle client request to block
+ * access to system for a particular user.
  */
 public class BanUser implements Command {
     private static final String ERROR_PAGE = "WEB-INF/jsp/error.jsp";

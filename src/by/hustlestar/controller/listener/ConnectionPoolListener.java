@@ -1,19 +1,21 @@
 package by.hustlestar.controller.listener;
-/**
- * Created by dell on 27.11.2016.
- */
 
 import by.hustlestar.service.ServiceFactory;
 import by.hustlestar.service.exception.ServiceException;
 import by.hustlestar.service.iface.PoolService;
+import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 
+/**
+ * ConnectionPoolListener is listener for ServletContext initialization
+ * and destroying. And used to initialize and destroy DB connection pool.
+ */
 public class ConnectionPoolListener implements ServletContextListener {
-    private static final Logger LOGGER = LogManager.getLogger();
+    private static final Logger logger = LogManager.getLogger(ConnectionPoolListener.class);
 
     // Public constructor is required by servlet spec
     public ConnectionPoolListener() {
@@ -22,6 +24,7 @@ public class ConnectionPoolListener implements ServletContextListener {
     // -------------------------------------------------------
     // ServletContextListener implementation
     // -------------------------------------------------------
+
     public void contextInitialized(ServletContextEvent sce) {
       /* This method is called when the servlet context is
          initialized(when the Web application is deployed). 
@@ -31,7 +34,8 @@ public class ConnectionPoolListener implements ServletContextListener {
             ServiceFactory serviceFactory = ServiceFactory.getInstance();
             PoolService poolService = serviceFactory.getPoolService();
             poolService.init();
-            LOGGER.debug("Pool successfully initialized");
+            logger.log(Level.INFO, "Pool successfully initialized");
+
         } catch (ServiceException e) {
             throw new ConnectionPoolListenerException("Cannot init the pool", e);
         }
@@ -46,7 +50,7 @@ public class ConnectionPoolListener implements ServletContextListener {
             ServiceFactory serviceFactory = ServiceFactory.getInstance();
             PoolService poolService = serviceFactory.getPoolService();
             poolService.destroy();
-            LOGGER.debug("Pool successfully destroyed");
+            logger.log(Level.INFO, "Pool successfully destroyed");
         } catch (ServiceException e) {
             throw new ConnectionPoolListenerException("Cannot destroy the pool", e);
         }

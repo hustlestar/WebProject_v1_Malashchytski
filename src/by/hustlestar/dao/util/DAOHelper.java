@@ -1,6 +1,5 @@
 package by.hustlestar.dao.util;
 
-import by.hustlestar.dao.exception.DAOException;
 import by.hustlestar.dao.pool.ConnectionPoolException;
 import by.hustlestar.dao.pool.ConnectionPoolSQLDAO;
 import org.apache.logging.log4j.Level;
@@ -13,12 +12,19 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 /**
- * Created by dell on 01.01.2017.
+ * DAOHelper is a helper class of DAO layer.
  */
 public class DAOHelper {
     private static final Logger logger = LogManager.getLogger(DAOHelper.class);
     private static final ConnectionPoolSQLDAO CONNECTION_POOL = ConnectionPoolSQLDAO.getInstance();
 
+    /**
+     * This method is used to close opened resources such as PreparedStatement, ResultSet and
+     * return Connection.
+     * @param con Connection
+     * @param st PreparedStatement
+     * @param rs ResultSet
+     */
     public static void closeResource(Connection con, PreparedStatement st, ResultSet rs) {
         if (rs != null) {
             try {
@@ -41,6 +47,12 @@ public class DAOHelper {
         }
     }
 
+    /**
+     * This method is used to close opened resource PreparedStatement and
+     * return Connection.
+     * @param con Connection
+     * @param st PreparedStatement
+     */
     public static void closeResource(Connection con, PreparedStatement st) {
         if (st != null) {
             try {

@@ -14,7 +14,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
- * Created by dell on 06.12.2016.
+ * AddMovieForNews class is used to handle client request to
+ * add some movie for a particular news.
  */
 public class AddMovieForNews implements Command {
     private static final Logger logger = LogManager.getLogger(AddMovieForNews.class);

@@ -13,7 +13,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
- * Created by Hustler on 21.11.2016.
+ * UnbanUser class is used to handle client request to give
+ * back access to the system for some user.
  */
 public class UnbanUser implements by.hustlestar.command.Command {
     private static final String ERROR_PAGE = "WEB-INF/jsp/error.jsp";

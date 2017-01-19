@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by Hustler on 08.11.2016.
+ * GenreSQLDAO is an implementation of GenreDAO for MySQL.
  */
 public class GenreSQLDAO implements GenreDAO {
     private final static String SHOW_GENRES_BY_ID = "SELECT genres_genre_ru, genres_genre_en FROM genres WHERE movies_m_id=?";
@@ -27,6 +27,14 @@ public class GenreSQLDAO implements GenreDAO {
 
     private static final String GENRE_RU = "genres_genre_ru";
     private static final String GENRE_EN = "genres_genre_en";
+
+    /**
+     * This method is used to get genres for a particular movie from data source.
+     *
+     * @param id of movie
+     * @return filled Genre beans
+     * @throws DAOException if some error occurred while processing data.
+     */
     @Override
     public List<Genre> getGenresByMovie(int id) throws DAOException {
         Connection con = null;
@@ -58,6 +66,14 @@ public class GenreSQLDAO implements GenreDAO {
         }
     }
 
+    /**
+     * This method is used to add connection between some movie and genre into data source.
+     *
+     * @param intMovieID id of movie
+     * @param nameRu     genre name in russian
+     * @param nameEn     genre name in english
+     * @throws DAOException if some error occurred while processing data.
+     */
     @Override
     public void addGenreForMovie(int intMovieID, String nameRu, String nameEn) throws DAOException {
         Connection con = null;
@@ -70,7 +86,7 @@ public class GenreSQLDAO implements GenreDAO {
             st.setString(3, nameEn);
             int update = st.executeUpdate();
             if (update > 0) {
-                System.out.println("Genre dobavlen vse ok "+nameEn+" "+nameRu);
+                System.out.println("Genre dobavlen vse ok " + nameEn + " " + nameRu);
                 return;
             }
             throw new DAOException("Wrong review data");
@@ -83,6 +99,13 @@ public class GenreSQLDAO implements GenreDAO {
         }
     }
 
+    /**
+     * This method is used to remove connection between some movie and genre from data source.
+     *
+     * @param intMovieID movie id
+     * @param nameEn     name in english
+     * @throws DAOException if some error occurred while processing data.
+     */
     @Override
     public void deleteGenreForMovie(int intMovieID, String nameEn) throws DAOException {
         Connection con = null;
@@ -94,7 +117,7 @@ public class GenreSQLDAO implements GenreDAO {
             st.setString(2, nameEn);
             int update = st.executeUpdate();
             if (update > 0) {
-                System.out.println("Genre udalen vse ok  "+intMovieID);
+                System.out.println("Genre udalen vse ok  " + intMovieID);
                 return;
             }
             throw new DAOException("Wrong review data");

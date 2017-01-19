@@ -16,7 +16,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
- * Created by Hustler on 20.11.2016.
+ * LikeReview class is used to handle client request to like or
+ * dislike the other user review.
  */
 public class LikeReview implements Command {
     private static final Logger logger = LogManager.getLogger(LikeReview.class);

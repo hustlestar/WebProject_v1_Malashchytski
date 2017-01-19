@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by Hustler on 15.11.2016.
+ * RatingSQLDAO is an implementation of RatingDAO for MySQL.
  */
 public class RatingSQLDAO implements RatingDAO {
 
@@ -35,7 +35,13 @@ public class RatingSQLDAO implements RatingDAO {
     private static final String MOVIES_M_ID = "movies_m_id";
     private static final String RATING_SCORE = "rating_score";
 
-
+    /**
+     * This method is used to get Rating for a movie.
+     *
+     * @param id id of movie
+     * @return list of filled rating beans
+     * @throws DAOException if some error occurred while processing data.
+     */
     @Override
     public List<Rating> getRatingsForMovie(int id) throws DAOException {
         Connection con = null;
@@ -68,6 +74,13 @@ public class RatingSQLDAO implements RatingDAO {
         }
     }
 
+    /**
+     * This method is used to get rating user gave to any movies.
+     *
+     * @param nickname of user
+     * @return list of filled movie beans
+     * @throws DAOException if some error occurred while processing data.
+     */
     @Override
     public List<Rating> getRatingsOfUser(String nickname) throws DAOException {
         Connection con = null;
@@ -100,6 +113,14 @@ public class RatingSQLDAO implements RatingDAO {
         }
     }
 
+    /**
+     * This method is used to check if there is an entry of this user for this movie.
+     *
+     * @param intMovieID   movie id
+     * @param userNickname user nickname
+     * @return filled rating bean
+     * @throws DAOException if some error occurred while processing data.
+     */
     @Override
     public Rating checkRating(int intMovieID, String userNickname) throws DAOException {
         Connection con = null;
@@ -131,6 +152,14 @@ public class RatingSQLDAO implements RatingDAO {
         }
     }
 
+    /**
+     * This method is used to add rating of some user for some mvoie.
+     *
+     * @param intMovieID   id of movie
+     * @param userNickname nickname of user
+     * @param rating       user gave
+     * @throws DAOException if some error occurred while processing data.
+     */
     @Override
     public void addRating(int intMovieID, String userNickname, int rating) throws DAOException {
         Connection con = null;
@@ -155,6 +184,14 @@ public class RatingSQLDAO implements RatingDAO {
         }
     }
 
+    /**
+     * This method is used to update rating some user gave to some movie in data source.
+     *
+     * @param intMovieID   id of movie
+     * @param userNickname user nickname
+     * @param intRating    rating user gave
+     * @throws DAOException if some error occurred while processing data.
+     */
     @Override
     public void updateRating(int intMovieID, String userNickname, int intRating) throws DAOException {
         Connection con = null;
@@ -179,6 +216,13 @@ public class RatingSQLDAO implements RatingDAO {
         }
     }
 
+    /**
+     * This method is used to remove rating some user gave for some movie and used only for tests!!!
+     *
+     * @param movieID      id of movie
+     * @param userNickname nickname of user
+     * @throws DAOException if some error occurred while processing data.
+     */
     @Override
     public void deleteRating(int movieID, String userNickname) throws DAOException {
         Connection con = null;

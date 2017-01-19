@@ -6,6 +6,7 @@
 <fmt:setBundle basename="locale" var="locale"/>
 <fmt:message bundle="${locale}" key="locale.relatedMovies" var="movies"/>
 <fmt:message bundle="${locale}" key="locale.relatedActors" var="actors"/>
+<fmt:message bundle="${locale}" key="locale.submit" var="submit"/>
 
 
 <!DOCTYPE html>
@@ -19,28 +20,42 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <title><c:out value="${news.titleEn}"/></title>
+    <link rel="shortcut icon" href="images/main/favicon_16x16.png">
+
 </head>
 <body onload="active()">
 
 <c:import url="template/navbar.jsp"/>
 <script language="javascript">
     function active() {
-        document.getElementById("movies-page").className = "active";
+        document.getElementById("news-page").className = "active";
     }
 </script>
-<div class="container-fluid text-center">
+<div class="container-fluid text-center wrapper">
     <div class="row content">
 
         <c:import url="template/sideleft.jsp"/>
 
-        <div class="col-sm-8 text-left">
+        <div class="col-sm-8 text-left mainContent">
             <c:if test="${sessionScope.get('language') eq 'ru' || sessionScope.get('language')==null}">
                 <h1><c:out value="${news.titleRu}"/></h1>
                 <h3>
                     <small>${news.newsDate}</small>
                 </h3>
                 <div class="col-sm-3">
-                    <img src="images/actors/${news.id}.jpg" alt="picture for news" width="100%"/>
+                    <img src="${news.image}" alt="picture for news" width="100%"/>
+                    <c:if test="${sessionScope.get('user').type eq 'admin' || sessionScope.get('user').type eq 'moder'}">
+                        <c:if test="${not empty param.errorMessage}">
+                            <h4 class="red"><c:out value="${param.errorMessage}"/></h4>
+                        </c:if>
+                        <form action="Controller" method="post" enctype="multipart/form-data">
+                            <input type="hidden" name="command" value="upload-photo-for-news"/>
+                            <input type="hidden" value="${news.id}" name="filename">
+                            <input name="data" type="file"><br>
+                            <button class="btn-sm btn-info" type="submit">${submit}</button>
+                            <br>
+                        </form>
+                    </c:if>
                 </div>
                 <div class="col-sm-9 text-left">
                     <p>${news.textRu}</p>

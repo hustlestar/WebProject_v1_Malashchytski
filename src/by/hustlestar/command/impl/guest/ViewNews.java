@@ -2,7 +2,7 @@ package by.hustlestar.command.impl.guest;
 
 import by.hustlestar.bean.entity.News;
 import by.hustlestar.command.Command;
-import by.hustlestar.command.util.QueryUtil;
+import by.hustlestar.command.util.CommandsUtil;
 import by.hustlestar.service.ServiceFactory;
 import by.hustlestar.service.exception.ServiceException;
 import by.hustlestar.service.iface.NewsService;
@@ -16,7 +16,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
- * Created by dell on 06.12.2016.
+ * ViewNews class is used to handle client request to
+ * show particular news.
  */
 public class ViewNews implements Command{
     private static final String JSP_PAGE_PATH = "WEB-INF/jsp/newsPage.jsp";
@@ -32,14 +33,14 @@ public class ViewNews implements Command{
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-        QueryUtil.saveCurrentQueryToSession(request);
+        CommandsUtil.saveCurrentQueryToSession(request);
 
         String id = request.getParameter(NEWS_ID);
         News news;
 
         NewsService newsService = ServiceFactory.getInstance().getNewsService();
         try {
-            news = newsService.viewNews(id);
+            news = newsService.getNews(id);
 
             request.setAttribute(REQUEST_ATTRIBUTE, news);
 

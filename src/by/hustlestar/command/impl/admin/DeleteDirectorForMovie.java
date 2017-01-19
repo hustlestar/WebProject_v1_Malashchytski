@@ -14,7 +14,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
- * Created by dell on 06.12.2016.
+ * DeleteDirectorForMovie class is used to handle client request to
+ * remove any actor from a particular movie.
  */
 public class DeleteDirectorForMovie implements Command {
     private static final Logger logger = LogManager.getLogger(DeleteDirectorForMovie.class);

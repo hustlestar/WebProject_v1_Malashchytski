@@ -10,7 +10,7 @@
 <fmt:message bundle="${locale}" key="locale.newsTextRu" var="newsTextRu"/>
 <fmt:message bundle="${locale}" key="locale.newsTextEn" var="newsTextEn"/>
 <fmt:message bundle="${locale}" key="locale.gross" var="gross"/>
-<fmt:message bundle="${locale}" key="locale.addMovie" var="addMovie"/>
+<fmt:message bundle="${locale}" key="locale.addNews" var="addNews"/>
 <fmt:message bundle="${locale}" key="locale.updateMovie" var="updateMovie"/>
 <fmt:message bundle="${locale}" key="locale.submit" var="submit"/>
 <c:if test="${sessionScope.get('user') == null && sessionScope.get('user').type ne 'admin' && sessionScope.get('user').type ne'moder'}">
@@ -19,25 +19,26 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Bootstrap Example</title>
+    <title>${addNews}</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <link rel="stylesheet" href="./src/first.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link rel="shortcut icon" href="images/main/favicon_16x16.png">
 
 </head>
 <body>
 
 <c:import url="template/navbar.jsp"/>
 
-<div class="container-fluid text-center">
-    <div class="row content">
+<div class="container-fluid text-center wrapper">
+    <div class="row content ">
 
         <c:import url="template/sideleft.jsp"/>
 
-        <div class="col-sm-8 text-left">
+        <div class="col-sm-8 text-left mainContent">
             <c:if test="${requestScope.get('errorMessage')!=null}">
                 <h3 class="red"><c:out value="${requestScope.get('errorMessage')}"/></h3>
                 <c:remove var="errorMessage" scope="request"/>
@@ -66,6 +67,7 @@
                 <br/>
                 <label for="newsTextEn">${newsTextEn}<br></label>
                 <input id="newsTextEn" class="form-control" type="text" name="newsTextEn"/>
+                <br/>
                 <br/>
                 <button type="submit" class="btn btn-primary">${submit}</button>
             </form>

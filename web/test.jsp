@@ -12,7 +12,6 @@
     <title>Title</title>
 </head>
 <body>
-<c:import var="data" url="Controller?command=view-news&news-id=1"/>
-${data}
+<c:import url="WEB-INF/jsp/template/footer.jsp"/>
 </body>
 </html>

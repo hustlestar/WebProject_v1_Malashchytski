@@ -16,7 +16,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
- * Created by Hustler on 07.11.2016.
+ * AddReview class is used to handle client request to add client's review
+ * for a particular movie.
  */
 public class AddReview implements Command {
 

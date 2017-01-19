@@ -4,10 +4,22 @@ package by.hustlestar.bean.entity;
  * Created by Hustler on 10.11.2016.
  */
 public class ReviewScore {
+    /**
+     * id of movie
+     */
     private int movieID;
+    /**
+     * nickname of a reviewer
+     */
     private String userNicknameWhoReviewed;
+    /**
+     * +1 -1 value
+     */
     private int score;
-    private String userNicknameWheScoredReview;
+    /**
+     * nickname of one, who liked
+     */
+    private String userNicknameWhoScoredReview;
 
     public int getMovieID() {
         return movieID;
@@ -33,12 +45,12 @@ public class ReviewScore {
         this.score = score;
     }
 
-    public String getUserNicknameWheScoredReview() {
-        return userNicknameWheScoredReview;
+    public String getUserNicknameWhoScoredReview() {
+        return userNicknameWhoScoredReview;
     }
 
-    public void setUserNicknameWheScoredReview(String userNicknameWheScoredReview) {
-        this.userNicknameWheScoredReview = userNicknameWheScoredReview;
+    public void setUserNicknameWhoScoredReview(String userNicknameWhoScoredReview) {
+        this.userNicknameWhoScoredReview = userNicknameWhoScoredReview;
     }
 
     @Override
@@ -52,7 +64,7 @@ public class ReviewScore {
         if (score != that.score) return false;
         if (userNicknameWhoReviewed != null ? !userNicknameWhoReviewed.equals(that.userNicknameWhoReviewed) : that.userNicknameWhoReviewed != null)
             return false;
-        return userNicknameWheScoredReview != null ? userNicknameWheScoredReview.equals(that.userNicknameWheScoredReview) : that.userNicknameWheScoredReview == null;
+        return userNicknameWhoScoredReview != null ? userNicknameWhoScoredReview.equals(that.userNicknameWhoScoredReview) : that.userNicknameWhoScoredReview == null;
     }
 
     @Override
@@ -60,7 +72,7 @@ public class ReviewScore {
         int result = movieID;
         result = 31 * result + (userNicknameWhoReviewed != null ? userNicknameWhoReviewed.hashCode() : 0);
         result = 31 * result + score;
-        result = 31 * result + (userNicknameWheScoredReview != null ? userNicknameWheScoredReview.hashCode() : 0);
+        result = 31 * result + (userNicknameWhoScoredReview != null ? userNicknameWhoScoredReview.hashCode() : 0);
         return result;
     }
 }

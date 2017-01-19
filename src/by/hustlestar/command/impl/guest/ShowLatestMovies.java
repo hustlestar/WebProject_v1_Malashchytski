@@ -1,7 +1,7 @@
 package by.hustlestar.command.impl.guest;
 
 import by.hustlestar.bean.entity.Movie;
-import by.hustlestar.command.util.QueryUtil;
+import by.hustlestar.command.util.CommandsUtil;
 import by.hustlestar.service.ServiceFactory;
 import by.hustlestar.service.exception.ServiceException;
 import by.hustlestar.service.iface.MovieService;
@@ -16,7 +16,7 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * Created by dell on 09.12.2016.
+ * ShowLatestMovies class is used to handle client request to show the latest movies.
  */
 public class ShowLatestMovies implements by.hustlestar.command.Command {
     private static final String JSP_PAGE_PATH = "WEB-INF/jsp/moviesPage.jsp";
@@ -31,12 +31,12 @@ public class ShowLatestMovies implements by.hustlestar.command.Command {
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-        QueryUtil.saveCurrentQueryToSession(request);
+        CommandsUtil.saveCurrentQueryToSession(request);
 
         List<Movie> movies;
         MovieService movieService = ServiceFactory.getInstance().getMovieService();
         try {
-            movies = movieService.showLatestMovies();
+            movies = movieService.getLatestMovies();
 
             request.setAttribute(REQUEST_ATTRIBUTE, movies);
 

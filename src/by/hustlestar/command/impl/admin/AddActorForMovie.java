@@ -14,7 +14,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
- * Created by dell on 06.12.2016.
+ * AddActorForMovie class is used to handle client request to
+ * add actor for a particular movie.
  */
 public class AddActorForMovie implements Command {
     private static final Logger logger = LogManager.getLogger(AddActorForMovie.class);

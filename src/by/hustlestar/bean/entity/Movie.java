@@ -3,24 +3,68 @@ package by.hustlestar.bean.entity;
 import java.util.List;
 
 /**
- * Created by Hustler on 01.11.2016.
+ * Entity represents movie.
  */
 public class Movie {
+    /**
+     * unique identifier
+     */
     private int id;
+    /**
+     * movie title in russian
+     */
     private String titleRu;
+    /**
+     * movie title english
+     */
     private String titleEn;
+    /**
+     * year 4 digits
+     */
     private int year;
+    /**
+     * budget of movie in dollars
+     */
     private long budget;
+    /**
+     * movie gross in dollars
+     */
     private long gross;
+    /**
+     * path to movie poster
+     */
+    private String image;
+    /**
+     * director of movie
+     */
     private Actor director;
-
+    /**
+     * list of countries
+     */
     private List<Country> countries;
+    /**
+     * list of reviews
+     */
     private List<Review> reviews;
+    /**
+     * list of ratings
+     */
     private List<Rating> ratings;
+    /**
+     * list of genres
+     */
     private List<Genre> genres;
+    /**
+     * list of actors
+     */
     private List<Actor> actors;
-
+    /**
+     * average rating of movie
+     */
     private double avgRating;
+    /**
+     * number of votes
+     */
     private int ratingVotes;
 
     public double getAvgRating() {
@@ -119,6 +163,14 @@ public class Movie {
         this.gross = gross;
     }
 
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+
     public Actor getDirector() {
         return director;
     }
@@ -150,6 +202,7 @@ public class Movie {
         if (ratingVotes != movie.ratingVotes) return false;
         if (titleRu != null ? !titleRu.equals(movie.titleRu) : movie.titleRu != null) return false;
         if (titleEn != null ? !titleEn.equals(movie.titleEn) : movie.titleEn != null) return false;
+        if (image != null ? !image.equals(movie.image) : movie.image != null) return false;
         if (director != null ? !director.equals(movie.director) : movie.director != null) return false;
         if (countries != null ? !countries.equals(movie.countries) : movie.countries != null) return false;
         if (reviews != null ? !reviews.equals(movie.reviews) : movie.reviews != null) return false;
@@ -168,6 +221,7 @@ public class Movie {
         result = 31 * result + year;
         result = 31 * result + (int) (budget ^ (budget >>> 32));
         result = 31 * result + (int) (gross ^ (gross >>> 32));
+        result = 31 * result + (image != null ? image.hashCode() : 0);
         result = 31 * result + (director != null ? director.hashCode() : 0);
         result = 31 * result + (countries != null ? countries.hashCode() : 0);
         result = 31 * result + (reviews != null ? reviews.hashCode() : 0);

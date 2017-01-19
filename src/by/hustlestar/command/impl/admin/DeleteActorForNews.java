@@ -14,7 +14,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
- * Created by dell on 06.12.2016.
+ * DeleteActorForNews class is used to handle client request to
+ * remove any actor from a particular actor.
  */
 public class DeleteActorForNews implements Command {
     private static final Logger logger = LogManager.getLogger(DeleteActorForNews.class);

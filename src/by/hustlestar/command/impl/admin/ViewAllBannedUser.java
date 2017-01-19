@@ -2,7 +2,7 @@ package by.hustlestar.command.impl.admin;
 
 import by.hustlestar.bean.entity.User;
 import by.hustlestar.command.Command;
-import by.hustlestar.command.util.QueryUtil;
+import by.hustlestar.command.util.CommandsUtil;
 import by.hustlestar.service.exception.ServiceException;
 import by.hustlestar.service.iface.AdminService;
 import org.apache.logging.log4j.Level;
@@ -16,7 +16,8 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * Created by Hustler on 21.11.2016.
+ * ViewAllBannedUser class is used to handle client request to
+ * show all users, which are banned.
  */
 public class ViewAllBannedUser implements Command{
     private static final String JSP_PAGE_PATH = "WEB-INF/jsp/usersPage.jsp";
@@ -31,21 +32,21 @@ public class ViewAllBannedUser implements Command{
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-        QueryUtil.saveCurrentQueryToSession(request);
+        CommandsUtil.saveCurrentQueryToSession(request);
 
         List<User> users;
 
         AdminService adminService= AdminUtil.getAdminService(request, response);
 
         try {
-            users = adminService.showAllBannedUsers();
+            users = adminService.getAllBannedUsers();
 
             request.setAttribute(REQUEST_ATTRIBUTE, users);
-            request.getRequestDispatcher(JSP_PAGE_PATH).include(request, response);
+            request.getRequestDispatcher(JSP_PAGE_PATH).forward(request, response);
         } catch (ServiceException e) {
             logger.log(Level.ERROR, e.getMessage(), e);
             request.setAttribute(ERROR, MESSAGE_OF_ERROR);
-            request.getRequestDispatcher(ERROR_PAGE).include(request, response);
+            request.getRequestDispatcher(ERROR_PAGE).forward(request, response);
         }
     }
 }

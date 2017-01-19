@@ -2,7 +2,7 @@ package by.hustlestar.command.impl.guest;
 
 import by.hustlestar.bean.entity.Movie;
 import by.hustlestar.command.Command;
-import by.hustlestar.command.util.QueryUtil;
+import by.hustlestar.command.util.CommandsUtil;
 import by.hustlestar.service.iface.MovieService;
 import by.hustlestar.service.ServiceFactory;
 import by.hustlestar.service.exception.ServiceException;
@@ -17,7 +17,7 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * Created by Hustler on 01.11.2016.
+ * ShowAllMovie class is used to show all movies for client request.
  */
 public class ShowAllMovie implements Command {
 
@@ -39,7 +39,7 @@ public class ShowAllMovie implements Command {
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-        QueryUtil.saveCurrentQueryToSession(request);
+        CommandsUtil.saveCurrentQueryToSession(request);
 
         List<Movie> movies;
         MovieService movieService = ServiceFactory.getInstance().getMovieService();
@@ -49,7 +49,7 @@ public class ShowAllMovie implements Command {
                 page = Integer.parseInt(request.getParameter(PAGE));
             }
 
-            movies = movieService.showFullList((page-1)* RECORDS_PER_PAGE, RECORDS_PER_PAGE);
+            movies = movieService.getFullList((page-1)* RECORDS_PER_PAGE, RECORDS_PER_PAGE);
 
             int numberOfMovies = movieService.countAllMoviesAmount();
             int noOfPages = (int) Math.ceil(numberOfMovies * 1.0 / RECORDS_PER_PAGE);

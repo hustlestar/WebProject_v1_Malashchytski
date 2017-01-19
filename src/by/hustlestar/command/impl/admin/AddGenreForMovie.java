@@ -13,7 +13,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
- * Created by dell on 01.12.2016.
+ * AddGenre class is used to handle client request to
+ * add any genre for a particular movie.
  */
 public class AddGenreForMovie implements by.hustlestar.command.Command {
 

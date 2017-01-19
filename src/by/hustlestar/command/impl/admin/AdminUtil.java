@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
- * Created by Hustler on 21.11.2016.
+ * AdminUtil is a helper class for commands in admin package.
  */
 class AdminUtil {
 
@@ -24,6 +24,15 @@ class AdminUtil {
     private static final String MESSAGE_OF_ERROR = "Cannot perform that action";
     private static final String MESSAGE_OF_ERROR_2 = "You don't have permission to do that";
 
+    /**
+     * This method is used to give Admin Service if user is admin or moderator
+     * in other case return null
+     * @param request
+     * @param response
+     * @return AdminService object
+     * @throws ServletException
+     * @throws IOException
+     */
     static AdminService getAdminService(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String userType;
         AdminService adminService=null;

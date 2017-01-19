@@ -1,5 +1,6 @@
 package by.hustlestar.service.validation;
 
+import java.util.Arrays;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -18,8 +19,6 @@ public class Validator {
     private static final Pattern PATTERN_YEAR = Pattern.compile(YEAR);
     private static final String LOGIN = "[a-zA-Z_0-9]{3,20}";
     private static final Pattern PATTERN_LOGIN = Pattern.compile(LOGIN);
-    private static final String PASSWORD = "[a-zA-Z_0-9]{6,30}";
-    private static final Pattern PATTERN_PASSWORD = Pattern.compile(PASSWORD);
 
     public static boolean validate(String... data) {
         Matcher matcher;
@@ -40,12 +39,6 @@ public class Validator {
         }
         return true;
     }
-    /*
-    public static boolean validate(String data) {
-        Matcher matcher;
-        matcher = PATTERN_TITLE.matcher(data);
-        return matcher.matches();
-    }*/
 
     public static boolean validateNumber(String data) {
         Matcher matcher;
@@ -59,15 +52,11 @@ public class Validator {
         return matcher.matches();
     }
 
-    public static boolean validatePassword(String password) {
-        Matcher matcher;
-        matcher = PATTERN_PASSWORD.matcher(password);
-        return matcher.matches();
+    public static boolean validatePassword(byte[] password) {
+        return password.length>6;
     }
-    public static boolean validatePassword(String password, String passwordrep) {
-        Matcher matcher;
-        matcher = PATTERN_PASSWORD.matcher(password);
-        return matcher.matches() && password.equals(passwordrep);
+    public static boolean validatePassword(byte[] password, byte[] passwordrep) {
+        return Arrays.equals(password, passwordrep);
     }
 
     public static boolean validateEmail(String email) {

@@ -2,7 +2,7 @@ package by.hustlestar.command.impl.guest;
 
 import by.hustlestar.bean.entity.Movie;
 import by.hustlestar.command.Command;
-import by.hustlestar.command.util.QueryUtil;
+import by.hustlestar.command.util.CommandsUtil;
 import by.hustlestar.service.ServiceFactory;
 import by.hustlestar.service.exception.ServiceException;
 import by.hustlestar.service.iface.MovieService;
@@ -17,7 +17,8 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * Created by Hustler on 17.11.2016.
+ * FindMovieByTitle class is used to handle request from client
+ * who searches any movie on the website.
  */
 public class FindMovieByTitle implements Command {
     private static final String JSP_PAGE_PATH = "WEB-INF/jsp/moviesPage.jsp";
@@ -34,7 +35,7 @@ public class FindMovieByTitle implements Command {
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-        QueryUtil.saveCurrentQueryToSession(request);
+        CommandsUtil.saveCurrentQueryToSession(request);
 
         String title = request.getParameter(TITLE);
 

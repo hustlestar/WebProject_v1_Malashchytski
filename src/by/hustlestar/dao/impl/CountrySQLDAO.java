@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by Hustler on 07.11.2016.
+ * CountrySQLDAO is an implementation of CountryDAO for MySQL.
  */
 public class CountrySQLDAO implements CountryDAO {
     private final static String SHOW_COUNTRIES_BY_ID =
@@ -29,6 +29,13 @@ public class CountrySQLDAO implements CountryDAO {
     private static final String COUNTRY_RU = "country_ru";
     private static final String COUNTRY_EN = "country_en";
 
+    /**
+     * This method is used to retrieve countries for a particular movie from data source.
+     *
+     * @param id of movie
+     * @return list of filled Country beans
+     * @throws DAOException if some error occurred while processing data.
+     */
     @Override
     public List<Country> getCountriesByMovie(int id) throws DAOException {
         Connection con = null;
@@ -60,6 +67,14 @@ public class CountrySQLDAO implements CountryDAO {
         }
     }
 
+    /**
+     * This method is used to add connection between some country and a particular movie into data source.
+     *
+     * @param intMovieID id of movie
+     * @param nameRu     name of country in russian
+     * @param nameEn     name of country in english
+     * @throws DAOException if some error occurred while processing data.
+     */
     @Override
     public void addCountryForMovie(int intMovieID, String nameRu, String nameEn) throws DAOException {
         Connection con = null;
@@ -72,7 +87,7 @@ public class CountrySQLDAO implements CountryDAO {
             st.setString(3, nameEn);
             int update = st.executeUpdate();
             if (update > 0) {
-                System.out.println("Country dobavlen vse ok"+ intMovieID+" "+nameEn+" "+nameRu);
+                System.out.println("Country dobavlen vse ok" + intMovieID + " " + nameEn + " " + nameRu);
                 return;
             }
             throw new DAOException("Wrong review data");
@@ -85,6 +100,13 @@ public class CountrySQLDAO implements CountryDAO {
         }
     }
 
+    /**
+     * This method is used to remove connection between some movie and country from data source.
+     *
+     * @param intMovieID id of movie
+     * @param nameEn     name of country in english
+     * @throws DAOException if some error occurred while processing data.
+     */
     @Override
     public void deleteCountryForMovie(int intMovieID, String nameEn) throws DAOException {
         Connection con = null;
@@ -96,7 +118,7 @@ public class CountrySQLDAO implements CountryDAO {
             st.setString(2, nameEn);
             int update = st.executeUpdate();
             if (update > 0) {
-                System.out.println("Country udalen vse ok "+intMovieID);
+                System.out.println("Country udalen vse ok " + intMovieID);
                 return;
             }
             throw new DAOException("Wrong review data");

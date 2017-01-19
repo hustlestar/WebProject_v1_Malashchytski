@@ -12,7 +12,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Created by Hustler on 27.10.2016.
+ * This class is used for picking right command for user, depending on
+ * type of user.
  */
 class CommandProvider {
     private static final Logger logger = LogManager.getLogger();
@@ -56,6 +57,7 @@ class CommandProvider {
         userCommands.put(CommandName.ADD_RATING, new AddRating());
         userCommands.put(CommandName.MY_PROFILE, new MyProfile());
         userCommands.put(CommandName.LOG_OUT, new Logout());
+        userCommands.put(CommandName.UPLOAD_PHOTO, new UploadPhoto());
 
 
         adminCommands.putAll(userCommands);
@@ -90,6 +92,14 @@ class CommandProvider {
         return instance;
     }
 
+    /**
+     * This method receives String type of user and String command name,
+     * looks for corresponding command for this user type if it's available
+     * for him or gives default command for guest.
+     * @param type of user
+     * @param commandName
+     * @return particular command
+     */
     Command getCommandForUser(String type, String commandName) {
         String cmd = commandName.replace("-", "_").toUpperCase();
         CommandName name = null;

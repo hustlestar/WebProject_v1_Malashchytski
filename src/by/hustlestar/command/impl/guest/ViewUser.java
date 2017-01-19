@@ -2,7 +2,7 @@ package by.hustlestar.command.impl.guest;
 
 import by.hustlestar.bean.entity.User;
 import by.hustlestar.command.Command;
-import by.hustlestar.command.util.QueryUtil;
+import by.hustlestar.command.util.CommandsUtil;
 import by.hustlestar.service.ServiceFactory;
 import by.hustlestar.service.iface.UserService;
 import by.hustlestar.service.exception.ServiceException;
@@ -16,7 +16,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
- * Created by Hustler on 08.11.2016.
+ * ViewUser class is used to handle client request to show
+ * profile page of a particular user.
  */
 public class ViewUser implements Command {
 
@@ -33,14 +34,14 @@ public class ViewUser implements Command {
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-        QueryUtil.saveCurrentQueryToSession(request);
+        CommandsUtil.saveCurrentQueryToSession(request);
 
         String nickname = request.getParameter(NICKNAME);
 
         User user;
         UserService userService = ServiceFactory.getInstance().getUserService();
         try {
-            user = userService.showUserByNickname(nickname);
+            user = userService.getUserByNickname(nickname);
 
             request.setAttribute(REQUEST_ATTRIBUTE, user);
 
