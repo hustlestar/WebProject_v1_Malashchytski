@@ -49,7 +49,7 @@ public class Login implements Command {
         UserService userService = ServiceFactory.getInstance().getUserService();
         HttpSession session = request.getSession(true);
 
-        if (login != null && password.length>0) {
+        if (login != null && password.length>5) {
             try {
                 User user = userService.authorize(login, password);
                 Arrays.fill(password, (byte) 0);

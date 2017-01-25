@@ -394,6 +394,10 @@ public class MovieServiceImpl implements MovieService {
         List<Movie> movies;
         try {
             movies = dao.getMoviesWithLatestReviews(lang);
+            for (Movie movie : movies) {
+                //System.out.println(movie.getReviews().size()+" for movie"+movie.getId());
+                UtilService.fillReviewWithScore(movie.getReviews());
+            }
             if (movies == null || movies.size() == 0) {
                 throw new ServiceException("No movies matching your query");
             }

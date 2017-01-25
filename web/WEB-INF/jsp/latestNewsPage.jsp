@@ -34,19 +34,23 @@
             <h1>${latestNews}</h1>
 
             <br>
-            <table>
+            <table class="table">
                 <c:forEach var="news" items="${requestScope.latest_news}">
                     <tr>
                         <c:if test="${sessionScope.get('language') eq 'ru' || sessionScope.get('language')==null}">
                             <td><a href="Controller?command=view-news&news-id=${news.id}">
-                                <h2>${news.titleRu}</h2></a></td>
+                                <p>${news.titleRu}</p></a></td>
                         </c:if>
                         <c:if test="${sessionScope.get('language') eq 'en'}">
                             <td><a href="Controller?command=view-news&news-id=${news.id}">
-                                <h2>${news.titleEn}</h2></a></td>
+                                <p>${news.titleEn} </p></a></td>
                         </c:if>
-                        <td><small><fmt:formatDate type="both" dateStyle="short" timeStyle="short"
-                                                   value="${news.newsDate}"/></small></td>
+                        <td>
+                            <small>
+                                <fmt:formatDate type="both" dateStyle="short" timeStyle="short"
+                                                value="${news.newsDate}"/>
+                            </small>
+                        </td>
                     </tr>
                 </c:forEach>
 

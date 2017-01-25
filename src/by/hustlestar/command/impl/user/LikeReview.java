@@ -52,6 +52,7 @@ public class LikeReview implements Command {
 
         if (movieID != null && userNickname != null && score != null && reviewerNickname != null) {
             try {
+                System.out.println(movieID+" "+ reviewerNickname+" "+score+" "+userNickname);
                 movieService.likeReview(movieID, reviewerNickname, score, userNickname);
                 response.sendRedirect(previousQuery);
             } catch (ServiceException e) {

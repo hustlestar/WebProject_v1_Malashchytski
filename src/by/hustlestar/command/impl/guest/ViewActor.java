@@ -28,7 +28,7 @@ public class ViewActor implements by.hustlestar.command.Command {
 
     private static final String REQUEST_ATTRIBUTE = "actor";
     private static final String ERROR = "errorMessage";
-    private static final String MESSAGE_OF_ERROR = "No movie with such id";
+    private static final String MESSAGE_OF_ERROR = "No actor with such id";
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {

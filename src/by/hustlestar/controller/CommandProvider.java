@@ -55,7 +55,6 @@ class CommandProvider {
         userCommands.put(CommandName.ADD_REVIEW, new AddReview());
         userCommands.put(CommandName.LIKE_REVIEW, new LikeReview());
         userCommands.put(CommandName.ADD_RATING, new AddRating());
-        userCommands.put(CommandName.MY_PROFILE, new MyProfile());
         userCommands.put(CommandName.LOG_OUT, new Logout());
         userCommands.put(CommandName.UPLOAD_PHOTO, new UploadPhoto());
 

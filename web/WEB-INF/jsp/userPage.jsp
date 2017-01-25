@@ -96,9 +96,9 @@
                             <p>
                                 <small>${usefulReview} <c:if test="${sessionScope.get('user') != null}">
                                     <a href="Controller?command=like-review&movieID=${review.movieID}&reviewer=${review.userNickname}&score=up"><i
-                                            class="green"><c:out value="${review.thumbsUp}"/></i></a> /
+                                            class="green"><img src="images/main/thumb_up.png" height="25px"> <c:out value="${review.thumbsUp}"/></i></a> /
                                     <a href="Controller?command=like-review&movieID=${review.movieID}&reviewer=${review.userNickname}&score=down"><i
-                                            class="red"><c:out value="${review.thumbsDown}"/></i></a>
+                                            class="red"><img src="images/main/thumb_down.png" height="25px"> <c:out value="${review.thumbsDown}"/></i></a>
                                     <br/></c:if>
                                     <c:if test="${sessionScope.get('user') == null}">
 

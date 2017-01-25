@@ -4,6 +4,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <fmt:setLocale value="${sessionScope.language}"/>
 <fmt:setBundle basename="locale" var="locale"/>
+<fmt:message bundle="${locale}" key="locale.involvedIn" var="involvedIn"/>
 
 
 <!DOCTYPE html>
@@ -65,8 +66,8 @@
                     publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
             </div>
             <div class="col-sm-12">
-                <hr>
-                <table border="1">
+                <h3>${involvedIn}</h3>
+                <table class="table">
                     <c:forEach var="movie" items="${requestScope.get('actor').movies}">
                         <tr>
                             <c:if test="${sessionScope.get('language') eq 'ru' || sessionScope.get('language')==null}">

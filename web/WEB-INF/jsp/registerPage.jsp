@@ -56,10 +56,11 @@
                         <c:remove var="errorMessage" scope="request"/>
                     </c:if>
                     <div class="modal-body text-center">
-                        <form class="form-horizontal" method="post" action="Controller">
+                        <form name="registerForm" class="form-horizontal" method="post" action="Controller" onsubmit="return validateForm();">
                             <input type="hidden" name="command" value="register"/>
                             <div class="form-group">
                                 <label for="inputNickname" class="col-sm-3 control-label">${nickname}</label>
+                                <span id="unameDemo" class="red"></span>
                                 <div class="col-sm-7">
                                     <input type="text" class="form-control" id="inputNickname" placeholder="${nickname}"
                                            name="nickname" required>
@@ -67,6 +68,7 @@
                             </div>
                             <div class="form-group">
                                 <label for="email" class="col-sm-3 control-label">${email}</label>
+                                <span id="emailDemo" class="red"></span>
                                 <div class="col-sm-7">
                                     <input type="email" class="form-control" id="email" placeholder="${email}"
                                            name="email" required>
@@ -74,15 +76,16 @@
                             </div>
                             <div class="form-group">
                                 <label for="inputPassword3" class="col-sm-3 control-label">${password}</label>
+                                <span id="pswDemo" class="red"></span>
                                 <div class="col-sm-7">
-                                    <input type="text" class="form-control" id="inputPassword3" placeholder="${password}"
+                                    <input type="password" class="form-control" id="inputPassword3" placeholder="${password}"
                                            name="pass" required>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label for="inputPassword4" class="col-sm-3 control-label">${repeatPassword}</label>
                                 <div class="col-sm-7">
-                                    <input type="text" class="form-control" id="inputPassword4" placeholder="${repeatPassword}"
+                                    <input type="password" class="form-control" id="inputPassword4" placeholder="${repeatPassword}"
                                            name="pass2" required>
                                 </div>
                             </div>
@@ -122,5 +125,69 @@
 
 <c:import url="template/footer.jsp"/>
 
+<script  language="javascript">
+    function validateForm() {
+        var uname, email, psw, psw2;
+        var unameText, emailText, pswText;
+        var result = true;
+
+        uname = document.forms["registerForm"]["nickname"].value;
+        email = document.forms["registerForm"]["email"].value;
+        psw = document.forms["registerForm"]["pass"].value;
+        psw2 = document.forms["registerForm"]["pass2"].value;
+
+        var unamePattern = /[a-zA-Z_0-9]{3,16}/;
+        if (!unamePattern.test(uname)) {
+            unameText = "Nickname should contain only latin symbols, digits and _";
+            document.getElementById("unameDemo").innerHTML = unameText;
+            result = false;
+        } else if (uname.length < 3) {
+            unameText = "Nickname should be at least 3 symbols.";
+            document.getElementById("unameDemo").innerHTML = unameText;
+            result = false;
+        } else if (uname.length > 16) {
+            unameText = "Nickname should be less then 17 symbols.";
+            document.getElementById("unameDemo").innerHTML = unameText;
+            result = false;
+        }  else {
+            unameText = "";
+            document.getElementById("unameDemo").innerHTML = unameText;
+        }
+
+        var emailPattern = /[a-zA-Z0-9_]+@[A-Za-z0-9].+/;
+        if (!emailPattern.test(email)) {
+            emailText = "Email should contain latin symbols, @, digits, . and _";
+            document.getElementById("emailDemo").innerHTML = emailText;
+            return false;
+        } else {
+            unameText = "";
+            document.getElementById("emailDemo").innerHTML = unameText;
+        }
+
+        var passPattern = /[a-zA-Z0-9_]{6,32}/;
+        if (psw.length < 6) {
+            pswText = "Password should be at least 6 symbols";
+            document.getElementById("pswDemo").innerHTML = pswText;
+            result = false;
+        } else if (!passPattern.test(psw)) {
+            pswText = "Password should contain only latin symbols, digits and _";
+            document.getElementById("pswDemo").innerHTML = pswText;
+            result = false;
+        } else if (psw.length > 32) {
+            pswText = "Password should be less then 32 symbols";
+            document.getElementById("pswDemo").innerHTML = pswText;
+            result = false;
+        } else if (psw !== psw2) {
+            pswText = "Passwords should be the same";
+            document.getElementById("pswDemo").innerHTML = pswText;
+            result = false;
+        } else {
+            unameText = "";
+            document.getElementById("pswDemo").innerHTML = unameText;
+        }
+
+        return result;
+    }
+</script>
 </body>
 </html>

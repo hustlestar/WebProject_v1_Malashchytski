@@ -37,6 +37,10 @@
         <div class="col-sm-8 text-left mainContent">
             <h1>${latestReviews}</h1>
             <br>
+            <c:if test="${requestScope.get('errorLikeReview')!=null}">
+                <h3 class="red"><c:out value="${requestScope.get('errorLikeReview')}"/></h3>
+                <c:remove var="errorLikeReview" scope="request"/>
+            </c:if>
             <hr>
             <c:forEach var="movie" items="${requestScope.latest_movies_reviews}">
                 <c:set var="review" value="${movie.reviews.get(0)}"/>
@@ -59,16 +63,19 @@
                     </h4>
                     <c:if test="${sessionScope.get('user').type eq 'admin' || sessionScope.get('user').type eq 'moder'}">
                         <p>
-                            <a class="edit" href="Controller?command=delete-review&movieID=${movie.id}&userNickname=${review.userNickname}">${deleteReview}</a>
-                            <a class="edit" href="Controller?command=ban-user&userNickname=${review.userNickname}">${banUser}</a></p>
+                            <a class="edit"
+                               href="Controller?command=delete-review&movieID=${movie.id}&userNickname=${review.userNickname}">${deleteReview}</a>
+                            <a class="edit"
+                               href="Controller?command=ban-user&userNickname=${review.userNickname}">${banUser}</a></p>
                     </c:if>
                     <p><c:out value="${movie.reviews.get(0).review}"/></p>
                     <p>
                         <small>${usefulReview} <c:if test="${sessionScope.get('user') != null}">
-                            <a href="Controller?command=like-review&movieID=${review.movieID}&reviewer=${review.userNickname}&score=up"><i
+                            <a href="Controller?command=like-review&movieID=${movie.id}&reviewer=${review.userNickname}&score=up">
+                                <img src="images/main/thumb_up.png" height="25px"> <i
                                     class="green"><c:out value="${review.thumbsUp}"/></i></a> /
-                            <a href="Controller?command=like-review&movieID=${review.movieID}&reviewer=${review.userNickname}&score=down"><i
-                                    class="red"><c:out value="${review.thumbsDown}"/></i></a>
+                            <a href="Controller?command=like-review&movieID=${movie.id}&reviewer=${review.userNickname}&score=down">
+                                <img src="images/main/thumb_down.png" height="25px"> <i class="red"><c:out value="${review.thumbsDown}"/></i></a>
                             <br/></c:if>
                             <c:if test="${sessionScope.get('user') == null}">
 

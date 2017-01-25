@@ -71,7 +71,6 @@ public class UploadPhoto implements by.hustlestar.command.Command {
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-        // Создаём класс фабрику
         String userType = null;
         Object object = request.getSession(false).getAttribute(USER);
         if (object.getClass().equals(User.class)) {
@@ -82,25 +81,21 @@ public class UploadPhoto implements by.hustlestar.command.Command {
         System.out.println(previousQuery);
         DiskFileItemFactory factory = new DiskFileItemFactory();
 
-        // Максимальный буфера данных в байтах,
-        // при его привышении данные начнут записываться на диск во временную директорию
-        // устанавливаем один мегабайт
+        // Maximal buffer size
         factory.setSizeThreshold(1024 * 1024);
 
-        // устанавливаем временную директорию
+        // temporary directory
         File tempDir = (File) request.getSession().getServletContext().getAttribute(TEMP_DIRECTORY);
         factory.setRepository(tempDir);
 
-        //Создаём сам загрузчик
+        // File uploader
         ServletFileUpload upload = new ServletFileUpload(factory);
 
-        //максимальный размер данных который разрешено загружать в байтах
-        //по умолчанию -1, без ограничений. Устанавливаем 10 мегабайт.
+        // setting maximum upload size
         upload.setSizeMax(1024 * 1024);
 
         try {
             List<FileItem> items = upload.parseRequest(request);
-            //System.out.println(items.size());
             Iterator<FileItem> iter = items.iterator();
 
             while (iter.hasNext()) {
@@ -154,16 +149,14 @@ public class UploadPhoto implements by.hustlestar.command.Command {
     }
 
     /**
-     * Сохраняет файл на сервере, в папке upload.
-     * Сама папка должна быть уже создана.
+     * Saves file on server in given directory.
      *
-     * @param item
-     * @param directory
-     * @throws Exception
+     * @param item file
+     * @param directory path
+     * @throws Exception when error occurred processing file
      */
     private void processUploadedFile(FileItem item, String directory) throws Exception {
         File uploadedFile = null;
-        //выбираем файлу имя пока не найдём свободное
         do {
             if (item.getName().endsWith(FILE_EXTENSION)) {
                 String path = directory + filename + FILE_EXTENSION;
@@ -180,9 +173,9 @@ public class UploadPhoto implements by.hustlestar.command.Command {
             }
         } while (uploadedFile.exists());
 
-        //создаём файл
+        // creating file
         uploadedFile.createNewFile();
-        //записываем в него данные
+        // writing data into it
         item.write(uploadedFile);
         AdminService adminService = ServiceFactory.getInstance().getAdminService();
         adminService.updateImage(entity, filename, filename + FILE_EXTENSION);

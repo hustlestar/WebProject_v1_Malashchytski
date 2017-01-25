@@ -29,7 +29,8 @@ public class MovieSQLDAO implements MovieDAO {
                     "AVG(rating.rating_score) AS m_rating, COUNT(rating.rating_score) AS m_votes FROM movies\n" +
                     "LEFT JOIN rating\n" +
                     "ON movies.m_id=rating.movies_m_id\n" +
-                    "WHERE m_id=?;";
+                    "WHERE m_id=?\n" +
+                    "GROUP BY m_id;";
 
     private final static String SHOW_BY_COUNTRY =
             "SELECT m_id, m_title_ru, m_title_en, AVG(rating.rating_score) AS m_rating, COUNT(rating.rating_score) AS m_votes\n" +
@@ -49,7 +50,8 @@ public class MovieSQLDAO implements MovieDAO {
             "SELECT m_id, m_title_ru, m_title_en, AVG(rating.rating_score) AS m_rating, COUNT(rating.rating_score) AS m_votes\n" +
                     "FROM movies\n" +
                     "LEFT JOIN rating ON movies.m_id = rating.movies_m_id\n" +
-                    "WHERE `m_title_en` LIKE ? OR `m_title_ru` LIKE ?;";
+                    "WHERE `m_title_en` LIKE ? OR `m_title_ru` LIKE ?" +
+                    "GROUP BY m_id;";
 
     private static final String SHOW_OF_TEN_YEARS_PERIOD =
             "SELECT m_id, m_title_ru, m_title_en, AVG(rating.rating_score) AS m_rating, COUNT(rating.rating_score) AS m_votes\n" +
@@ -620,6 +622,7 @@ public class MovieSQLDAO implements MovieDAO {
                 movie.setTitleEn(rs.getString(M_TITLE_EN));
                 reviewList = new ArrayList<>();
                 review = new Review();
+                review.setMovieID(rs.getInt(M_ID));
                 review.setUserNickname(rs.getString(R_USER_NICK));
                 review.setReview(rs.getString(R_REVIEW));
                 review.setReviewDate(rs.getTimestamp(R_REVIEW_DATE));
