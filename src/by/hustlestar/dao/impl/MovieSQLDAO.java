@@ -459,7 +459,7 @@ public class MovieSQLDAO implements MovieDAO {
             st.setLong(5, gross);
             int update = st.executeUpdate();
             if (update > 0) {
-                System.out.println("Filmec dobavlen vse ok" + titleRu);
+                //System.out.println("Filmec dobavlen vse ok" + titleRu);
                 return;
             }
             throw new DAOException("Wrong movie data");
@@ -498,7 +498,7 @@ public class MovieSQLDAO implements MovieDAO {
             st.setInt(6, id);
             int update = st.executeUpdate();
             if (update > 0) {
-                System.out.println("Filmec obnovlen vse ok" + titleRu);
+                //System.out.println("Filmec obnovlen vse ok" + titleRu);
                 return;
             }
             throw new DAOException("Wrong movie data");
@@ -794,7 +794,7 @@ public class MovieSQLDAO implements MovieDAO {
             st.setInt(1, id);
             int update = st.executeUpdate();
             if (update > 0) {
-                System.out.println("Filmec udalen vse ok " + id);
+                //System.out.println("Filmec udalen vse ok " + id);
                 return;
             }
             throw new DAOException("Wrong movie data");
@@ -863,7 +863,7 @@ public class MovieSQLDAO implements MovieDAO {
             st.setInt(2, id);
             int update = st.executeUpdate();
             if (update > 0) {
-                System.out.println("Movie obnovlen vse ok " + path);
+                //System.out.println("Movie obnovlen vse ok " + path);
                 return;
             }
             throw new DAOException("Wrong review data");

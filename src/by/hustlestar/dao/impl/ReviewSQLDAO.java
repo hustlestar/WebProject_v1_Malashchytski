@@ -152,7 +152,7 @@ public class ReviewSQLDAO implements ReviewDAO {
             st.setTimestamp(5, new Timestamp(System.currentTimeMillis()));
             int update = st.executeUpdate();
             if (update > 0) {
-                System.out.println("Review dobavlen vse ok" + userNickname + " " + review);
+                //System.out.println("Review dobavlen vse ok" + userNickname + " " + review);
                 return;
             }
             throw new DAOException("Wrong review data");
@@ -183,7 +183,7 @@ public class ReviewSQLDAO implements ReviewDAO {
             st.setString(2, userNickname);
             int update = st.executeUpdate();
             if (update > 0) {
-                System.out.println("Review udalen vse ok " + userNickname);
+                //System.out.println("Review udalen vse ok " + userNickname);
                 return;
             }
             throw new DAOException("Wrong review data");

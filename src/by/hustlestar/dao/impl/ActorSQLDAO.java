@@ -196,7 +196,7 @@ public class ActorSQLDAO implements ActorDAO {
             st.setString(2, nameEn);
             int update = st.executeUpdate();
             if (update > 0) {
-                System.out.println("Actor dobavlen vse ok" + nameEn);
+                //System.out.println("Actor dobavlen vse ok" + nameEn);
                 return;
             }
             throw new DAOException("Wrong movie data");
@@ -229,7 +229,7 @@ public class ActorSQLDAO implements ActorDAO {
             st.setInt(3, actorID);
             int update = st.executeUpdate();
             if (update > 0) {
-                System.out.println("Actor obnovlen vse ok " + nameEn);
+                //System.out.println("Actor obnovlen vse ok " + nameEn);
                 return;
             }
             throw new DAOException("Wrong movie data");
@@ -260,7 +260,7 @@ public class ActorSQLDAO implements ActorDAO {
             st.setInt(2, movieID);
             int update = st.executeUpdate();
             if (update > 0) {
-                System.out.println("Actor dobavlen k filmy");
+                //System.out.println("Actor dobavlen k filmy");
                 return;
             }
             throw new DAOException("Wrong movie data");
@@ -291,7 +291,7 @@ public class ActorSQLDAO implements ActorDAO {
             st.setInt(2, actorID);
             int update = st.executeUpdate();
             if (update > 0) {
-                System.out.println("Actor udalen vse ok " + actorID);
+                //System.out.println("Actor udalen vse ok " + actorID);
                 return;
             }
             throw new DAOException("Wrong review data");
@@ -322,7 +322,7 @@ public class ActorSQLDAO implements ActorDAO {
             st.setInt(2, movieID);
             int update = st.executeUpdate();
             if (update > 0) {
-                System.out.println("Director dobavlen k filmy");
+                //System.out.println("Director dobavlen k filmy");
                 return;
             }
             throw new DAOException("Wrong actor data");
@@ -353,7 +353,7 @@ public class ActorSQLDAO implements ActorDAO {
             st.setInt(2, actorID);
             int update = st.executeUpdate();
             if (update > 0) {
-                System.out.println("Director udalen vse ok " + actorID);
+                //System.out.println("Director udalen vse ok " + actorID);
                 return;
             }
             throw new DAOException("Wrong review data");
@@ -496,7 +496,7 @@ public class ActorSQLDAO implements ActorDAO {
             st.setInt(1, id);
             int update = st.executeUpdate();
             if (update > 0) {
-                System.out.println("Actor udalen vse ok " + id);
+                //System.out.println("Actor udalen vse ok " + id);
                 return;
             }
             throw new DAOException("Wrong movie data");
@@ -527,7 +527,7 @@ public class ActorSQLDAO implements ActorDAO {
             st.setInt(2, id);
             int update = st.executeUpdate();
             if (update > 0) {
-                System.out.println("News obnovlen vse ok " + path);
+                //System.out.println("News obnovlen vse ok " + path);
                 return;
             }
             throw new DAOException("Wrong review data");

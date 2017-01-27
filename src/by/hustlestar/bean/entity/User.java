@@ -1,12 +1,13 @@
 package by.hustlestar.bean.entity;
 
+import java.io.Serializable;
 import java.sql.Date;
 import java.util.List;
 
 /**
  * Entity represents user.
  */
-public class User {
+public class User implements Serializable {
     /**
      * nickname of user
      */

@@ -87,7 +87,7 @@ public class CountrySQLDAO implements CountryDAO {
             st.setString(3, nameEn);
             int update = st.executeUpdate();
             if (update > 0) {
-                System.out.println("Country dobavlen vse ok" + intMovieID + " " + nameEn + " " + nameRu);
+                //System.out.println("Country dobavlen vse ok" + intMovieID + " " + nameEn + " " + nameRu);
                 return;
             }
             throw new DAOException("Wrong review data");
@@ -118,7 +118,7 @@ public class CountrySQLDAO implements CountryDAO {
             st.setString(2, nameEn);
             int update = st.executeUpdate();
             if (update > 0) {
-                System.out.println("Country udalen vse ok " + intMovieID);
+                //System.out.println("Country udalen vse ok " + intMovieID);
                 return;
             }
             throw new DAOException("Wrong review data");

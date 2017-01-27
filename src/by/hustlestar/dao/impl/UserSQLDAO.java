@@ -280,7 +280,7 @@ public class UserSQLDAO implements UserDAO {
             st.setString(1, userNickname);
             int update = st.executeUpdate();
             if (update > 0) {
-                System.out.println("User v bane vse ok" + userNickname);
+                //System.out.println("User v bane vse ok" + userNickname);
                 return;
             }
             throw new DAOException("Wrong ban data");
@@ -309,7 +309,7 @@ public class UserSQLDAO implements UserDAO {
             st.setString(1, userNickname);
             int update = st.executeUpdate();
             if (update > 0) {
-                System.out.println("User razbanen vse ok " + userNickname);
+                //System.out.println("User razbanen vse ok " + userNickname);
                 return;
             }
             throw new DAOException("Wrong unban data");
@@ -376,7 +376,7 @@ public class UserSQLDAO implements UserDAO {
             st.setString(1, userNickname);
             int update = st.executeUpdate();
             if (update > 0) {
-                System.out.println("User udalen vse ok " + userNickname);
+                //System.out.println("User udalen vse ok " + userNickname);
                 return;
             }
             throw new DAOException("Wrong movie data");
@@ -407,10 +407,10 @@ public class UserSQLDAO implements UserDAO {
             st.setString(2, nickname);
             int update = st.executeUpdate();
             if (update > 0) {
-                System.out.println("News image obnovlen vse ok " + path);
+                //System.out.println("News image obnovlen vse ok " + path);
                 return;
             }
-            throw new DAOException("Wrong review data");
+            throw new DAOException("Wrong image data");
         } catch (SQLException e) {
             throw new DAOException("News sql error", e);
         } catch (ConnectionPoolException e) {

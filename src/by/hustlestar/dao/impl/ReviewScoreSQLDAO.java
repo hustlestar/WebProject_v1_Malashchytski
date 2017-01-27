@@ -94,7 +94,7 @@ public class ReviewScoreSQLDAO implements ReviewScoreDAO {
             st.setString(4, userNickname);
             int update = st.executeUpdate();
             if (update > 0) {
-                System.out.println("Review like dobavlen vse ok");
+                //System.out.println("Review like dobavlen vse ok");
                 return;
             }
             throw new DAOException("Wrong movie data");

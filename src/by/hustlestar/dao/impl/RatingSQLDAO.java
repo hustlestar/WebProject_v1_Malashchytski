@@ -234,7 +234,7 @@ public class RatingSQLDAO implements RatingDAO {
             st.setString(2, userNickname);
             int update = st.executeUpdate();
             if (update > 0) {
-                System.out.println("Rating udalen vse ok");
+                //System.out.println("Rating udalen vse ok");
                 return;
             }
             throw new DAOException("Wrong rating data");

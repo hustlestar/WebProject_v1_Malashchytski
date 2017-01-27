@@ -15,6 +15,9 @@ public class Genre implements Serializable {
      */
     private String nameEn;
 
+    public Genre() {
+    }
+
     public String getNameRu() {
         return nameRu;
     }

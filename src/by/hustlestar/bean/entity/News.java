@@ -5,20 +5,49 @@ import java.sql.Timestamp;
 import java.util.List;
 
 /**
- * Created by dell on 05.12.2016.
+ * Entity represents news.
  */
 public class News implements Serializable {
+    /**
+     * unique identifier of news
+     */
     private int id;
+    /**
+     * news title in russian
+     */
     private String titleRu;
+    /**
+     * news title in english
+     */
     private String titleEn;
+    /**
+     * news text in russian
+     */
     private String textRu;
+    /**
+     * news text in english
+     */
     private String textEn;
+    /**
+     * date of news
+     */
     private Timestamp newsDate;
+    /**
+     * path to image for news
+     */
     private String image;
 
-
+    /**
+     * list of connected movies
+     */
     private List<Movie> newsMovies;
+    /**
+     * list of connected actors
+     */
     private List<Actor> newsActors;
+
+    public News() {
+    }
 
     public int getId() {
         return id;

@@ -1,9 +1,11 @@
 package by.hustlestar.bean.entity;
 
+import java.io.Serializable;
+
 /**
  * Created by Hustler on 10.11.2016.
  */
-public class ReviewScore {
+public class ReviewScore implements Serializable {
     /**
      * id of movie
      */
@@ -16,10 +18,14 @@ public class ReviewScore {
      * +1 -1 value
      */
     private int score;
+
     /**
      * nickname of one, who liked
      */
     private String userNicknameWhoScoredReview;
+
+    public ReviewScore() {
+    }
 
     public int getMovieID() {
         return movieID;

@@ -15,6 +15,9 @@ public class Country implements Serializable {
      */
     private String nameEn;
 
+    public Country() {
+    }
+
     public String getNameRu() {
         return nameRu;
     }

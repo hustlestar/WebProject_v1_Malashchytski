@@ -19,6 +19,9 @@ public class Rating implements Serializable {
      */
     private int ratingScore;
 
+    public Rating() {
+    }
+
     public int getMovieID() {
         return movieID;
     }

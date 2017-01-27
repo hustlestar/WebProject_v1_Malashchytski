@@ -76,7 +76,7 @@ public class NewsSQLDAO implements NewsDAO {
             st.setTimestamp(5, new Timestamp(System.currentTimeMillis()));
             int update = st.executeUpdate();
             if (update > 0) {
-                System.out.println("News dobavlen vse ok " + newsTitleEn);
+                //System.out.println("News dobavlen vse ok " + newsTitleEn);
                 return;
             }
             throw new DAOException("Wrong review data");
@@ -114,7 +114,7 @@ public class NewsSQLDAO implements NewsDAO {
             st.setInt(6, newsID);
             int update = st.executeUpdate();
             if (update > 0) {
-                System.out.println("News obnovlen vse ok " + newsTitleEn);
+                //System.out.println("News obnovlen vse ok " + newsTitleEn);
                 return;
             }
             throw new DAOException("Wrong review data");
@@ -182,12 +182,12 @@ public class NewsSQLDAO implements NewsDAO {
         try {
             con = ConnectionPoolSQLDAO.getInstance().takeConnection();
             st = con.prepareStatement(ADD_ACTOR_FOR_NEWS);
-            System.out.println(newsID);
+            //System.out.println(newsID);
             st.setInt(1, newsID);
             st.setInt(2, actorID);
             int update = st.executeUpdate();
             if (update > 0) {
-                System.out.println("Actor dobavlen k news");
+                //System.out.println("Actor dobavlen k news");
                 return;
             }
             throw new DAOException("Wrong movie data");
@@ -218,7 +218,7 @@ public class NewsSQLDAO implements NewsDAO {
             st.setInt(2, actorID);
             int update = st.executeUpdate();
             if (update > 0) {
-                System.out.println("Actor udalen vse ok " + actorID);
+                //System.out.println("Actor udalen vse ok " + actorID);
                 return;
             }
             throw new DAOException("Wrong review data");
@@ -249,7 +249,7 @@ public class NewsSQLDAO implements NewsDAO {
             st.setInt(2, intNewsID);
             int update = st.executeUpdate();
             if (update > 0) {
-                System.out.println("Movie dobavlen k news");
+                //System.out.println("Movie dobavlen k news");
                 return;
             }
             throw new DAOException("Wrong movie data");
@@ -276,13 +276,13 @@ public class NewsSQLDAO implements NewsDAO {
         try {
             con = ConnectionPoolSQLDAO.getInstance().takeConnection();
             st = con.prepareStatement(DELETE_MOVIE_FOR_NEWS);
-            System.out.println("id news" + intNewsID + " id movie" + intMovieID);
+            //System.out.println("id news" + intNewsID + " id movie" + intMovieID);
             st.setInt(1, intNewsID);
             st.setInt(2, intMovieID);
-            System.out.println(st.toString());
+            //System.out.println(st.toString());
             int update = st.executeUpdate();
             if (update > 0) {
-                System.out.println("Movie udalen for news ");
+                //System.out.println("Movie udalen for news ");
                 return;
             }
             throw new DAOException("Wrong review data");
@@ -389,7 +389,7 @@ public class NewsSQLDAO implements NewsDAO {
             st.setInt(1, id);
             int update = st.executeUpdate();
             if (update > 0) {
-                System.out.println("News udalen vse ok" + id);
+                //System.out.println("News udalen vse ok" + id);
                 return;
             }
             throw new DAOException("Wrong movie data");
@@ -420,7 +420,7 @@ public class NewsSQLDAO implements NewsDAO {
             st.setInt(2, id);
             int update = st.executeUpdate();
             if (update > 0) {
-                System.out.println("News image obnovlen vse ok " + path);
+                //System.out.println("News image obnovlen vse ok " + path);
                 return;
             }
             throw new DAOException("Wrong review data");

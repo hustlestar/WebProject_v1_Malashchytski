@@ -1,11 +1,12 @@
 package by.hustlestar.bean.entity;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * Entity represents movie.
  */
-public class Movie {
+public class Movie implements Serializable {
     /**
      * unique identifier
      */
@@ -66,6 +67,9 @@ public class Movie {
      * number of votes
      */
     private int ratingVotes;
+
+    public Movie() {
+    }
 
     public double getAvgRating() {
         return avgRating;

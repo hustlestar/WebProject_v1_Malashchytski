@@ -78,7 +78,7 @@ public class UploadPhoto implements by.hustlestar.command.Command {
             userType = user.getType();
         }
         String previousQuery = CommandsUtil.getPreviousQuery(request);
-        System.out.println(previousQuery);
+        //System.out.println(previousQuery);
         DiskFileItemFactory factory = new DiskFileItemFactory();
 
         // Maximal buffer size
@@ -106,6 +106,7 @@ public class UploadPhoto implements by.hustlestar.command.Command {
                     if (fieldName.equals(COMMAND) && value.equals(UPLOAD_PHOTO_FOR_AVATAR)
                             && (userType.equals(ADMIN) || userType.equals(MODER) || userType.equals(USER))) {
                         directory = USERS_DIRECTORY;
+                        entity = USERS;
                     } else if (fieldName.equals(COMMAND) && (userType.equals(ADMIN) || userType.equals(MODER))) {
                         switch (value) {
                             case UPLOAD_PHOTO_FOR_MOVIE:
@@ -123,7 +124,6 @@ public class UploadPhoto implements by.hustlestar.command.Command {
                         }
                     } else if (fieldName.equals(FILENAME)) {
                         filename = value;
-                        entity = USERS;
                     }
                 } else {
                     processUploadedFile(item, directory);

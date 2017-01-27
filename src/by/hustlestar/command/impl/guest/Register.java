@@ -36,7 +36,7 @@ public class Register implements Command {
 
     private static final String ERROR = "errorMessage";
     private static final String MESSAGE_OF_ERROR_1 = "All fields should be filled";
-    private static final String MESSAGE_OF_ERROR_2 = "Wrong login or password";
+    private static final String MESSAGE_OF_ERROR_2 = "Such with such email or login is already exist";
     private static final String MESSAGE_OF_ERROR_3 = "Login and password should be at least 6 characters";
 
     @Override

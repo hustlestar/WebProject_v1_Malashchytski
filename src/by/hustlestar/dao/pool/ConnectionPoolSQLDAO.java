@@ -13,11 +13,11 @@ import java.util.concurrent.BlockingQueue;
  */
 public class ConnectionPoolSQLDAO implements ConnectionPoolDAO {
     private static final String DRIVER = "com.mysql.jdbc.Driver";
-    //private static final String URL = "jdbc:mysql://127.0.0.1:3309/jackdb?useEncoding=true&amp;characterEncoding=UTF-8";
-    private static final String URL = "jdbc:mysql://mysql42382-env-0609561.mycloud.by/jackdb?useEncoding=true&amp;characterEncoding=UTF-8";
+    private static final String URL = "jdbc:mysql://127.0.0.1:3309/jackdb?useEncoding=true&amp;characterEncoding=UTF-8";
+    //private static final String URL = "jdbc:mysql://mysql42382-env-0609561.mycloud.by/jackdb?useEncoding=true&amp;characterEncoding=UTF-8";
     private static final String USER = "root";
-    //private static final String PASSWORD = "pass";
-    private static final String PASSWORD = "TOFgle57892";
+    private static final String PASSWORD = "pass";
+    //private static final String PASSWORD = "TOFgle57892";
 
     private static final int MINIMAL_CONNECTION_COUNT = 5;
 

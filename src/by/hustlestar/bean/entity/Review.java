@@ -1,12 +1,13 @@
 package by.hustlestar.bean.entity;
 
+import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.List;
 
 /**
  * Entity represents review.
  */
-public class Review {
+public class Review implements Serializable {
     /**
      * id of movie
      */
@@ -43,6 +44,9 @@ public class Review {
      * number of dislikes
      */
     private int thumbsDown;
+
+    public Review() {
+    }
 
     public List<ReviewScore> getReviewScores() {
         return reviewScores;

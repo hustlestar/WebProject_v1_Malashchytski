@@ -28,6 +28,8 @@ public class Actor implements Serializable {
      */
     private String image;
 
+    public Actor() {
+    }
 
     public int getId() {
         return id;
