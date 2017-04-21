@@ -34,6 +34,11 @@ public class RatingSQLDAO implements RatingDAO {
     private static final String USER_U_NICK = "user_u_nick";
     private static final String MOVIES_M_ID = "movies_m_id";
     private static final String RATING_SCORE = "rating_score";
+    private static final RatingDAO instance = new RatingSQLDAO();
+
+    public static RatingDAO getInstance() {
+        return instance;
+    }
 
     /**
      * This method is used to get Rating for a movie.

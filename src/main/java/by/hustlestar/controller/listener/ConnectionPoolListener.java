@@ -30,15 +30,15 @@ public class ConnectionPoolListener implements ServletContextListener {
          initialized(when the Web application is deployed). 
          You can initialize servlet context related data here.
       */
-        try {
+        //try {
             ServiceFactory serviceFactory = ServiceFactory.getInstance();
             PoolService poolService = serviceFactory.getPoolService();
-            poolService.init();
+//            poolService.init();
             logger.log(Level.INFO, "Pool successfully initialized");
 
-        } catch (ServiceException e) {
-            throw new ConnectionPoolListenerException("Cannot init the pool", e);
-        }
+       // } catch (ServiceException e) {
+        //    throw new ConnectionPoolListenerException("Cannot init the pool", e);
+       // }
     }
 
     public void contextDestroyed(ServletContextEvent sce) {

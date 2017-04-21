@@ -40,6 +40,14 @@ public class ReviewSQLDAO implements ReviewDAO {
     private static final String U_IMAGE = "u_image";
 
     private static final String AMOUNT = "amount";
+    private static final ReviewDAO instance = new ReviewSQLDAO();
+
+    private ReviewSQLDAO() {
+    }
+
+    public static ReviewDAO getInstance() {
+        return instance;
+    }
 
     /**
      * This method is used to get reviews for some movie from data source

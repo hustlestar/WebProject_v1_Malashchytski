@@ -27,6 +27,15 @@ public class GenreSQLDAO implements GenreDAO {
 
     private static final String GENRE_RU = "genres_genre_ru";
     private static final String GENRE_EN = "genres_genre_en";
+    private static final GenreDAO instance = new GenreSQLDAO();
+
+    private GenreSQLDAO() {
+
+    }
+
+    public static GenreDAO getInstance() {
+        return instance;
+    }
 
     /**
      * This method is used to get genres for a particular movie from data source.

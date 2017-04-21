@@ -29,6 +29,15 @@ public class ReviewScoreSQLDAO implements ReviewScoreDAO {
 
     private static final String SCORE_VALUE = "value";
     private static final String USER_WHO_SCORED_REVIEW = "user_u_nick";
+    private static final ReviewScoreDAO instance = new ReviewScoreSQLDAO();
+
+    private ReviewScoreSQLDAO() {
+
+    }
+
+    public static ReviewScoreDAO getInstance() {
+        return instance;
+    }
 
     /**
      * This method is used to get all ReviewScores for some review.

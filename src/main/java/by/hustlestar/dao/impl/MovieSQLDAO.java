@@ -129,6 +129,14 @@ public class MovieSQLDAO implements MovieDAO {
     private static final String U_IMAGE = "u_image";
 
     private static final String AMOUNT = "amount";
+    private static final MovieDAO instance = new MovieSQLDAO();
+
+    private MovieSQLDAO() {
+    }
+
+    public static MovieDAO getInstance() {
+        return instance;
+    }
 
     /**
      * This method is used to get list of movies from data source.

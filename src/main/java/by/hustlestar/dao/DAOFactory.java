@@ -18,16 +18,16 @@ public class DAOFactory {
     }
 
 
-    private UserDAO userDAO = new UserSQLDAO();
-    private MovieDAO movieDAO = new MovieSQLDAO();
-    private CountryDAO countryDAO = new CountrySQLDAO();
-    private RatingDAO ratingDAO = new RatingSQLDAO();
-    private ReviewDAO reviewDAO = new ReviewSQLDAO();
-    private ReviewScoreDAO reviewScoreDAO = new ReviewScoreSQLDAO();
-    private GenreDAO genreDAO = new GenreSQLDAO();
-    private ActorDAO actorDAO = new ActorSQLDAO();
-    private NewsDAO newsDAO = new NewsSQLDAO();
-    private ConnectionPoolDAO connectionPoolDAO = new ConnectionPoolSQLDAO();
+    private UserDAO userDAO = UserSQLDAO.getInstance();
+    private MovieDAO movieDAO = MovieSQLDAO.getInstance();
+    private CountryDAO countryDAO = CountrySQLDAO.getInstance();
+    private RatingDAO ratingDAO = RatingSQLDAO.getInstance();
+    private ReviewDAO reviewDAO = ReviewSQLDAO.getInstance();
+    private ReviewScoreDAO reviewScoreDAO = ReviewScoreSQLDAO.getInstance();
+    private GenreDAO genreDAO = GenreSQLDAO.getInstance();
+    private ActorDAO actorDAO = ActorSQLDAO.getInstance();
+    private NewsDAO newsDAO = NewsSQLDAO.getInstance();
+    private ConnectionPoolDAO connectionPoolDAO = ConnectionPoolSQLDAO.getInstance();
 
     public UserDAO getUserDAO() {
         return userDAO;

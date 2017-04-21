@@ -62,6 +62,14 @@ public class ActorSQLDAO implements ActorDAO {
     private static final String A_NAME_RU = "a_name_ru";
     private static final String A_NAME_EN = "a_name_en";
     private static final String A_IMAGE = "a_image";
+    private static final ActorDAO instance = new ActorSQLDAO();
+
+    private ActorSQLDAO() {
+    }
+
+    public static ActorDAO getInstance() {
+        return instance;
+    }
 
     /**
      * This method gets list of Actors from data source.

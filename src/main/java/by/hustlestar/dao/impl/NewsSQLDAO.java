@@ -53,6 +53,9 @@ public class NewsSQLDAO implements NewsDAO {
     private static final String NEWS_DATE = "n_date";
     private static final String NEWS_IMAGE = "n_image";
 
+    private static final NewsSQLDAO instance = new NewsSQLDAO();
+
+
     /**
      * This method is used to add new news entry to the data source.
      *
@@ -433,4 +436,7 @@ public class NewsSQLDAO implements NewsDAO {
         }
     }
 
+    public static NewsDAO getInstance() {
+        return instance;
+    }
 }

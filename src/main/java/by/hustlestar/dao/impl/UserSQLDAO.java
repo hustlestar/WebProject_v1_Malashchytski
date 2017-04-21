@@ -56,6 +56,14 @@ public class UserSQLDAO implements UserDAO {
     private static final String REPUTATION = "reputation";
     private static final String U_REGISTER = "u_register";
     private static final String DATE_FORMAT = "yyyy-MM-dd";
+    private static final UserDAO instance = new UserSQLDAO();
+
+    private UserSQLDAO() {
+    }
+
+    public static UserDAO getInstance() {
+        return instance;
+    }
 
     /**
      * This method is used to authorize user in the system using data source.

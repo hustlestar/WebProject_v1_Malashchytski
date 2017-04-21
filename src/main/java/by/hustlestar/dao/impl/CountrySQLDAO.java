@@ -28,6 +28,14 @@ public class CountrySQLDAO implements CountryDAO {
 
     private static final String COUNTRY_RU = "country_ru";
     private static final String COUNTRY_EN = "country_en";
+    private static final CountryDAO instance = new CountrySQLDAO();
+
+    private CountrySQLDAO() {
+    }
+
+    public static CountryDAO getInstance() {
+        return instance;
+    }
 
     /**
      * This method is used to retrieve countries for a particular movie from data source.

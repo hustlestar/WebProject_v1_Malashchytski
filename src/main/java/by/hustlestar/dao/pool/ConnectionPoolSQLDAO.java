@@ -24,13 +24,14 @@ public class ConnectionPoolSQLDAO implements ConnectionPoolDAO {
     private static BlockingQueue<Connection> freeConnections;
     private static BlockingQueue<Connection> usedConnections;
 
-    private final static ConnectionPoolSQLDAO instance = new ConnectionPoolSQLDAO();
-
     private volatile boolean isInit = false;
 
+    private static final ConnectionPoolSQLDAO instance = new ConnectionPoolSQLDAO();
 
-    public ConnectionPoolSQLDAO() {
+    private ConnectionPoolSQLDAO() {
     }
+
+
 
     /**
      * This method is used to initialize pool of connections with data source.
